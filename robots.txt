@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://fatimsidiba-hue.github.io/sitemap.xml

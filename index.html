@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="canonical" href="https://fatimsidiba-hue.github.io/">
+<link rel="icon" type="image/png" href="images/logo-carre.png">
+<link rel="apple-touch-icon" href="images/logo-carre.png">
+<meta name="theme-color" content="#fcecee">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_CI">
+<meta property="og:site_name" content="Timfa online shop">
+<meta property="og:title" content="Timfa online shop · Des bijoux qui vous ressemblent">
+<meta property="og:description" content="Colliers, bagues Toi &amp; Moi et bracelets dès 3 000 F. Paiement à la livraison à Abidjan. Commande sur WhatsApp.">
+<meta property="og:image" content="https://fatimsidiba-hue.github.io/images/couverture.jpg">
+<meta property="og:url" content="https://fatimsidiba-hue.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<title>Timfa Online Shop</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Timfa online shop, bijouterie en ligne : colliers, bracelets et bagues Toi &amp; Moi. Offre Black Friday : tous les colliers à 4 000 F, bagues Toi &amp; Moi à 5 000 F. Commande sur WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap">
+<style>
+/* Layout: boutique claire rose poudré, cartes blanches arrondies, héro photo à droite. Thème clair unique, voulu. */
+:root{
+  --bg:#fffafa;          /* fond page */
+  --blush:#fcecee;       /* rose très clair */
+  --blush-2:#f7d9dd;     /* rose poudré */
+  --rose:#c4526e;        /* accent rose */
+  --ink:#2a1c1e;         /* texte & boutons */
+  --muted:#7e6a6e;       /* texte secondaire */
+  --line:#f1dfe2;        /* filets */
+  --card:#ffffff;
+  --gold:#b8893a;
+  --red:#d6334a;
+  --display:"Playfair Display", Georgia, "Times New Roman", serif;
+  --body:"Jost", "Helvetica Neue", Arial, sans-serif;
+  --gl:max(16px, env(safe-area-inset-left, 0px));
+  --gr:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--blush)}
+a{color:inherit}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3{font-family:var(--display);font-weight:500;margin:0;line-height:1.12;text-wrap:balance}
+.wrap{max-width:1200px;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--rose);font-weight:500}
+.rose{color:var(--rose)}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+.sec-title{font-size:clamp(28px,3.4vw,40px)}
+
+.btn{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:14px 26px;font-size:14px;font-weight:500;text-decoration:none;transition:transform .2s,box-shadow .2s,background .2s}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-dark:hover{transform:translateY(-2px);box-shadow:0 10px 24px -10px rgba(42,28,30,.6)}
+.btn-light{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn-light:hover{border-color:var(--ink)}
+.arrow{width:16px;height:16px}
+
+/* Bandeau */
+.promo-bar{background:var(--ink);color:#fff;font-size:13px;padding-block:8px;overflow:hidden;white-space:nowrap}
+.promo-bar b{color:#f7c9d3;font-weight:500}
+
+/* En-tête */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(252,236,238,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:6px}
+.logo img{height:62px;width:auto}
+nav.menu{display:flex;gap:34px;font-size:14px;font-weight:500}
+nav.menu a{text-decoration:none;padding-block:6px;border-bottom:2px solid transparent;transition:border-color .2s}
+nav.menu a:hover,nav.menu a.on{border-color:var(--ink)}
+.icons{display:flex;align-items:center;gap:8px}
+.icon-btn{position:relative;width:42px;height:42px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center}
+.icon-btn:hover{background:#fff}
+.icon-btn svg{width:22px;height:22px}
+.cart-count{position:absolute;top:2px;right:0;min-width:18px;height:18px;border-radius:9px;background:var(--ink);color:#fff;font-size:11px;display:grid;place-items:center;padding:0 4px}
+@media (max-width:860px){nav.menu{display:none}.logo img{height:52px}}
+
+/* Héro */
+.hero{background:linear-gradient(115deg,var(--blush) 0%,var(--blush) 40%,var(--blush-2) 100%);position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.1fr;align-items:center;min-height:540px;position:static}
+.hero-text{padding-block:56px;position:relative;z-index:2}
+.hero h1{font-size:clamp(40px,5.4vw,68px);margin:14px 0 18px}
+.hero .lead{max-width:40ch;color:var(--muted);font-size:16px;margin:0 0 30px}
+.hero .lead em{display:block;font-family:var(--display);color:var(--ink);font-size:18px;margin-bottom:6px}
+.ctas{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.play{display:inline-flex;align-items:center;gap:12px;font-size:14px;font-weight:500;text-decoration:none}
+.play span{width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 6px 18px -8px rgba(196,82,110,.5)}
+.trust{display:flex;gap:28px;flex-wrap:wrap;margin-top:44px}
+.trust div{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;line-height:1.3}
+.trust small{display:block;color:var(--muted);font-weight:400;font-size:12px}
+.trust svg{width:30px;height:30px;flex:none;color:var(--ink)}
+.hero-photo{position:absolute;top:0;right:0;bottom:0;width:58%}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:62% 40%}
+.hero-photo::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--blush) 0%,rgba(252,236,238,0) 28%);z-index:1}
+.offer-bubble{position:absolute;z-index:3;top:16%;right:max(4%,var(--gr));width:116px;height:116px;border-radius:50%;background:#fff;display:grid;place-content:center;text-align:center;box-shadow:0 14px 30px -14px rgba(42,28,30,.35)}
+.offer-bubble b{font-size:20px;font-weight:600;line-height:1.1}
+.offer-bubble small{font-size:12px;color:var(--muted);line-height:1.3}
+@media (max-width:860px){
+  .hero .wrap{grid-template-columns:1fr;min-height:0;padding-left:0;padding-right:0}
+  .hero-photo{position:relative;width:100%;height:auto;aspect-ratio:4/3;order:-1}
+  .hero-photo::before{background:linear-gradient(0deg,var(--blush) 0%,rgba(252,236,238,0) 30%)}
+  .hero-text{padding:8px var(--gr) 48px var(--gl)}
+  .offer-bubble{top:16px;bottom:auto;width:96px;height:96px}
+  .offer-bubble b{font-size:17px}
+}
+
+/* Catégories */
+.cats .wrap{padding-block:64px 24px;text-align:center}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:30px}
+.cat{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;text-decoration:none;text-align:center;transition:transform .25s,box-shadow .25s;padding:0;cursor:pointer}
+.cat:hover{transform:translateY(-4px);box-shadow:0 18px 30px -20px rgba(196,82,110,.45)}
+.cat img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.cat div{padding:14px 10px 16px}
+.cat strong{display:block;font-weight:500;font-size:16px}
+.cat small{color:var(--muted);font-size:13px}
+@media (max-width:760px){.cat-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
+
+/* Bannière Black Friday */
+.bf .wrap{padding-block:40px}
+.bf-card{background:linear-gradient(110deg,var(--blush) 0%,var(--blush-2) 100%);border-radius:24px;display:grid;grid-template-columns:1.1fr 1fr .8fr;align-items:center;gap:28px;padding:44px 48px;position:relative;overflow:hidden}
+.bf-card h2{font-size:clamp(30px,3.6vw,44px);margin:10px 0 14px}
+.bf-card p{color:var(--muted);margin:0 0 24px;max-width:36ch}
+.bf-stack{position:relative;height:260px}
+.bf-stack img{position:absolute;border-radius:16px;object-fit:cover;box-shadow:0 20px 34px -18px rgba(42,28,30,.45);border:5px solid #fff}
+.bf-stack img:nth-child(1){width:52%;aspect-ratio:4/5;left:4%;top:8%;transform:rotate(-6deg)}
+.bf-stack img:nth-child(2){width:52%;aspect-ratio:4/5;right:4%;top:0;transform:rotate(5deg)}
+.bf-stats{display:grid;gap:22px}
+.bf-stats b{display:block;font-family:var(--display);font-size:34px;color:var(--rose);line-height:1.1;font-weight:500;font-variant-numeric:tabular-nums}
+.bf-stats small{font-size:13px;color:var(--muted)}
+.countdown{display:flex;gap:6px;font-variant-numeric:tabular-nums}
+.countdown span{background:#fff;border-radius:10px;padding:6px 8px;text-align:center;min-width:48px}
+.countdown span b{font-size:22px;color:var(--ink);font-family:var(--body);font-weight:600}
+.countdown span small{font-size:10px;display:block;letter-spacing:.06em;text-transform:uppercase}
+@media (max-width:960px){.bf-card{grid-template-columns:1fr;padding:32px 24px}.bf-stack{height:220px;max-width:340px}}
+
+/* Boutique */
+.shop .wrap{padding-block:48px 72px}
+.shop-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:26px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filters button{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:13px}
+.filters button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+@media (max-width:1040px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:700px){.grid{grid-template-columns:repeat(2,1fr);gap:12px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:box-shadow .25s}
+.card:hover{box-shadow:0 18px 30px -22px rgba(196,82,110,.55)}
+.media{position:relative;aspect-ratio:1/1;background:var(--blush);overflow:hidden}
+.media img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.card:hover .media img{transform:scale(1.05)}
+.badge{position:absolute;top:12px;left:12px;background:var(--red);color:#fff;font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px}
+.fav{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:#fff;display:grid;place-items:center;box-shadow:0 4px 10px -4px rgba(0,0,0,.2)}
+.fav svg{width:17px;height:17px}
+.fav[aria-pressed="true"] svg{fill:var(--rose);stroke:var(--rose)}
+.body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.body h3{font-family:var(--body);font-size:16px;font-weight:500;line-height:1.3}
+.body p{margin:0;font-size:13px;color:var(--muted);line-height:1.45}
+.swatches{display:flex;gap:7px}
+.swatches button{width:20px;height:20px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);padding:0}
+.swatches button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
+.foot{margin-top:auto;padding-top:8px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.price .now{font-size:18px;font-weight:600}
+.price .was{font-size:13px;color:var(--muted);text-decoration:line-through}
+.price .ask{font-size:13px;color:var(--muted)}
+.add{width:40px;height:40px;flex:none;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;transition:background .2s,color .2s,border-color .2s}
+.add svg{width:18px;height:18px}
+.add:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.more{display:flex;justify-content:center;margin-top:30px}
+@media (max-width:460px){.body p{display:none}.body{padding:12px}.price .now{font-size:16px}}
+
+/* Portés */
+.look .wrap{padding-block:16px 72px}
+.look-grid{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:16px;height:min(70vw,640px);margin-top:26px}
+.look-grid figure{margin:0;position:relative;overflow:hidden;border-radius:20px;min-height:0}
+.look-grid .big{grid-row:span 2}
+.look-grid img{width:100%;height:100%;object-fit:cover}
+.look-grid figcaption{position:absolute;left:14px;bottom:14px;background:rgba(255,255,255,.92);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500}
+@media (max-width:760px){.look-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;height:auto}.look-grid .big{grid-column:span 2;grid-row:auto;aspect-ratio:1.23}.look-grid figure:not(.big){aspect-ratio:4/5}}
+
+/* Vidéos */
+.reels .wrap{padding-block:0 72px}
+.reels-card{background:var(--blush);border-radius:24px;padding:44px 48px;display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:center}
+.reels-card p{color:var(--muted);max-width:40ch}
+.reel-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.reel-row video{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:16px;background:#000}
+@media (max-width:860px){.reels-card{grid-template-columns:1fr;padding:28px 20px}}
+
+/* Livraison */
+.delivery .wrap{padding-block:0 72px}
+.deliv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:26px}
+.deliv-grid article{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;display:grid;gap:6px;align-content:start}
+.fee{font-family:var(--display);font-size:34px;font-weight:500;color:var(--rose);font-variant-numeric:tabular-nums}
+.deliv-grid p{margin:0;color:var(--muted);font-size:14px}
+.deliv-grid strong{color:var(--ink);font-weight:500}
+@media (max-width:760px){.deliv-grid{grid-template-columns:1fr}}
+
+/* Engagements + contact */
+.promise .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding-block:0 72px}
+.promise article{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px}
+.promise h3{font-size:20px;margin:8px 0}
+.promise p{margin:0;color:var(--muted);font-size:14px}
+@media (max-width:760px){.promise .wrap{grid-template-columns:1fr}}
+.contact{background:linear-gradient(180deg,var(--bg),var(--blush))}
+.contact .wrap{padding-block:72px;display:grid;justify-items:center;text-align:center;gap:16px}
+.contact h2{font-size:clamp(32px,4vw,48px)}
+.contact p{color:var(--muted);max-width:46ch;margin:0}
+.contact .contact-info{color:var(--ink);font-size:16px;line-height:1.7}
+.sel{user-select:all;font-variant-numeric:tabular-nums}
+footer{background:var(--blush);border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+footer .wrap{padding-block:22px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+footer img{height:46px}
+
+/* Bouton WhatsApp flottant */
+.wa-float{position:fixed;z-index:65;right:max(18px,calc(env(safe-area-inset-right,0px) + 12px));bottom:calc(18px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;box-shadow:0 10px 24px -8px rgba(0,0,0,.35);transition:transform .2s}
+.wa-float:hover{transform:scale(1.07)}
+.wa-float svg{width:32px;height:32px}
+
+/* Panier */
+.scrim{position:fixed;inset:0;background:rgba(42,28,30,.4);z-index:70;opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.open{opacity:1;pointer-events:auto}
+aside.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);z-index:80;background:#fff;transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;padding:calc(20px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) 22px;box-shadow:-20px 0 40px -20px rgba(0,0,0,.2)}
+aside.drawer.open{transform:none}
+.lines{min-height:80px}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.drawer-head h2{font-size:24px}
+.x{background:var(--blush);border:0;border-radius:50%;width:36px;height:36px;font-size:18px}
+.lines{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-block:16px}
+.line{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center}
+.line img{width:64px;height:64px;object-fit:cover;border-radius:12px}
+.line h4{margin:0;font-size:14px;font-weight:500}
+.line small{color:var(--muted)}
+.qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px}
+.qty button{background:none;border:0;width:28px;height:28px}
+.qty span{min-width:18px;text-align:center;font-size:13px}
+.empty{color:var(--muted);text-align:center;margin:auto 0}
+.drawer-foot{border-top:1px solid var(--line);padding-top:14px;display:grid;gap:12px}
+.total{display:flex;justify-content:space-between;align-items:baseline}
+.total b{font-size:22px;font-variant-numeric:tabular-nums}
+.drawer-foot .btn{justify-content:center}
+.zones{border:0;padding:0;margin:0;display:grid;gap:6px}
+.zones legend{font-size:13px;font-weight:500;margin-bottom:6px}
+.zones label{display:flex;align-items:center;gap:8px;font-size:14px;border:1px solid var(--line);border-radius:12px;padding:8px 12px;cursor:pointer}
+.zones label:has(input:checked){border-color:var(--ink);background:var(--blush)}
+.zones b{margin-left:auto;font-weight:500;font-variant-numeric:tabular-nums}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fields input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0;background:#fff;color:var(--ink)}
+.pay-note{margin:0;font-size:13px;background:var(--blush);border-radius:10px;padding:8px 12px}
+.sub{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.note{font-size:12px;color:var(--muted);margin:0}
+.copy{background:none;border:0;color:var(--rose);font-size:13px;text-decoration:underline;padding:0;justify-self:center}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:.3s;z-index:90;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ===== Animations ===== */
+.marquee{display:inline-flex;animation:marquee 32s linear infinite}
+.marquee span{padding-right:48px}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* Héro : apparition en cascade */
+.hero-text > *{animation:fadeUp .9s cubic-bezier(.2,.7,.2,1) both}
+.hero-text > :nth-child(1){animation-delay:.1s}
+.hero-text > :nth-child(2){animation-delay:.25s}
+.hero-text > :nth-child(3){animation-delay:.45s}
+.hero-text > :nth-child(4){animation-delay:.6s}
+.hero-text > :nth-child(5){animation-delay:.8s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.hero h1 .rose{display:inline-block;background:linear-gradient(90deg,var(--rose) 0%,#e98aa2 45%,var(--rose) 90%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s ease-in-out infinite}
+@keyframes shine{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+.hero-photo{animation:fadeIn 1.2s ease both;overflow:hidden}
+.hero-photo img{transform-origin:65% 55%}
+.hero-photo img{animation:kenburns 18s ease-in-out infinite alternate}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.08)}}
+.spark{position:absolute;z-index:2;width:16px;height:16px;background:#fff;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);animation:twinkle 3.2s ease-in-out infinite;filter:drop-shadow(0 0 6px #fff)}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.4) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
+.offer-bubble{animation:pop .7s cubic-bezier(.3,1.6,.5,1) 1s both,float 4s ease-in-out 1.7s infinite}
+@keyframes pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* Boutons : reflet */
+.btn-dark{position:relative;overflow:hidden}
+.btn-dark::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-20deg);animation:sheen 4.5s ease-in-out infinite}
+@keyframes sheen{0%,70%{left:-60%}100%{left:130%}}
+.btn .arrow{transition:transform .25s}
+.btn:hover .arrow{transform:translateX(4px)}
+
+/* Apparition au défilement */
+.reveal-on .rv{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--d,0) * 90ms)}
+.reveal-on .rv.in{opacity:1;transform:none}
+
+/* Cartes produits : entrée en cascade */
+.card{animation:cardIn .6s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i,0) * 60ms)}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:none}}
+.card{transition:box-shadow .3s,transform .3s}
+.card:hover{transform:translateY(-6px)}
+.media img{animation:imgIn .5s ease both}
+@keyframes imgIn{from{opacity:.2}to{opacity:1}}
+.fav[aria-pressed="true"] svg{animation:heart .45s ease}
+@keyframes heart{50%{transform:scale(1.4)}}
+.cat img{transition:transform .6s ease}
+.cat:hover img{transform:scale(1.07)}
+.look-grid img{transition:transform .8s ease}
+.look-grid figure:hover img{transform:scale(1.05)}
+
+/* Black Friday : photos qui flottent */
+.bf-stack img:nth-child(1){animation:floatA 6s ease-in-out infinite}
+.bf-stack img:nth-child(2){animation:floatB 6s ease-in-out infinite}
+@keyframes floatA{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(-8deg) translateY(-10px)}}
+@keyframes floatB{0%,100%{transform:rotate(5deg) translateY(0)}50%{transform:rotate(7deg) translateY(-14px)}}
+
+/* Panier qui sautille */
+.bump{animation:bump .5s ease}
+@keyframes bump{30%{transform:scale(1.25) rotate(-8deg)}60%{transform:scale(.95)}}
+
+/* WhatsApp : onde */
+.wa-float::before{content:"";position:absolute;inset:0;border-radius:50%;background:#25d366;z-index:-1;animation:ring 2.4s ease-out infinite}
+@keyframes ring{from{transform:scale(1);opacity:.6}to{transform:scale(1.7);opacity:0}}
+
+@media (prefers-reduced-motion:reduce){.reveal-on .rv{opacity:1;transform:none}.marquee{animation:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+
+<div class="promo-bar" aria-label="Black Friday : tous les colliers 4 000 F, bagues Toi et Moi 5 000 F, bracelets dès 3 000 F, paiement à la livraison à Abidjan"><div class="marquee" aria-hidden="true"><span>✦ Black Friday : <b>tous les colliers 4 000 F</b> ✦ <b>Bagues Toi &amp; Moi 5 000 F</b> ✦ Bracelets dès 3 000 F ✦ Paiement à la livraison à Abidjan</span><span>✦ Black Friday : <b>tous les colliers 4 000 F</b> ✦ <b>Bagues Toi &amp; Moi 5 000 F</b> ✦ Bracelets dès 3 000 F ✦ Paiement à la livraison à Abidjan</span></div></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#accueil" aria-label="Timfa online shop, accueil"><img src="images/logo-sombre.png" alt="Timfa online shop · Jewelry store" width="600" height="396"></a>
+    <nav class="menu" aria-label="Navigation">
+      <a href="#accueil" class="on">Accueil</a>
+      <a href="#boutique">Boutique</a>
+      <a href="#categories">Catégories</a>
+      <a href="#portes">Portés par vous</a>
+      <a href="#livraison">Livraison</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="icons">
+      <a class="icon-btn" href="#boutique" aria-label="Voir la boutique"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a>
+      <button class="icon-btn" id="openCart" type="button" aria-label="Ouvrir le panier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-count" id="cartCount">0</span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="accueil">
+  <div class="wrap">
+    <div class="hero-text">
+      <div class="eyebrow">Nouvelle collection</div>
+      <h1>Des bijoux qui<br><span class="rose">vous</span> ressemblent</h1>
+      <p class="lead"><em>N’oubliez jamais que vous êtes des reines et des rois.</em>Colliers, bagues et bracelets délicats, dès 3 000 F, depuis Bingerville.</p>
+      <div class="ctas">
+        <a class="btn btn-dark" href="#boutique">Découvrir la boutique <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+        <a class="play" href="#videos"><span><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5Z" fill="currentColor"/></svg></span>Voir la vidéo</a>
+      </div>
+      <div class="trust">
+        <div><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M16 4 26 10v12L16 28 6 22V10Z"/><path d="m16 11 4 5-4 5-4-5Z"/></svg><span>Pièces choisies<small>une à une</small></span></div>
+        <div><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9h15v13H3zM18 13h6l4 4v5h-10z"/><circle cx="8" cy="23.5" r="2.5" fill="#fff"/><circle cx="23" cy="23.5" r="2.5" fill="#fff"/></svg><span>Paiement à la livraison<small>Abidjan dès 1 500 F</small></span></div>
+        <div><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 26l1.6-5A10 10 0 1 1 11 24.4Z"/><path d="M12.5 12.5c0 4 3 7 7 7l1.5-2-2.5-1.5-1 1c-1.5-.5-2.5-1.5-3-3l1-1L14 10.5Z"/></svg><span>Commande WhatsApp<small>en 1 minute</small></span></div>
+      </div>
+    </div>
+    <div class="hero-photo"><i class="spark" style="top:58%;left:66%"></i><i class="spark" style="top:52%;left:76%;animation-delay:1.2s"></i><i class="spark" style="top:66%;left:72%;animation-delay:2.1s"></i><img src="images/couverture.jpg" alt="Collier Cœurs Entrelacés doré porté" fetchpriority="high"></div>
+    <div class="offer-bubble"><b>-1 000 F</b><small>sur tous<br>les colliers</small></div>
+  </div>
+</section>
+
+<section class="cats" id="categories">
+  <div class="wrap">
+    <h2 class="sec-title">Nos catégories</h2>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+</section>
+
+<section class="bf" id="black-friday">
+  <div class="wrap">
+    <div class="bf-card">
+      <div>
+        <div class="eyebrow">Black Friday ✦</div>
+        <h2>Brillez plus,<br><span class="rose">payez moins</span></h2>
+        <p>Tous nos colliers à 4 000 F au lieu de 5 000 F, et les bagues Toi &amp; Moi à 5 000 F au lieu de 7 000 F.</p>
+        <a class="btn btn-dark" href="#boutique" data-jump="Promo">J’en profite <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+      </div>
+      <div class="bf-stack">
+        <img src="images/collier-arc-en-ciel.jpg" alt="Collier Arc-en-ciel">
+        <img src="images/tm-rose-ciel.jpg" alt="Bague Toi &amp; Moi rose et bleu ciel">
+      </div>
+      <div class="bf-stats">
+        <div><b>-2 000 F</b><small>sur les bagues Toi &amp; Moi</small></div>
+        <div><small id="cdLabel">Black Friday dans</small>
+          <div class="countdown" role="timer"><span><b id="cdD">00</b><small>jours</small></span><span><b id="cdH">00</b><small>h</small></span><span><b id="cdM">00</b><small>min</small></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="shop" id="boutique">
+  <div class="wrap">
+    <div class="shop-head">
+      <h2 class="sec-title">Nos bijoux</h2>
+      <div class="filters" role="group" aria-label="Filtrer les bijoux">
+        <button type="button" data-filter="Tout" aria-pressed="true">Tout</button>
+        <button type="button" data-filter="Colliers" aria-pressed="false">Colliers</button>
+        <button type="button" data-filter="Bagues" aria-pressed="false">Bagues</button>
+        <button type="button" data-filter="Bracelets & parures" aria-pressed="false">Bracelets &amp; parures</button>
+        <button type="button" data-filter="Promo" aria-pressed="false">Black Friday</button>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="more" id="moreWrap"><button class="btn btn-light" id="more" type="button">Voir tous les bijoux</button></div>
+  </div>
+</section>
+
+<section class="look" id="portes">
+  <div class="wrap">
+    <h2 class="sec-title">Portés par vous</h2>
+    <div class="look-grid">
+      <figure class="big"><img src="images/porte-coeurs.jpg" alt="Collier Cœurs Entrelacés doré porté" loading="lazy"><figcaption>Collier Cœurs Entrelacés · doré</figcaption></figure>
+      <figure><img src="images/bracelet-coeurs.jpg" alt="Bracelet Deux Cœurs porté" loading="lazy"><figcaption>Bracelet Deux Cœurs</figcaption></figure>
+      <figure><img src="images/parure-feuillage.jpg" alt="Parure Feuillage portée" loading="lazy"><figcaption>Parure Feuillage</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="reels" id="videos">
+  <div class="wrap">
+    <div class="reels-card">
+      <div>
+        <div class="eyebrow">En vidéo</div>
+        <h2 class="sec-title" style="margin:10px 0 14px">Voyez-les briller</h2>
+        <p>Nos bijoux filmés à la lumière du jour, sans retouche. Ce que vous voyez est ce que vous recevez.</p>
+      </div>
+      <div class="reel-row">
+        <video src="videos/toi-et-moi.mp4" poster="videos/toi-et-moi.jpg" muted playsinline loop controls preload="none" aria-label="Vidéo des bagues Toi &amp; Moi"></video>
+        <video src="videos/colliers.mp4" poster="videos/colliers.jpg" muted playsinline loop controls preload="none" aria-label="Vidéo des colliers"></video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="delivery" id="livraison">
+  <div class="wrap">
+    <h2 class="sec-title">Livraison &amp; paiement</h2>
+    <div class="deliv-grid">
+      <article><div class="eyebrow">Abidjan</div><b class="fee">1 500 F</b><p>Livraison dans Abidjan.<br><strong>Paiement à la livraison.</strong></p></article>
+      <article><div class="eyebrow">Port-Bouët · Bassam</div><b class="fee">2 000 F</b><p>Livraison à Port-Bouët et Grand-Bassam.<br><strong>Paiement à la livraison.</strong></p></article>
+      <article><div class="eyebrow">Expédition</div><b class="fee">2 500 F</b><p>Envoi hors de ces zones. Paiement avant l’envoi sur le <strong class="sel">07 79 51 25 04</strong>, puis envoyez la capture avec votre nom sur WhatsApp.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Une question ?</div>
+    <h2>Écrivez-<span class="rose">nous</span></h2>
+    <p>Disponibilité, taille de bague, livraison : envoyez-nous un message, nous répondons rapidement.</p>
+    <p class="contact-info"><strong>WhatsApp : <span class="sel">07 04 16 09 52</span></strong><br>Bingerville, Côte d’Ivoire</p>
+    <a class="btn btn-dark" id="waContact" href="#" target="_blank" rel="noopener">Nous écrire sur WhatsApp</a>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><img src="images/logo-sombre.png" alt="Timfa online shop" width="70" height="46"><span>© 2026 Timfa online shop · Bingerville, Côte d’Ivoire · WhatsApp 07 04 16 09 52</span></div></footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Panier" aria-hidden="true">
+  <div class="drawer-head"><h2>Votre panier</h2><button class="x" id="closeCart" type="button" aria-label="Fermer le panier">×</button></div>
+  <div class="lines" id="lines"></div>
+  <div class="drawer-foot">
+    <fieldset class="zones"><legend>Livraison</legend>
+      <label><input type="radio" name="zone" id="zone-abj" value="abj" checked> Abidjan <b>1 500 F</b></label>
+      <label><input type="radio" name="zone" id="zone-pb" value="pb"> Port-Bouët · Bassam <b>2 000 F</b></label>
+      <label><input type="radio" name="zone" id="zone-exp" value="exp"> Expédition <b>2 500 F</b></label>
+    </fieldset>
+    <div class="fields"><input id="cName" type="text" placeholder="Votre nom" autocomplete="name"><input id="cPlace" type="text" placeholder="Quartier / ville" autocomplete="address-level2"></div>
+    <p class="pay-note" id="payNote"></p>
+    <div class="sub"><span>Bijoux</span><span id="subtotal">0 F</span></div>
+    <div class="sub"><span>Livraison</span><span id="shipFee">1 500 F</span></div>
+    <div class="total"><span>Total</span><b id="total">0 F</b></div>
+    <a class="btn btn-dark" id="checkout" href="#" target="_blank" rel="noopener">Commander sur WhatsApp</a>
+    <button class="copy" id="copyOrder" type="button">Copier le message de commande</button>
+    <p class="note">La commande part sur WhatsApp avec votre zone de livraison, nous confirmons avec vous.</p>
+  </div>
+</aside>
+<a class="wa-float" id="waFloat" href="https://wa.me/message/IEI3IPYSG7YJA1" target="_blank" rel="noopener" aria-label="Nous écrire sur WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.6c-2 0-3.9-.5-5.6-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5.9-1.6.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.1 1.3 3.3c.2.2 2.3 3.5 5.6 4.9 2.1.9 2.9 1 4 .8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5l-.6-.3Z"/></svg></a>
+<div class="toast" id="toast" role="status"></div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"JewelryStore","name":"Timfa online shop","alternateName":"Timfa Jewelry","description":"Bijouterie en ligne : colliers, bagues Toi & Moi, bracelets. Commande sur WhatsApp.","url":"https://fatimsidiba-hue.github.io/","logo":"https://fatimsidiba-hue.github.io/images/logo-carre.png","image":"https://fatimsidiba-hue.github.io/images/couverture.jpg","telephone":"+225 07 04 16 09 52","address":{"@type":"PostalAddress","addressLocality":"Bingerville","addressCountry":"CI"},"areaServed":"Côte d'Ivoire","paymentAccepted":"Paiement à la livraison (Abidjan, Port-Bouët, Grand-Bassam), paiement avant envoi pour les expéditions","priceRange":"3000-7000 XOF","currenciesAccepted":"XOF"}
+</script>
+<script>
+// Numéro WhatsApp de la boutique, format international sans + ni espaces (ex. 2250700000000).
+const WHATSAPP = "2250704160952";
+// Lien WhatsApp de la boutique, pour le contact simple (sans message pré-rempli).
+const WA_LINK = "https://wa.me/message/IEI3IPYSG7YJA1";
+
+const PRODUCTS = [
+  {id:"toi-moi", cat:"Bagues", sub:"toi-moi", name:"Bague Toi & Moi", desc:"Deux pierres qui se rencontrent. Choisissez votre duo.", price:5000, was:7000,
+   variants:[
+     {name:"Rose & Bleu ciel · doré", color:"linear-gradient(135deg,#f06aa8 50%,#7cc8ef 50%)", img:"images/tm-rose-ciel.jpg"},
+     {name:"Émeraude & Cristal · doré", color:"linear-gradient(135deg,#1f9a5a 50%,#e8ecef 50%)", img:"images/tm-emeraude.jpg"},
+     {name:"Cristal & Rose · argenté", color:"linear-gradient(135deg,#e8ecef 50%,#e0457f 50%)", img:"images/tm-cristal-rose.jpg"},
+     {name:"Saphir & Topaze · argenté", color:"linear-gradient(135deg,#1c3fb8 50%,#69b8e8 50%)", img:"images/tm-saphir.jpg"}
+   ]},
+  {id:"collier-coeurs", cat:"Colliers", name:"Collier Cœurs Entrelacés", desc:"Deux cœurs pavés de zircons.", price:4000, was:5000,
+   variants:[
+     {name:"Doré", color:"linear-gradient(135deg,#f4dca4,#b8893a)", img:"images/porte-coeurs.jpg"},
+     {name:"Argenté", color:"linear-gradient(135deg,#f2f2f2,#9aa0a6)", img:"images/collier-coeurs-entrelaces.jpg"}
+   ]},
+  {id:"collier-arc", cat:"Colliers", name:"Collier Arc-en-ciel", desc:"Baguettes multicolores sur chaîne dorée.", price:4000, was:5000, img:"images/collier-arc-en-ciel.jpg"},
+  {id:"collier-rose", cat:"Colliers", name:"Collier Goutte Rose", desc:"Cascade de pierres roses, chaîne dorée.", price:4000, was:5000, img:"images/collier-goutte-rose.jpg"},
+  {id:"bracelet-coeurs", cat:"Bracelets & parures", name:"Bracelet Deux Cœurs", desc:"Un cœur cristal, un cœur bleu, chaîne dorée.", price:3000, img:"images/bracelet-coeurs.jpg"},
+  {id:"collier-goutte", cat:"Colliers", name:"Collier Goutte de Lumière", desc:"Trois pierres en cascade et une goutte claire.", price:4000, was:5000, img:"images/collier-goutte-lumiere.jpg"},
+  {id:"bague-fleurs-duo", cat:"Bagues", sub:"fleurs", name:"Bagues Jardin Arc-en-ciel", desc:"Deux anneaux de fleurs colorées, dorés.", price:5000, img:"images/bague-fleurs-duo.jpg"},
+  {id:"parure-feuillage", cat:"Bracelets & parures", name:"Parure Feuillage", desc:"Collier et boucles d'oreilles assortis.", price:null, img:"images/parure-feuillage.jpg"},
+  {id:"collier-couronne", cat:"Colliers", name:"Collier Couronne", desc:"Cinq pierres en poire alignées.", price:4000, was:5000, img:"images/collier-couronne.jpg"},
+  {id:"collier-riviere", cat:"Colliers", name:"Collier Rivière", desc:"Ligne de pierres et goutte suspendue, argenté.", price:4000, was:5000, img:"images/collier-riviere.jpg"},
+  {id:"collier-onyx", cat:"Colliers", name:"Collier Nuit", desc:"Pierre noire coussin entourée d'or.", price:4000, was:5000, img:"images/collier-onyx.jpg"},
+  {id:"coffret-coeurs", cat:"Colliers", name:"Coffret Cœurs", desc:"Collier et boucles d'oreilles cœur, en coffret.", price:4000, was:5000, img:"images/coffret-coeurs.jpg"},
+  {id:"collier-infini", cat:"Colliers", name:"Collier Infini", desc:"Le symbole de l'infini, discret et élégant.", price:4000, was:5000, img:"images/collier-infini.jpg"},
+  {id:"collier-soleil", cat:"Colliers", name:"Collier Soleil & Lune", desc:"Double rang doré, soleil et croissant de lune.", price:4000, was:5000, img:"images/collier-soleil-lune.jpg"},
+  {id:"bague-fleurs-soleil", cat:"Bagues", sub:"fleurs", name:"Bague Fleurs Soleil", desc:"Fleurs lavande, cristal, orange et fuchsia, doré.", price:5000, img:"images/bague-fleurs-soleil.jpg"},
+  {id:"bague-fleurs-lavande", cat:"Bagues", sub:"fleurs", name:"Bague Fleurs Lavande", desc:"Fleurs rose, lilas et bleu, argenté.", price:5000, img:"images/bague-fleurs-lavande.jpg"},
+  {id:"bague-solitaire", cat:"Bagues", sub:"solitaire", name:"Bague Solitaire Étoilée", desc:"Grande pierre ronde et quatre petits éclats.", price:5000, img:"images/bague-solitaire-etoilee.jpg"},
+  {id:"bague-ovale", cat:"Bagues", sub:"solitaire", name:"Bague Ovale Torsadée", desc:"Pierre ovale sur anneau torsadé pavé.", price:5000, img:"images/bague-ovale-torsadee.jpg"}
+];
+const CATS = [
+  {label:"Colliers", filter:"Colliers", img:"images/collier-goutte-rose.jpg", count:p=>p.cat==="Colliers"},
+  {label:"Bagues Toi & Moi", filter:"Bagues", img:"images/tm-emeraude.jpg", count:null, text:"4 couleurs"},
+  {label:"Bagues fleurs & solitaires", filter:"Bagues", img:"images/bague-fleurs-duo.jpg", count:p=>p.sub==="fleurs"||p.sub==="solitaire"},
+  {label:"Bracelets & parures", filter:"Bracelets & parures", img:"images/bracelet-coeurs.jpg", count:p=>p.cat==="Bracelets & parures"}
+];
+
+const fmt = n => n.toLocaleString("fr-FR").replace(/ | /g," ") + " F";
+const $ = s => document.querySelector(s);
+const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch(e) { return d; } };
+const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} };
+let filter = "Tout", showAll = false;
+let cart = read("timfa-cart", []);
+let favs = read("timfa-favs", []);
+const chosen = {};
+const HEART = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>';
+const BAG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>';
+const CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19l1.2-3.6A8 8 0 1 1 8 18.2Z"/></svg>';
+
+$("#catGrid").innerHTML = CATS.map(c => `<button class="cat" type="button" data-jump="${c.filter}"><img src="${c.img}" alt="" loading="lazy"><div><strong>${c.label}</strong><small>${c.count ? PRODUCTS.filter(c.count).length + " bijoux" : c.text}</small></div></button>`).join("");
+
+function card(p, i = 0){
+  const v = p.variants ? p.variants[chosen[p.id]||0] : null;
+  const img = v ? v.img : p.img;
+  const priceHtml = p.price ? `<span class="now">${fmt(p.price)}</span>${p.was ? `<span class="was">${fmt(p.was)}</span>` : ""}` : `<span class="ask">Prix sur demande</span>`;
+  const sw = p.variants ? `<div class="swatches" role="group" aria-label="Couleur">${p.variants.map((x,i)=>`<button type="button" style="background:${x.color}" title="${x.name}" aria-label="${x.name}" aria-pressed="${i===(chosen[p.id]||0)}" data-sw="${p.id}" data-i="${i}"></button>`).join("")}</div><p>${v.name}</p>` : `<p>${p.desc}</p>`;
+  return `<article class="card" style="--i:${i}">
+    <div class="media">${p.was ? `<span class="badge">-${fmt(p.was-p.price)}</span>` : ""}<button class="fav" type="button" data-fav="${p.id}" aria-label="Ajouter aux favoris" aria-pressed="${favs.includes(p.id)}">${HEART}</button><img src="${img}" alt="${p.name}${v ? " " + v.name : ""}" loading="lazy"></div>
+    <div class="body"><h3>${p.name}</h3>${sw}
+      <div class="foot"><div class="price">${priceHtml}</div><button class="add" type="button" data-add="${p.id}" aria-label="${p.price ? "Ajouter au panier" : "Demander le prix"}">${p.price ? BAG : CHAT}</button></div>
+    </div></article>`;
+}
+function renderGrid(){
+  let list = PRODUCTS.filter(p => filter==="Tout" || (filter==="Promo" ? !!p.was : p.cat===filter));
+  const limited = filter==="Tout" && !showAll && list.length > 8;
+  $("#moreWrap").hidden = !limited;
+  if (limited) list = list.slice(0, 8);
+  $("#grid").innerHTML = list.map(card).join("");
+}
+function setFilter(v){ filter=v; showAll=false; document.querySelectorAll("[data-filter]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.filter===v))); renderGrid(); }
+$("#more").onclick = () => { showAll = true; renderGrid(); };
+
+function addToCart(id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  const i = chosen[p.id]||0, key = p.variants ? p.id+"#"+i : p.id;
+  const ex = cart.find(l=>l.key===key);
+  if (ex) ex.qty++; else { const v = p.variants ? p.variants[i] : null; cart.push({key, name:p.name+(v?" · "+v.name:""), price:p.price, img:v?v.img:p.img, qty:1}); }
+  write("timfa-cart", cart); renderCart(); bump(); toast(p.price ? "Ajouté au panier" : "Ajouté, prix à confirmer");
+}
+function orderText(){
+  if (!cart.length) return "Bonjour Timfa online shop, j'ai une question sur vos bijoux.";
+  const lines = cart.map(l => `• ${l.qty} × ${l.name} : ${l.price ? fmt(l.price*l.qty) : "prix à confirmer"}`);
+  const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), z = ZONES[zone()];
+  const name = $("#cName").value.trim(), place = $("#cPlace").value.trim();
+  return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\nLivraison ${z.label} : ${fmt(z.fee)}\nTotal : ${fmt(sub+z.fee)}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${name ? "\nNom : "+name : ""}${place ? "\nQuartier / ville : "+place : ""}\nMerci !`;
+}
+const ZONES = {abj:{label:"Abidjan", fee:1500}, pb:{label:"Port-Bouët / Bassam", fee:2000}, exp:{label:"Expédition", fee:2500}};
+const zone = () => (document.querySelector('input[name="zone"]:checked')||{value:"abj"}).value;
+const payText = z => z==="exp" ? "Paiement avant l'envoi sur le 07 79 51 25 04, puis envoyez la capture avec votre nom." : "Paiement à la livraison.";
+const waLink = t => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(t)}`;
+function renderCart(){
+  $("#cartCount").textContent = cart.reduce((s,l)=>s+l.qty,0);
+  $("#lines").innerHTML = cart.length ? cart.map((l,i)=>`<div class="line"><img src="${l.img}" alt=""><div><h4>${l.name}</h4><small>${l.price ? fmt(l.price) : "Prix sur demande"}</small></div><div class="qty"><button type="button" data-q="${i}" data-d="-1" aria-label="Retirer un">−</button><span>${l.qty}</span><button type="button" data-q="${i}" data-d="1" aria-label="Ajouter un">+</button></div></div>`).join("")
+    : `<p class="empty">Votre panier est vide.<br>Ajoutez un bijou pour commencer.</p>`;
+  const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), fee = ZONES[zone()].fee;
+  $("#subtotal").textContent = fmt(sub); $("#shipFee").textContent = fmt(fee);
+  $("#total").textContent = fmt(cart.length ? sub+fee : 0);
+  $("#payNote").textContent = payText(zone());
+  $("#checkout").href = waLink(orderText());
+}
+function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("show"); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove("show"),1800); }
+function openCart(o){ $("#drawer").classList.toggle("open",o); $("#scrim").classList.toggle("open",o); $("#drawer").setAttribute("aria-hidden",String(!o)); }
+
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-add]"); if (a) return addToCart(a.dataset.add);
+  const f2 = e.target.closest("[data-fav]"); if (f2) { const id=f2.dataset.fav; favs = favs.includes(id) ? favs.filter(x=>x!==id) : [...favs,id]; write("timfa-favs", favs); f2.setAttribute("aria-pressed", String(favs.includes(id))); return; }
+  const s = e.target.closest("[data-sw]"); if (s) { chosen[s.dataset.sw] = +s.dataset.i; return renderGrid(); }
+  const q = e.target.closest("[data-q]"); if (q) { const l = cart[+q.dataset.q]; l.qty += +q.dataset.d; if (l.qty<=0) cart.splice(+q.dataset.q,1); write("timfa-cart", cart); return renderCart(); }
+  const f = e.target.closest("[data-filter]"); if (f) return setFilter(f.dataset.filter);
+  const j = e.target.closest("[data-jump]"); if (j) { setFilter(j.dataset.jump); if (j.tagName==="BUTTON") $("#boutique").scrollIntoView({behavior:"smooth"}); }
+});
+document.querySelectorAll('input[name="zone"]').forEach(x=>x.addEventListener("change",renderCart));
+["#cName","#cPlace"].forEach(id=>$(id).addEventListener("input",()=>{$("#checkout").href = waLink(orderText());}));
+$("#openCart").onclick = () => openCart(true);
+$("#closeCart").onclick = () => openCart(false);
+$("#scrim").onclick = () => openCart(false);
+document.addEventListener("keydown", e => { if (e.key==="Escape") openCart(false); });
+$("#copyOrder").onclick = () => { if (navigator.clipboard) navigator.clipboard.writeText(orderText()).then(()=>toast("Message copié"), ()=>toast("Copie impossible")); };
+$("#waContact").href = WA_LINK;
+$("#waFloat").href = WA_LINK;
+
+// Compte à rebours : Black Friday, vendredi 27 novembre 2026, puis fin de l'offre le 30
+const BF = new Date(2026,10,27).getTime(), BF_END = new Date(2026,10,30,23,59,59).getTime();
+function tick(){
+  const now = Date.now(), target = now >= BF ? BF_END : BF;
+  $("#cdLabel").textContent = now >= BF ? "Fin de l'offre dans" : "Black Friday dans";
+  let d = Math.max(0, target-now)/1000; const pad = n => String(Math.floor(n)).padStart(2,"0");
+  $("#cdD").textContent = pad(d/86400); d%=86400; $("#cdH").textContent = pad(d/3600); d%=3600; $("#cdM").textContent = pad(d/60);
+}
+tick(); setInterval(tick, 30000);
+
+if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) en.target.play().catch(()=>{}); else en.target.pause(); }), {threshold:.4});
+  document.querySelectorAll("video").forEach(v => io.observe(v));
+}
+// Apparition des sections au défilement (les éléments déjà visibles restent affichés)
+function bump(){ const b=$("#openCart"); b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); }
+(function(){
+  if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const groups = [".cats .sec-title",".cat",".bf-card",".shop-head",".look .sec-title",".look-grid figure",".reels-card",".delivery .sec-title",".deliv-grid article",".contact .wrap > *"];
+  const els = [];
+  groups.forEach(sel => document.querySelectorAll(sel).forEach((el,i) => { el.style.setProperty("--d", i); els.push(el); }));
+  const vh = innerHeight;
+  els.forEach(el => { if (el.getBoundingClientRect().top < vh * .92) el.classList.add("in"); el.classList.add("rv"); });
+  document.documentElement.classList.add("reveal-on");
+  const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } }), {threshold:.15, rootMargin:"0px 0px -40px 0px"});
+  els.forEach(el => { if (!el.classList.contains("in")) io.observe(el); });
+})();
+renderGrid(); renderCart();
+</script>
+
+</body>
+</html>
