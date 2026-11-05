@@ -153,6 +153,22 @@ nav.menu a:hover,nav.menu a.on{border-color:var(--ink)}
 .media img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
 .card:hover .media img{transform:scale(1.05)}
 .badge{position:absolute;top:12px;left:12px;background:var(--red);color:#fff;font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px}
+.badge.new{background:var(--ink)}
+.size-link{font-size:12px;color:var(--rose);text-decoration:underline;text-underline-offset:2px;align-self:flex-start}
+/* Guide des tailles */
+.sizes .wrap{padding-block:0 72px}
+.sizes-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:40px 44px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-top:26px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:18px;counter-reset:st}
+.steps li{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start;font-size:15px;color:var(--muted)}
+.steps li::before{counter-increment:st;content:counter(st);width:40px;height:40px;border-radius:50%;background:var(--blush);color:var(--rose);display:grid;place-items:center;font-weight:600;font-size:16px}
+.steps strong{display:block;color:var(--ink);font-weight:500;font-size:16px;margin-bottom:2px}
+.size-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15px}
+.size-table th{font-weight:500;text-align:left;color:var(--muted);font-size:13px;padding:8px 10px;border-bottom:1px solid var(--line)}
+.size-table td{padding:9px 10px;border-bottom:1px solid var(--line)}
+.size-table td:first-child{font-weight:600}
+.size-table tr:hover td{background:var(--blush)}
+.size-tip{margin:16px 0 0;font-size:13px;color:var(--muted);background:var(--blush);border-radius:12px;padding:12px 14px}
+@media (max-width:860px){.sizes-card{grid-template-columns:1fr;padding:26px 20px}}
 .fav{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:#fff;display:grid;place-items:center;box-shadow:0 4px 10px -4px rgba(0,0,0,.2)}
 .fav svg{width:17px;height:17px}
 .fav[aria-pressed="true"] svg{fill:var(--rose);stroke:var(--rose)}
@@ -412,6 +428,7 @@ aside.drawer.open{transform:none}
         <button type="button" data-filter="Bagues" aria-pressed="false">Bagues</button>
         <button type="button" data-filter="Bracelets & parures" aria-pressed="false">Bracelets &amp; parures</button>
         <button type="button" data-filter="Promo" aria-pressed="false">Black Friday</button>
+        <button type="button" data-filter="Nouveautés" aria-pressed="false" id="newFilter" hidden>Nouveautés ✦</button>
       </div>
     </div>
     <div class="grid" id="grid"></div>
@@ -454,6 +471,29 @@ aside.drawer.open{transform:none}
       <article><div class="eyebrow">Abidjan</div><b class="fee">1 500 F</b><p>Livraison dans Abidjan.<br><strong>Paiement à la livraison.</strong></p></article>
       <article><div class="eyebrow">Port-Bouët · Bassam</div><b class="fee">2 000 F</b><p>Livraison à Port-Bouët et Grand-Bassam.<br><strong>Paiement à la livraison.</strong></p></article>
       <article><div class="eyebrow">Expédition</div><b class="fee">2 500 F</b><p>Envoi hors de ces zones. Paiement avant l’envoi sur le <strong class="sel">07 79 51 25 04</strong>, puis envoyez la capture avec votre nom sur WhatsApp.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="sizes" id="tailles">
+  <div class="wrap">
+    <h2 class="sec-title">Guide des tailles de bague</h2>
+    <div class="sizes-card">
+      <div>
+        <ol class="steps">
+          <li><span><strong>Prenez un fil ou une bande de papier</strong>Enroulez-le autour du doigt choisi, à la base, sans trop serrer.</span></li>
+          <li><span><strong>Marquez et mesurez</strong>Faites une marque là où le fil se rejoint, puis mesurez la longueur en millimètres avec une règle.</span></li>
+          <li><span><strong>Lisez votre taille</strong>La longueur en mm donne directement votre taille : 54 mm = taille 54.</span></li>
+          <li><span><strong>Ou mesurez une bague que vous portez</strong>Mesurez l’intérieur de la bague (le diamètre) et comparez avec le tableau.</span></li>
+        </ol>
+        <p class="size-tip">Entre deux tailles ? Prenez la plus grande. Un doute ? Écrivez-nous sur WhatsApp avec votre mesure, nous vous conseillons.</p>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="size-table">
+          <thead><tr><th>Taille</th><th>Diamètre intérieur</th><th>Tour de doigt</th></tr></thead>
+          <tbody><tr><td>48</td><td>15.3 mm</td><td>48 mm</td></tr><tr><td>50</td><td>15.9 mm</td><td>50 mm</td></tr><tr><td>52</td><td>16.6 mm</td><td>52 mm</td></tr><tr><td>54</td><td>17.2 mm</td><td>54 mm</td></tr><tr><td>56</td><td>17.8 mm</td><td>56 mm</td></tr><tr><td>58</td><td>18.5 mm</td><td>58 mm</td></tr><tr><td>60</td><td>19.1 mm</td><td>60 mm</td></tr><tr><td>62</td><td>19.7 mm</td><td>62 mm</td></tr></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
@@ -560,13 +600,14 @@ function card(p, i = 0){
   const priceHtml = p.price ? `<span class="now">${fmt(p.price)}</span>${p.was ? `<span class="was">${fmt(p.was)}</span>` : ""}` : `<span class="ask">Prix sur demande</span>`;
   const sw = p.variants ? `<div class="swatches" role="group" aria-label="Couleur">${p.variants.map((x,i)=>`<button type="button" style="background:${x.color}" title="${x.name}" aria-label="${x.name}" aria-pressed="${i===(chosen[p.id]||0)}" data-sw="${p.id}" data-i="${i}"></button>`).join("")}</div><p>${v.name}</p>` : `<p>${p.desc}</p>`;
   return `<article class="card" style="--i:${i}">
-    <div class="media">${p.was ? `<span class="badge">-${fmt(p.was-p.price)}</span>` : ""}<button class="fav" type="button" data-fav="${p.id}" aria-label="Ajouter aux favoris" aria-pressed="${favs.includes(p.id)}">${HEART}</button><img src="${img}" alt="${p.name}${v ? " " + v.name : ""}" loading="lazy"></div>
-    <div class="body"><h3>${p.name}</h3>${sw}
+    <div class="media">${p.isNew ? `<span class="badge new">Nouveau</span>` : p.was ? `<span class="badge">-${fmt(p.was-p.price)}</span>` : ""}<button class="fav" type="button" data-fav="${p.id}" aria-label="Ajouter aux favoris" aria-pressed="${favs.includes(p.id)}">${HEART}</button><img src="${img}" alt="${p.name}${v ? " " + v.name : ""}" loading="lazy"></div>
+    <div class="body"><h3>${p.name}</h3>${sw}${p.cat==="Bagues" ? `<a class="size-link" href="#tailles">Trouver ma taille</a>` : ""}
       <div class="foot"><div class="price">${priceHtml}</div><button class="add" type="button" data-add="${p.id}" aria-label="${p.price ? "Ajouter au panier" : "Demander le prix"}">${p.price ? BAG : CHAT}</button></div>
     </div></article>`;
 }
 function renderGrid(){
-  let list = PRODUCTS.filter(p => filter==="Tout" || (filter==="Promo" ? !!p.was : p.cat===filter));
+  let list = PRODUCTS.filter(p => filter==="Tout" || (filter==="Promo" ? !!p.was : filter==="Nouveautés" ? !!p.isNew : p.cat===filter));
+  if (filter==="Tout") list = [...list.filter(p=>p.isNew), ...list.filter(p=>!p.isNew)];
   const limited = filter==="Tout" && !showAll && list.length > 8;
   $("#moreWrap").hidden = !limited;
   if (limited) list = list.slice(0, 8);
@@ -643,7 +684,7 @@ if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: re
 function bump(){ const b=$("#openCart"); b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); }
 (function(){
   if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const groups = [".cats .sec-title",".cat",".bf-card",".shop-head",".look .sec-title",".look-grid figure",".reels-card",".delivery .sec-title",".deliv-grid article",".contact .wrap > *"];
+  const groups = [".sizes .sec-title",".sizes-card",".cats .sec-title",".cat",".bf-card",".shop-head",".look .sec-title",".look-grid figure",".reels-card",".delivery .sec-title",".deliv-grid article",".contact .wrap > *"];
   const els = [];
   groups.forEach(sel => document.querySelectorAll(sel).forEach((el,i) => { el.style.setProperty("--d", i); els.push(el); }));
   const vh = innerHeight;
@@ -652,6 +693,8 @@ function bump(){ const b=$("#openCart"); b.classList.remove("bump"); void b.offs
   const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } }), {threshold:.15, rootMargin:"0px 0px -40px 0px"});
   els.forEach(el => { if (!el.classList.contains("in")) io.observe(el); });
 })();
+// Nouveautés : mettre isNew:true sur un bijou pour l'afficher en premier avec le badge « Nouveau »
+if (PRODUCTS.some(p=>p.isNew)) $("#newFilter").hidden = false;
 renderGrid(); renderCart();
 </script>
 
