@@ -186,6 +186,7 @@ nav.menu a:hover,nav.menu a.on{border-color:var(--ink)}
 .reels .wrap{padding-block:0 72px}
 .reels-card{background:var(--blush);border-radius:24px;padding:44px 48px;display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:center}
 .reels-card p{color:var(--muted);max-width:40ch}
+.promo-video{display:block;width:100%;max-width:340px;aspect-ratio:9/16;object-fit:cover;border-radius:20px;background:#000;margin-top:22px;box-shadow:0 24px 40px -24px rgba(42,28,30,.5)}
 .reel-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .reel-row video{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:16px;background:#000}
 @media (max-width:860px){.reels-card{grid-template-columns:1fr;padding:28px 20px}}
@@ -358,7 +359,7 @@ aside.drawer.open{transform:none}
       <p class="lead"><em>N’oubliez jamais que vous êtes des reines et des rois.</em>Colliers, bagues et bracelets délicats, dès 3 000 F, depuis Bingerville.</p>
       <div class="ctas">
         <a class="btn btn-dark" href="#boutique">Découvrir la boutique <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
-        <a class="play" href="#videos"><span><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5Z" fill="currentColor"/></svg></span>Voir la vidéo</a>
+        <a class="play" href="#videos" id="playPromo"><span><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5Z" fill="currentColor"/></svg></span>Voir la vidéo</a>
       </div>
       <div class="trust">
         <div><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M16 4 26 10v12L16 28 6 22V10Z"/><path d="m16 11 4 5-4 5-4-5Z"/></svg><span>Pièces choisies<small>une à une</small></span></div>
@@ -434,8 +435,9 @@ aside.drawer.open{transform:none}
     <div class="reels-card">
       <div>
         <div class="eyebrow">En vidéo</div>
-        <h2 class="sec-title" style="margin:10px 0 14px">Voyez-les briller</h2>
-        <p>Nos bijoux filmés à la lumière du jour, sans retouche. Ce que vous voyez est ce que vous recevez.</p>
+        <h2 class="sec-title" style="margin:10px 0 14px">Découvrez Timfa en vidéo</h2>
+        <p>En une minute : nos bijoux, comment commander sur WhatsApp et pourquoi nos clientes nous font confiance.</p>
+        <video class="promo-video" id="promoVideo" src="videos/presentation.mp4" poster="videos/presentation.jpg" playsinline controls preload="metadata" data-noauto aria-label="Vidéo de présentation de Timfa online shop"></video>
       </div>
       <div class="reel-row">
         <video src="videos/toi-et-moi.mp4" poster="videos/toi-et-moi.jpg" muted playsinline loop controls preload="none" aria-label="Vidéo des bagues Toi &amp; Moi"></video>
@@ -632,9 +634,10 @@ function tick(){
 }
 tick(); setInterval(tick, 30000);
 
+$("#playPromo").addEventListener("click", () => { const v = $("#promoVideo"); setTimeout(() => v.play().catch(()=>{}), 600); });
 if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) en.target.play().catch(()=>{}); else en.target.pause(); }), {threshold:.4});
-  document.querySelectorAll("video").forEach(v => io.observe(v));
+  document.querySelectorAll("video:not([data-noauto])").forEach(v => io.observe(v));
 }
 // Apparition des sections au défilement (les éléments déjà visibles restent affichés)
 function bump(){ const b=$("#openCart"); b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); }
