@@ -154,6 +154,14 @@ nav.menu a:hover,nav.menu a.on{border-color:var(--ink)}
 .card:hover .media img{transform:scale(1.05)}
 .badge{position:absolute;top:12px;left:12px;background:var(--red);color:#fff;font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px}
 .badge.new{background:var(--ink)}
+.tag{align-self:flex-start;font-size:12px;font-weight:500;background:var(--blush);color:var(--rose);border-radius:999px;padding:3px 10px}
+.sizes-pick{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px;color:var(--muted);border-radius:12px;transition:background .3s}
+.sizes-pick button{min-width:34px;height:30px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:500}
+.sizes-pick button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sizes-pick.need{background:#fde3e8;outline:2px solid var(--rose);outline-offset:3px}
+.sizes-pick .size-link{margin-left:4px}
+.size-table tr.dispo td{background:var(--blush)}
+.size-table .pill-ok{font-size:11px;font-weight:600;color:#fff;background:var(--rose);border-radius:999px;padding:2px 8px;margin-left:6px}
 .size-link{font-size:12px;color:var(--rose);text-decoration:underline;text-underline-offset:2px;align-self:flex-start}
 /* Avis */
 .reviews .wrap{padding-block:0 72px}
@@ -522,15 +530,15 @@ aside.drawer.open{transform:none}
         <ol class="steps">
           <li><span><strong>Prenez un fil ou une bande de papier</strong>Enroulez-le autour du doigt choisi, à la base, sans trop serrer.</span></li>
           <li><span><strong>Marquez et mesurez</strong>Faites une marque là où le fil se rejoint, puis mesurez la longueur en millimètres avec une règle.</span></li>
-          <li><span><strong>Lisez votre taille</strong>La longueur en mm donne directement votre taille : 54 mm = taille 54.</span></li>
+          <li><span><strong>Lisez votre taille</strong>Comparez avec le tableau : environ 52 mm = taille 6, environ 54 mm = taille 7.</span></li>
           <li><span><strong>Ou mesurez une bague que vous portez</strong>Mesurez l’intérieur de la bague (le diamètre) et comparez avec le tableau.</span></li>
         </ol>
-        <p class="size-tip"><strong>Certaines de nos bagues sont réglables</strong> et s’adaptent à votre doigt ; pour les autres, vérifiez votre taille avant de commander. Entre deux tailles ? Prenez la plus grande. Un doute ? Écrivez-nous sur WhatsApp avec votre mesure, nous vous conseillons.</p>
+        <p class="size-tip"><strong>Bagues réglables :</strong> Fleurs Soleil, Fleurs Lavande, Solitaire Étoilée et Ovale Torsadée s’adaptent à votre doigt. <strong>Bagues Toi &amp; Moi et Jardin Arc-en-ciel :</strong> disponibles en taille 6 et 7. Entre deux tailles ? Prenez la plus grande. Un doute ? Écrivez-nous sur WhatsApp avec votre mesure, nous vous conseillons.</p>
       </div>
       <div style="overflow-x:auto">
         <table class="size-table">
           <thead><tr><th>Taille</th><th>Diamètre intérieur</th><th>Tour de doigt</th></tr></thead>
-          <tbody><tr><td>48</td><td>15.3 mm</td><td>48 mm</td></tr><tr><td>50</td><td>15.9 mm</td><td>50 mm</td></tr><tr><td>52</td><td>16.6 mm</td><td>52 mm</td></tr><tr><td>54</td><td>17.2 mm</td><td>54 mm</td></tr><tr><td>56</td><td>17.8 mm</td><td>56 mm</td></tr><tr><td>58</td><td>18.5 mm</td><td>58 mm</td></tr><tr><td>60</td><td>19.1 mm</td><td>60 mm</td></tr><tr><td>62</td><td>19.7 mm</td><td>62 mm</td></tr></tbody>
+          <tbody><tr><td>5</td><td>15,7 mm</td><td>49,3 mm</td></tr><tr class="dispo"><td>6<span class="pill-ok">disponible</span></td><td>16,5 mm</td><td>51,9 mm</td></tr><tr class="dispo"><td>7<span class="pill-ok">disponible</span></td><td>17,3 mm</td><td>54,4 mm</td></tr><tr><td>8</td><td>18,1 mm</td><td>57,0 mm</td></tr><tr><td>9</td><td>19,0 mm</td><td>59,5 mm</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -583,7 +591,7 @@ const WHATSAPP = "2250704160952";
 const WA_LINK = "https://wa.me/message/IEI3IPYSG7YJA1";
 
 const PRODUCTS = [
-  {id:"toi-moi", cat:"Bagues", sub:"toi-moi", name:"Bague Toi & Moi", desc:"Deux pierres qui se rencontrent. Choisissez votre duo.", price:5000, was:7000,
+  {id:"toi-moi", cat:"Bagues", sub:"toi-moi", name:"Bague Toi & Moi", desc:"Deux pierres qui se rencontrent. Choisissez votre duo.", price:5000, was:7000, sizes:["6","7"],
    variants:[
      {name:"Rose & Bleu ciel · doré", color:"linear-gradient(135deg,#f06aa8 50%,#7cc8ef 50%)", img:"images/tm-rose-ciel.jpg"},
      {name:"Émeraude & Cristal · doré", color:"linear-gradient(135deg,#1f9a5a 50%,#e8ecef 50%)", img:"images/tm-emeraude.jpg"},
@@ -599,7 +607,7 @@ const PRODUCTS = [
   {id:"collier-rose", cat:"Colliers", name:"Collier Goutte Rose", desc:"Cascade de pierres roses, chaîne dorée.", price:4000, was:5000, img:"images/collier-goutte-rose.jpg"},
   {id:"bracelet-coeurs", cat:"Bracelets & parures", name:"Bracelet Deux Cœurs", desc:"Un cœur cristal, un cœur bleu, chaîne dorée.", price:3000, img:"images/bracelet-coeurs.jpg"},
   {id:"collier-goutte", cat:"Colliers", name:"Collier Goutte de Lumière", desc:"Trois pierres en cascade et une goutte claire.", price:4000, was:5000, img:"images/collier-goutte-lumiere.jpg"},
-  {id:"bague-fleurs-duo", cat:"Bagues", sub:"fleurs", name:"Bagues Jardin Arc-en-ciel", desc:"Deux anneaux de fleurs colorées, dorés.", price:5000, img:"images/bague-fleurs-duo.jpg"},
+  {id:"bague-fleurs-duo", cat:"Bagues", sub:"fleurs", name:"Bagues Jardin Arc-en-ciel", desc:"Deux anneaux de fleurs colorées, dorés.", price:5000, sizes:["6","7"], img:"images/bague-fleurs-duo.jpg"},
   {id:"parure-feuillage", cat:"Bracelets & parures", name:"Parure Feuillage", desc:"Collier et boucles d'oreilles assortis.", price:null, img:"images/parure-feuillage.jpg"},
   {id:"collier-couronne", cat:"Colliers", name:"Collier Couronne", desc:"Cinq pierres en poire alignées.", price:4000, was:5000, img:"images/collier-couronne.jpg"},
   {id:"collier-riviere", cat:"Colliers", name:"Collier Rivière", desc:"Ligne de pierres et goutte suspendue, argenté.", price:4000, was:5000, img:"images/collier-riviere.jpg"},
@@ -607,10 +615,10 @@ const PRODUCTS = [
   {id:"coffret-coeurs", cat:"Colliers", name:"Coffret Cœurs", desc:"Collier et boucles d'oreilles cœur, en coffret.", price:4000, was:5000, img:"images/coffret-coeurs.jpg"},
   {id:"collier-infini", cat:"Colliers", name:"Collier Infini", desc:"Le symbole de l'infini, discret et élégant.", price:4000, was:5000, img:"images/collier-infini.jpg"},
   {id:"collier-soleil", cat:"Colliers", name:"Collier Soleil & Lune", desc:"Double rang doré, soleil et croissant de lune.", price:4000, was:5000, img:"images/collier-soleil-lune.jpg"},
-  {id:"bague-fleurs-soleil", cat:"Bagues", sub:"fleurs", name:"Bague Fleurs Soleil", desc:"Fleurs lavande, cristal, orange et fuchsia, doré.", price:5000, img:"images/bague-fleurs-soleil.jpg"},
-  {id:"bague-fleurs-lavande", cat:"Bagues", sub:"fleurs", name:"Bague Fleurs Lavande", desc:"Fleurs rose, lilas et bleu, argenté.", price:5000, img:"images/bague-fleurs-lavande.jpg"},
-  {id:"bague-solitaire", cat:"Bagues", sub:"solitaire", name:"Bague Solitaire Étoilée", desc:"Grande pierre ronde et quatre petits éclats.", price:5000, img:"images/bague-solitaire-etoilee.jpg"},
-  {id:"bague-ovale", cat:"Bagues", sub:"solitaire", name:"Bague Ovale Torsadée", desc:"Pierre ovale sur anneau torsadé pavé.", price:5000, img:"images/bague-ovale-torsadee.jpg"}
+  {id:"bague-fleurs-soleil", cat:"Bagues", sub:"fleurs", name:"Bague Fleurs Soleil", desc:"Fleurs lavande, cristal, orange et fuchsia, doré.", price:5000, adjustable:true, img:"images/bague-fleurs-soleil.jpg"},
+  {id:"bague-fleurs-lavande", cat:"Bagues", sub:"fleurs", name:"Bague Fleurs Lavande", desc:"Fleurs rose, lilas et bleu, argenté.", price:5000, adjustable:true, img:"images/bague-fleurs-lavande.jpg"},
+  {id:"bague-solitaire", cat:"Bagues", sub:"solitaire", name:"Bague Solitaire Étoilée", desc:"Grande pierre ronde et quatre petits éclats.", price:5000, adjustable:true, img:"images/bague-solitaire-etoilee.jpg"},
+  {id:"bague-ovale", cat:"Bagues", sub:"solitaire", name:"Bague Ovale Torsadée", desc:"Pierre ovale sur anneau torsadé pavé.", price:5000, adjustable:true, img:"images/bague-ovale-torsadee.jpg"}
 ];
 const CATS = [
   {label:"Colliers", filter:"Colliers", img:"images/collier-goutte-rose.jpg", count:p=>p.cat==="Colliers"},
@@ -626,7 +634,7 @@ const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } ca
 let filter = "Tout", showAll = false;
 let cart = read("timfa-cart", []);
 let favs = read("timfa-favs", []);
-const chosen = {};
+const chosen = {}, chosenSize = {};
 const HEART = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>';
 const BAG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>';
 const CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19l1.2-3.6A8 8 0 1 1 8 18.2Z"/></svg>';
@@ -640,7 +648,7 @@ function card(p, i = 0){
   const sw = p.variants ? `<div class="swatches" role="group" aria-label="Couleur">${p.variants.map((x,i)=>`<button type="button" style="background:${x.color}" title="${x.name}" aria-label="${x.name}" aria-pressed="${i===(chosen[p.id]||0)}" data-sw="${p.id}" data-i="${i}"></button>`).join("")}</div><p>${v.name}</p>` : `<p>${p.desc}</p>`;
   return `<article class="card" style="--i:${i}">
     <div class="media">${p.isNew ? `<span class="badge new">Nouveau</span>` : p.was ? `<span class="badge">-${fmt(p.was-p.price)}</span>` : ""}<button class="fav" type="button" data-fav="${p.id}" aria-label="Ajouter aux favoris" aria-pressed="${favs.includes(p.id)}">${HEART}</button><img src="${img}" alt="${p.name}${v ? " " + v.name : ""}" loading="lazy"></div>
-    <div class="body"><h3>${p.name}</h3>${sw}${p.cat==="Bagues" ? `<a class="size-link" href="#tailles">Trouver ma taille</a>` : ""}
+    <div class="body"><h3>${p.name}</h3>${sw}${p.adjustable ? `<span class="tag">Réglable · s’adapte à votre doigt</span>` : ""}${p.sizes ? `<div class="sizes-pick" role="group" aria-label="Taille"><span>Taille :</span>${p.sizes.map(z=>`<button type="button" data-size="${p.id}" data-z="${z}" aria-pressed="${chosenSize[p.id]===z}">${z}</button>`).join("")}<a class="size-link" href="#tailles">Ma taille ?</a></div>` : ""}
       <div class="foot"><div class="price">${priceHtml}</div><button class="add" type="button" data-add="${p.id}" aria-label="${p.price ? "Ajouter au panier" : "Demander le prix"}">${p.price ? BAG : CHAT}</button></div>
     </div></article>`;
 }
@@ -657,9 +665,10 @@ $("#more").onclick = () => { showAll = true; renderGrid(); };
 
 function addToCart(id){
   const p = PRODUCTS.find(x=>x.id===id);
-  const i = chosen[p.id]||0, key = p.variants ? p.id+"#"+i : p.id;
+  if (p.sizes && !chosenSize[p.id]) { toast("Choisissez d’abord votre taille (6 ou 7)"); const g=document.querySelector(`[data-size="${p.id}"]`); if (g) g.parentElement.classList.add("need"), setTimeout(()=>g.parentElement.classList.remove("need"),1200); return; }
+  const i = chosen[p.id]||0, z = chosenSize[p.id], key = (p.variants ? p.id+"#"+i : p.id) + (z ? "@"+z : "");
   const ex = cart.find(l=>l.key===key);
-  if (ex) ex.qty++; else { const v = p.variants ? p.variants[i] : null; cart.push({key, name:p.name+(v?" · "+v.name:""), price:p.price, img:v?v.img:p.img, qty:1}); }
+  if (ex) ex.qty++; else { const v = p.variants ? p.variants[i] : null; cart.push({key, name:p.name+(v?" · "+v.name:"")+(z?" · taille "+z:"")+(p.adjustable?" · réglable":""), price:p.price, img:v?v.img:p.img, qty:1}); }
   write("timfa-cart", cart); renderCart(); bump(); toast(p.price ? "Ajouté au panier" : "Ajouté, prix à confirmer");
 }
 function orderText(){
@@ -690,6 +699,7 @@ document.addEventListener("click", e => {
   const a = e.target.closest("[data-add]"); if (a) return addToCart(a.dataset.add);
   const f2 = e.target.closest("[data-fav]"); if (f2) { const id=f2.dataset.fav; favs = favs.includes(id) ? favs.filter(x=>x!==id) : [...favs,id]; write("timfa-favs", favs); f2.setAttribute("aria-pressed", String(favs.includes(id))); return; }
   const s = e.target.closest("[data-sw]"); if (s) { chosen[s.dataset.sw] = +s.dataset.i; return renderGrid(); }
+  const sz = e.target.closest("[data-size]"); if (sz) { chosenSize[sz.dataset.size] = sz.dataset.z; return renderGrid(); }
   const q = e.target.closest("[data-q]"); if (q) { const l = cart[+q.dataset.q]; l.qty += +q.dataset.d; if (l.qty<=0) cart.splice(+q.dataset.q,1); write("timfa-cart", cart); return renderCart(); }
   const f = e.target.closest("[data-filter]"); if (f) return setFilter(f.dataset.filter);
   const j = e.target.closest("[data-jump]"); if (j) { setFilter(j.dataset.jump); if (j.tagName==="BUTTON") $("#boutique").scrollIntoView({behavior:"smooth"}); }
