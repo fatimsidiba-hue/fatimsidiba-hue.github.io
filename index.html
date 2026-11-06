@@ -2,6 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-mTUUD8v10dMqpHROkskF/AWon7eCEstHJ6ypPetPjDE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
 <link rel="icon" type="image/png" href="images/logo-carre.png">
@@ -627,6 +629,7 @@ const CATS = [
   {label:"Bracelets & parures", filter:"Bracelets & parures", img:"images/bracelet-coeurs.jpg", count:p=>p.cat==="Bracelets & parures"}
 ];
 
+const esc = x => String(x).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 const fmt = n => n.toLocaleString("fr-FR").replace(/ | /g," ") + " F";
 const $ = s => document.querySelector(s);
 const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch(e) { return d; } };
@@ -684,7 +687,7 @@ const payText = z => z==="exp" ? "Paiement avant l'envoi sur le 07 79 51 25 04, 
 const waLink = t => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(t)}`;
 function renderCart(){
   $("#cartCount").textContent = cart.reduce((s,l)=>s+l.qty,0);
-  $("#lines").innerHTML = cart.length ? cart.map((l,i)=>`<div class="line"><img src="${l.img}" alt=""><div><h4>${l.name}</h4><small>${l.price ? fmt(l.price) : "Prix sur demande"}</small></div><div class="qty"><button type="button" data-q="${i}" data-d="-1" aria-label="Retirer un">−</button><span>${l.qty}</span><button type="button" data-q="${i}" data-d="1" aria-label="Ajouter un">+</button></div></div>`).join("")
+  $("#lines").innerHTML = cart.length ? cart.map((l,i)=>`<div class="line"><img src="${esc(l.img)}" alt=""><div><h4>${esc(l.name)}</h4><small>${l.price ? fmt(l.price) : "Prix sur demande"}</small></div><div class="qty"><button type="button" data-q="${i}" data-d="-1" aria-label="Retirer un">−</button><span>${l.qty}</span><button type="button" data-q="${i}" data-d="1" aria-label="Ajouter un">+</button></div></div>`).join("")
     : `<p class="empty">Votre panier est vide.<br>Ajoutez un bijou pour commencer.</p>`;
   const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), fee = ZONES[zone()].fee;
   $("#subtotal").textContent = fmt(sub); $("#shipFee").textContent = fmt(fee);
@@ -744,6 +747,20 @@ function bump(){ const b=$("#openCart"); b.classList.remove("bump"); void b.offs
 })();
 // Nouveautés : mettre isNew:true sur un bijou pour l'afficher en premier avec le badge « Nouveau »
 if (PRODUCTS.some(p=>p.isNew)) $("#newFilter").hidden = false;
+// Sécurité : le panier enregistré dans le navigateur est reconstruit à partir du catalogue
+// (nom, photo et prix viennent toujours du site, jamais de la mémoire du navigateur).
+cart = (Array.isArray(cart) ? cart : []).map(l => {
+  const m = /^([a-z0-9-]+)(?:#(\d+))?(?:@(\d+))?$/.exec(String(l && l.key || ""));
+  if (!m) return null;
+  const p = PRODUCTS.find(x => x.id === m[1]); if (!p) return null;
+  const i = m[2] ? +m[2] : 0, z = m[3] || null;
+  if (p.variants && !p.variants[i]) return null;
+  if (z && !(p.sizes || []).includes(z)) return null;
+  const v = p.variants ? p.variants[i] : null;
+  const qty = Math.min(20, Math.max(1, parseInt(l.qty, 10) || 1));
+  return {key: l.key, name: p.name + (v ? " · " + v.name : "") + (z ? " · taille " + z : "") + (p.adjustable ? " · réglable" : ""), price: p.price, img: v ? v.img : p.img, qty};
+}).filter(Boolean);
+favs = (Array.isArray(favs) ? favs : []).filter(id => PRODUCTS.some(p => p.id === id));
 renderGrid(); renderCart();
 </script>
 
