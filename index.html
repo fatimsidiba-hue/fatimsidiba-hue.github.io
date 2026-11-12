@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-L4LQl4qJNwaB/BquQTQQFkLsOLT08AYKJHW2scjhOA8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-KgARbxaBf3nm3neP3Il9elrJTG375MvYhum3Bx0eun4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -290,6 +290,9 @@ aside.drawer.open{transform:none}
 .fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .fields input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0;background:#fff;color:var(--ink)}
 .pay-note{margin:0;font-size:13px;background:var(--blush);border-radius:10px;padding:8px 12px}
+.promo-line{color:var(--rose)!important;font-weight:500}
+.site-deal{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;margin-bottom:6px}
+.site-deal b{color:var(--rose)}
 .sub{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
 .note{font-size:12px;color:var(--muted);margin:0}
 .copy{background:none;border:0;color:var(--rose);font-size:13px;text-decoration:underline;padding:0;justify-self:center}
@@ -369,7 +372,7 @@ aside.drawer.open{transform:none}
 <body>
 
 
-<div class="promo-bar" aria-label="Nouvelle collection : colliers 6 000 F, bracelets 5 000 F, ensembles 10 000 F. Black Friday : colliers 4 000 F, bagues Toi et Moi 5 000 F. Paiement à la livraison à Abidjan"><div class="marquee" aria-hidden="true"><span>✦ Nouvelle collection : <b>colliers 6 000 F</b> · <b>bracelets 5 000 F</b> · <b>ensembles 10 000 F</b> (livraison 900 F à Abidjan) ✦ Black Friday : <b>colliers 4 000 F</b> · <b>bagues Toi &amp; Moi 5 000 F</b> ✦ Paiement à la livraison à Abidjan</span><span>✦ Nouvelle collection : <b>colliers 6 000 F</b> · <b>bracelets 5 000 F</b> · <b>ensembles 10 000 F</b> (livraison 900 F à Abidjan) ✦ Black Friday : <b>colliers 4 000 F</b> · <b>bagues Toi &amp; Moi 5 000 F</b> ✦ Paiement à la livraison à Abidjan</span></div></div>
+<div class="promo-bar" aria-label="Nouvelle collection : colliers 6 000 F, bracelets 5 000 F, ensembles 10 000 F. Black Friday : colliers 4 000 F, bagues Toi et Moi 5 000 F. Paiement à la livraison à Abidjan"><div class="marquee" aria-hidden="true"><span>✦ Nouvelle collection : <b>colliers 6 000 F</b> · <b>bracelets 5 000 F</b> · <b>ensembles 10 000 F</b> (livraison 900 F à Abidjan) ✦ Black Friday : <b>colliers 4 000 F</b> · <b>bagues Toi &amp; Moi 5 000 F</b> ✦ <b>−1 000 F</b> sur toute commande passée sur le site ✦ Paiement à la livraison à Abidjan</span><span>✦ Nouvelle collection : <b>colliers 6 000 F</b> · <b>bracelets 5 000 F</b> · <b>ensembles 10 000 F</b> (livraison 900 F à Abidjan) ✦ Black Friday : <b>colliers 4 000 F</b> · <b>bagues Toi &amp; Moi 5 000 F</b> ✦ <b>−1 000 F</b> sur toute commande passée sur le site ✦ Paiement à la livraison à Abidjan</span></div></div>
 
 <header class="top">
   <div class="wrap">
@@ -394,6 +397,7 @@ aside.drawer.open{transform:none}
 <section class="hero" id="accueil">
   <div class="wrap">
     <div class="hero-text">
+      <div class="site-deal">🎁 <span><b>−1 000 F</b> sur votre commande passée sur le site</span></div>
       <div class="eyebrow">Nouvelle collection</div>
       <h1>Des bijoux qui<br><span class="rose">vous</span> ressemblent</h1>
       <p class="lead"><em>N’oubliez jamais que vous êtes des reines et des rois.</em>Colliers, bagues et bracelets délicats, dès 3 000 F, depuis Bingerville.</p>
@@ -576,10 +580,11 @@ aside.drawer.open{transform:none}
     <p class="pay-note" id="payNote"></p>
     <div class="sub"><span>Bijoux</span><span id="subtotal">0 F</span></div>
     <div class="sub"><span>Livraison</span><span id="shipFee">1 500 F</span></div>
+    <div class="sub promo-line" id="promoLine" hidden><span>Réduction commande sur le site</span><span>−1 000 F</span></div>
     <div class="total"><span>Total</span><b id="total">0 F</b></div>
     <a class="btn btn-dark" id="checkout" href="#" target="_blank" rel="noopener">Commander sur WhatsApp</a>
     <button class="copy" id="copyOrder" type="button">Copier le message de commande</button>
-    <p class="note">La commande part sur WhatsApp avec votre zone de livraison, nous confirmons avec vous.</p>
+    <p class="note">La réduction de 1 000 F est déjà déduite. La commande part sur WhatsApp avec votre zone de livraison, nous confirmons avec vous.</p>
   </div>
 </aside>
 <a class="wa-float" id="waFloat" href="https://wa.me/message/IEI3IPYSG7YJA1" target="_blank" rel="noopener" aria-label="Nous écrire sur WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.6c-2 0-3.9-.5-5.6-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5.9-1.6.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.1 1.3 3.3c.2.2 2.3 3.5 5.6 4.9 2.1.9 2.9 1 4 .8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5l-.6-.3Z"/></svg></a>
@@ -715,11 +720,14 @@ function addToCart(id){
 function orderText(){
   if (!cart.length) return "Bonjour Timfa online shop, j'ai une question sur vos bijoux.";
   const lines = cart.map(l => `• ${l.qty} × ${l.name} : ${l.price ? fmt(l.price*l.qty) : "prix à confirmer"}`);
-  const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), z = ZONES[zone()], f = feeFor(zone());
+  const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), z = ZONES[zone()], f = feeFor(zone()), d = discountFor(sub);
   const name = $("#cName").value.trim(), place = $("#cPlace").value.trim();
-  return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\nLivraison ${z.label}${f!==z.fee ? " (tarif ensemble)" : ""} : ${fmt(f)}\nTotal : ${fmt(sub+f)}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${name ? "\nNom : "+name : ""}${place ? "\nQuartier / ville : "+place : ""}\nMerci !`;
+  return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\nLivraison ${z.label}${f!==z.fee ? " (tarif ensemble)" : ""} : ${fmt(f)}\n${d ? "Réduction commande sur le site : -"+fmt(d)+"\n" : ""}Total : ${fmt(sub+f-d)}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${name ? "\nNom : "+name : ""}${place ? "\nQuartier / ville : "+place : ""}\nMerci !`;
 }
 const feeFor = z => (z==="abj" && cart.some(l => String(l.key).startsWith("ensemble"))) ? 900 : ZONES[z].fee;
+// Réduction de 1 000 F sur chaque commande passée via le site (une fois par commande)
+const SITE_DISCOUNT = 1000;
+const discountFor = sub => sub >= SITE_DISCOUNT ? SITE_DISCOUNT : 0;
 const ZONES = {abj:{label:"Abidjan", fee:1500}, pb:{label:"Port-Bouët / Bassam", fee:2000}, exp:{label:"Expédition", fee:2500}};
 const zone = () => (document.querySelector('input[name="zone"]:checked')||{value:"abj"}).value;
 const payText = z => z==="exp" ? "Paiement avant l'envoi sur le 07 79 51 25 04, puis envoyez la capture avec votre nom." : "Paiement à la livraison.";
@@ -728,10 +736,11 @@ function renderCart(){
   $("#cartCount").textContent = cart.reduce((s,l)=>s+l.qty,0);
   $("#lines").innerHTML = cart.length ? cart.map((l,i)=>`<div class="line"><img src="${esc(l.img)}" alt=""><div><h4>${esc(l.name)}</h4><small>${l.price ? fmt(l.price) : "Prix sur demande"}</small></div><div class="qty"><button type="button" data-q="${i}" data-d="-1" aria-label="Retirer un">−</button><span>${l.qty}</span><button type="button" data-q="${i}" data-d="1" aria-label="Ajouter un">+</button></div></div>`).join("")
     : `<p class="empty">Votre panier est vide.<br>Ajoutez un bijou pour commencer.</p>`;
-  const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), fee = feeFor(zone());
+  const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), fee = feeFor(zone()), disc = discountFor(sub);
+  $("#promoLine").hidden = !disc;
   $("#feeAbj").textContent = fmt(feeFor("abj"));
   $("#subtotal").textContent = fmt(sub); $("#shipFee").textContent = fmt(fee);
-  $("#total").textContent = fmt(cart.length ? sub+fee : 0);
+  $("#total").textContent = fmt(cart.length ? sub+fee-disc : 0);
   $("#payNote").textContent = payText(zone());
   $("#checkout").href = waLink(orderText());
 }
