@@ -124,21 +124,23 @@ nav.menu a:hover,nav.menu a.on{border-color:var(--ink)}
 
 /* Bannière Black Friday */
 .bf .wrap{padding-block:40px}
-.bf-card{background:linear-gradient(110deg,var(--blush) 0%,var(--blush-2) 100%);border-radius:24px;display:grid;grid-template-columns:1.1fr 1fr .8fr;align-items:center;gap:28px;padding:44px 48px;position:relative;overflow:hidden}
+.bf-card{background:linear-gradient(110deg,var(--blush) 0%,var(--blush-2) 100%);border-radius:24px;display:grid;grid-template-columns:1fr 1.3fr .75fr;align-items:center;gap:28px;padding:44px 48px;position:relative;overflow:hidden}
 .bf-card h2{font-size:clamp(30px,3.6vw,44px);margin:10px 0 14px}
 .bf-card p{color:var(--muted);margin:0 0 24px;max-width:36ch}
-.bf-stack{position:relative;height:260px}
+.bf-stack{position:relative;height:420px}
+.deal-big{color:var(--rose);font-size:1.25em;font-weight:600}
+.bf-mini{padding-top:6px;border-top:1px solid rgba(196,82,110,.2)}
 .bf-stack img{position:absolute;border-radius:16px;object-fit:cover;box-shadow:0 20px 34px -18px rgba(42,28,30,.45);border:5px solid #fff}
-.bf-stack img:nth-child(1){width:52%;aspect-ratio:4/5;left:4%;top:8%;transform:rotate(-6deg)}
-.bf-stack img:nth-child(2){width:52%;aspect-ratio:4/5;right:4%;top:0;transform:rotate(5deg)}
-.bf-stats{display:grid;gap:22px}
+.bf-stack img:nth-child(1){width:56%;aspect-ratio:4/5;left:0;top:10%;transform:rotate(-6deg);z-index:1}
+.bf-stack img:nth-child(2){width:56%;aspect-ratio:3/4;right:0;top:0;transform:rotate(5deg)}
+.bf-stats{display:grid;gap:16px}
 .bf-stats b{display:block;font-family:var(--display);font-size:34px;color:var(--rose);line-height:1.1;font-weight:500;font-variant-numeric:tabular-nums}
 .bf-stats small{font-size:13px;color:var(--muted)}
 .countdown{display:flex;gap:6px;font-variant-numeric:tabular-nums}
 .countdown span{background:#fff;border-radius:10px;padding:6px 8px;text-align:center;min-width:48px}
 .countdown span b{font-size:22px;color:var(--ink);font-family:var(--body);font-weight:600}
 .countdown span small{font-size:10px;display:block;letter-spacing:.06em;text-transform:uppercase}
-@media (max-width:960px){.bf-card{grid-template-columns:1fr;padding:32px 24px}.bf-stack{height:220px;max-width:340px}}
+@media (max-width:960px){.bf-card{grid-template-columns:1fr;padding:32px 24px}.bf-stack{height:300px;max-width:380px;width:100%;justify-self:center}}
 
 /* Boutique */
 .shop .wrap{padding-block:48px 72px}
@@ -427,18 +429,20 @@ aside.drawer.open{transform:none}
   <div class="wrap">
     <div class="bf-card">
       <div>
-        <div class="eyebrow">Black Friday ✦</div>
-        <h2>Brillez plus,<br><span class="rose">payez moins</span></h2>
-        <p>Les colliers de la sélection Black Friday à 4 000 F au lieu de 5 000 F, et les bagues Toi &amp; Moi à 5 000 F au lieu de 7 000 F.</p>
-        <a class="btn btn-dark" href="#boutique" data-jump="Promo">J’en profite <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+        <div class="eyebrow">Brillez chaque jour ✦</div>
+        <h2>Des bijoux qui<br><span class="rose">vous font briller</span></h2>
+        <p><strong class="deal-big">−1 000 F</strong> sur votre commande passée sur le site. Choisissez, commandez sur WhatsApp, payez à la livraison.</p>
+        <a class="btn btn-dark" href="#boutique">J’en profite <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
       </div>
       <div class="bf-stack">
-        <img src="images/collier-arc-en-ciel.jpg" alt="Collier Arc-en-ciel">
-        <img src="images/tm-rose-ciel.jpg" alt="Bague Toi &amp; Moi rose et bleu ciel">
+        <img src="images/promo-violet-gouttes.jpg" alt="Collier Violet Éclat et collier Gouttes de Cristal portés à la main">
+        <img src="images/promo-jean.jpg" alt="Bague Toi &amp; Moi rose et bleue, collier Cygne rose et collier goutte de cristal">
       </div>
       <div class="bf-stats">
-        <div><b>-2 000 F</b><small>sur les bagues Toi &amp; Moi</small></div>
-        <div><small id="cdLabel">Black Friday dans</small>
+        <div><b>−1 000 F</b><small>sur chaque commande<br>passée sur le site</small></div>
+        <div><b>900 F</b><small>livraison des ensembles<br>à Abidjan</small></div>
+        <div><b>0 F</b><small>à payer avant la livraison<br>(Abidjan, Port-Bouët, Bassam)</small></div>
+        <div class="bf-mini"><small id="cdLabel">Black Friday dans</small>
           <div class="countdown" role="timer"><span><b id="cdD">00</b><small>jours</small></span><span><b id="cdH">00</b><small>h</small></span><span><b id="cdM">00</b><small>min</small></span></div>
         </div>
       </div>
