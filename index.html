@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-KgARbxaBf3nm3neP3Il9elrJTG375MvYhum3Bx0eun4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8HBBNkCQgW4VNYIa22wjpPEL+VItGh8cwiFw+Pmf7zY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -158,6 +158,7 @@ nav.menu a:hover,nav.menu a.on{border-color:var(--ink)}
 .card:hover .media img{transform:scale(1.05)}
 .badge{position:absolute;z-index:2;top:12px;left:12px;background:var(--red);color:#fff;font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px}
 .badge.new{background:var(--ink)}
+.badge.pre{background:#fff;color:var(--rose);border:1px solid var(--rose);white-space:nowrap}
 .tag{align-self:flex-start;font-size:12px;font-weight:500;background:var(--blush);color:var(--rose);border-radius:999px;padding:3px 10px}
 .sizes-pick{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px;color:var(--muted);border-radius:12px;transition:background .3s}
 .sizes-pick button{min-width:34px;height:30px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:500}
@@ -374,7 +375,7 @@ aside.drawer.open{transform:none}
 <body>
 
 
-<div class="promo-bar" aria-label="Nouvelle collection : colliers 6 000 F, bracelets 5 000 F, ensembles 10 000 F. Black Friday : colliers 4 000 F, bagues Toi et Moi 5 000 F. Paiement à la livraison à Abidjan"><div class="marquee" aria-hidden="true"><span>✦ Nouvelle collection : <b>colliers 6 000 F</b> · <b>bracelets 5 000 F</b> · <b>ensembles 10 000 F</b> (livraison 900 F à Abidjan) ✦ Black Friday : <b>colliers 4 000 F</b> · <b>bagues Toi &amp; Moi 5 000 F</b> ✦ <b>−1 000 F</b> sur toute commande passée sur le site ✦ Paiement à la livraison à Abidjan</span><span>✦ Nouvelle collection : <b>colliers 6 000 F</b> · <b>bracelets 5 000 F</b> · <b>ensembles 10 000 F</b> (livraison 900 F à Abidjan) ✦ Black Friday : <b>colliers 4 000 F</b> · <b>bagues Toi &amp; Moi 5 000 F</b> ✦ <b>−1 000 F</b> sur toute commande passée sur le site ✦ Paiement à la livraison à Abidjan</span></div></div>
+<div class="promo-bar" aria-label="Nouvelle collection en précommande, disponible jeudi 19 novembre : colliers 6 000 F, bracelets 5 000 F, ensembles 10 000 F. Black Friday : colliers 4 000 F, bagues Toi et Moi 5 000 F. Paiement à la livraison à Abidjan"><div class="marquee" aria-hidden="true"><span>✦ Nouvelle collection en précommande, <b>disponible jeudi 19 novembre</b> : <b>colliers 6 000 F</b> · <b>bracelets 5 000 F</b> · <b>ensembles 10 000 F</b> (livraison 900 F à Abidjan) ✦ Black Friday : <b>colliers 4 000 F</b> · <b>bagues Toi &amp; Moi 5 000 F</b> ✦ <b>−1 000 F</b> sur toute commande passée sur le site ✦ Paiement à la livraison à Abidjan</span><span>✦ Nouvelle collection en précommande, <b>disponible jeudi 19 novembre</b> : <b>colliers 6 000 F</b> · <b>bracelets 5 000 F</b> · <b>ensembles 10 000 F</b> (livraison 900 F à Abidjan) ✦ Black Friday : <b>colliers 4 000 F</b> · <b>bagues Toi &amp; Moi 5 000 F</b> ✦ <b>−1 000 F</b> sur toute commande passée sur le site ✦ Paiement à la livraison à Abidjan</span></div></div>
 
 <header class="top">
   <div class="wrap">
@@ -697,7 +698,7 @@ function card(p, i = 0){
   const priceHtml = p.price ? `<span class="now">${fmt(p.price)}</span>${p.was ? `<span class="was">${fmt(p.was)}</span>` : ""}` : `<span class="ask">Prix sur demande</span>`;
   const sw = p.variants ? `<div class="swatches" role="group" aria-label="Couleur">${p.variants.map((x,i)=>`<button type="button" style="background:${x.color}" title="${x.name}" aria-label="${x.name}" aria-pressed="${i===(chosen[p.id]||0)}" data-sw="${p.id}" data-i="${i}"></button>`).join("")}</div><p>${v.name}</p>` : `<p>${p.desc}</p>`;
   return `<article class="card" style="--i:${i}">
-    <div class="media">${p.isNew ? `<span class="badge new">Nouveau</span>` : p.was ? `<span class="badge">-${fmt(p.was-p.price)}</span>` : ""}<button class="fav" type="button" data-fav="${p.id}" aria-label="Ajouter aux favoris" aria-pressed="${favs.includes(p.id)}">${HEART}</button><img src="${img}" alt="${p.name}${v ? " " + v.name : ""}" loading="lazy"></div>
+    <div class="media">${p.isNew ? (PREORDER ? `<span class="badge pre">Dispo jeudi 19/11</span>` : `<span class="badge new">Nouveau</span>`) : p.was ? `<span class="badge">-${fmt(p.was-p.price)}</span>` : ""}<button class="fav" type="button" data-fav="${p.id}" aria-label="Ajouter aux favoris" aria-pressed="${favs.includes(p.id)}">${HEART}</button><img src="${img}" alt="${p.name}${v ? " " + v.name : ""}" loading="lazy"></div>
     <div class="body"><h3>${p.name}</h3>${sw}${p.adjustable ? `<span class="tag">Réglable · s’adapte à votre doigt</span>` : ""}${p.sizes ? `<div class="sizes-pick" role="group" aria-label="Taille"><span>Taille :</span>${p.sizes.map(z=>`<button type="button" data-size="${p.id}" data-z="${z}" aria-pressed="${chosenSize[p.id]===z}">${z}</button>`).join("")}<a class="size-link" href="#tailles">Ma taille ?</a></div>` : ""}
       <div class="foot"><div class="price">${priceHtml}</div><button class="add" type="button" data-add="${p.id}" aria-label="${p.price ? "Ajouter au panier" : "Demander le prix"}">${p.price ? BAG : CHAT}</button></div>
     </div></article>`;
@@ -719,16 +720,19 @@ function addToCart(id){
   const i = chosen[p.id]||0, z = chosenSize[p.id], key = (p.variants ? p.id+"#"+i : p.id) + (z ? "@"+z : "");
   const ex = cart.find(l=>l.key===key);
   if (ex) ex.qty++; else { const v = p.variants ? p.variants[i] : null; cart.push({key, name:p.name+(v?" · "+v.name:"")+(z?" · taille "+z:"")+(p.adjustable?" · réglable":""), price:p.price, img:v?v.img:p.img, qty:1}); }
-  write("timfa-cart", cart); renderCart(); bump(); toast(p.price ? "Ajouté au panier" : "Ajouté, prix à confirmer");
+  write("timfa-cart", cart); renderCart(); bump(); toast(PREORDER && p.isNew ? "Précommande ajoutée · dispo jeudi 19/11" : p.price ? "Ajouté au panier" : "Ajouté, prix à confirmer");
 }
 function orderText(){
   if (!cart.length) return "Bonjour Timfa online shop, j'ai une question sur vos bijoux.";
-  const lines = cart.map(l => `• ${l.qty} × ${l.name} : ${l.price ? fmt(l.price*l.qty) : "prix à confirmer"}`);
+  const lines = cart.map(l => `• ${l.qty} × ${l.name}${isPre(l.key) ? " (précommande, disponible le jeudi 19 novembre)" : ""} : ${l.price ? fmt(l.price*l.qty) : "prix à confirmer"}`);
   const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), z = ZONES[zone()], f = feeFor(zone()), d = discountFor(sub);
   const name = $("#cName").value.trim(), place = $("#cPlace").value.trim();
   return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\nLivraison ${z.label}${f!==z.fee ? " (tarif ensemble)" : ""} : ${fmt(f)}\n${d ? "Réduction commande sur le site : -"+fmt(d)+"\n" : ""}Total : ${fmt(sub+f-d)}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${name ? "\nNom : "+name : ""}${place ? "\nQuartier / ville : "+place : ""}\nMerci !`;
 }
 const feeFor = z => (z==="abj" && cart.some(l => String(l.key).startsWith("ensemble"))) ? 900 : ZONES[z].fee;
+// Nouvelle collection en précommande jusqu'au jeudi 19 novembre 2026 (passe en « Nouveau » automatiquement)
+const PREORDER = Date.now() < new Date(2026,10,19).getTime();
+const isPre = key => { const id = String(key).split(/[#@]/)[0]; const p = PRODUCTS.find(x => x.id === id); return PREORDER && !!(p && p.isNew); };
 // Réduction de 1 000 F sur chaque commande passée via le site (une fois par commande)
 const SITE_DISCOUNT = 1000;
 const discountFor = sub => sub >= SITE_DISCOUNT ? SITE_DISCOUNT : 0;
