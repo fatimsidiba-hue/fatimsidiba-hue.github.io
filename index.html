@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-PFI4itqgi8lavHy1ook8OeXqiBsliIpKe8YtU2O547g='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-L4LQl4qJNwaB/BquQTQQFkLsOLT08AYKJHW2scjhOA8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -596,11 +596,15 @@ const WA_LINK = "https://wa.me/message/IEI3IPYSG7YJA1";
 
 const PRODUCTS = [
   // ——— Nouvelle collection ———
-  {id:"ensemble", cat:"Ensembles", isNew:true, name:"Ensemble collier + bracelet", desc:"Un collier et un bracelet assortis.", price:10000,
+  {id:"ensemble", cat:"Ensembles", isNew:true, name:"Ensemble Cygne Rose", desc:"Collier Cygne Rose et bracelet Liane rose, dorés.", price:10000,
    variants:[
-     {name:"Cygne rose & Liane rose", color:"linear-gradient(135deg,#f6b5c8 50%,#e9c46a 50%)", img:"images/n-ens-cygne-rose.jpg"},
+     {name:"Porté · Cygne rose & Liane rose", color:"linear-gradient(135deg,#f6b5c8 50%,#e9c46a 50%)", img:"images/n-ens-cygne-rose.jpg"},
+     {name:"Coffret cadeau · Cygne rose & Liane rose", color:"linear-gradient(135deg,#f6b5c8 50%,#f3efe8 50%)", img:"images/n-ens-coffret-cygne-rose.jpg"}
+   ]},
+  {id:"ensemble-cygne-flamboyant", cat:"Ensembles", isNew:true, name:"Ensemble Cygne Flamboyant", desc:"Collier Cygne Flamboyant et son bracelet assorti.", price:10000,
+   variants:[
      {name:"Cygne flamboyant & Nœud doré", color:"linear-gradient(135deg,#d6334a 50%,#f6b5c8 50%)", img:"images/n-ens-cygne-noeud.jpg"},
-     {name:"Coffret Cygne flamboyant & Liane argentée", color:"linear-gradient(135deg,#d6334a 50%,#d8d8de 50%)", img:"images/n-ens-coffret-cygne.jpg"}
+     {name:"Coffret · Cygne flamboyant & Liane argentée", color:"linear-gradient(135deg,#d6334a 50%,#d8d8de 50%)", img:"images/n-ens-coffret-cygne.jpg"}
    ]},
   {id:"ensemble-sirene", cat:"Ensembles", isNew:true, name:"Ensemble Sirène", desc:"Collier Queue de Sirène et son bracelet assorti.", price:10000,
    variants:[
@@ -660,7 +664,7 @@ const CATS = [
   {label:"Colliers", filter:"Colliers", img:"images/collier-goutte-rose.jpg", count:p=>p.cat==="Colliers"},
   {label:"Bagues", filter:"Bagues", img:"images/tm-emeraude.jpg", count:p=>p.cat==="Bagues"},
   {label:"Bracelets & parures", filter:"Bracelets & parures", img:"images/n-bracelet-liane-rose.jpg", count:p=>p.cat==="Bracelets & parures"},
-  {label:"Ensembles", filter:"Ensembles", img:"images/n-ens-cygne-rose.jpg", count:null, text:"10 000 F · 6 modèles"}
+  {label:"Ensembles", filter:"Ensembles", img:"images/n-ens-cygne-rose.jpg", count:null, text:"10 000 F · 4 ensembles"}
 ];
 
 const esc = x => String(x).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
