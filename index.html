@@ -127,12 +127,12 @@ nav.menu a:hover,nav.menu a.on{border-color:var(--ink)}
 .bf-card{background:linear-gradient(110deg,var(--blush) 0%,var(--blush-2) 100%);border-radius:24px;display:grid;grid-template-columns:.95fr 1.6fr .7fr;align-items:center;gap:28px;padding:44px 48px;position:relative;overflow:hidden}
 .bf-card h2{font-size:clamp(30px,3.6vw,44px);margin:10px 0 14px}
 .bf-card p{color:var(--muted);margin:0 0 24px;max-width:36ch}
-.bf-stack{position:relative;height:540px}
+.bf-stack{position:relative;height:440px}
 .deal-big{color:var(--rose);font-size:1.25em;font-weight:600}
 .bf-mini{padding-top:6px;border-top:1px solid rgba(196,82,110,.2)}
 .bf-stack img{position:absolute;border-radius:16px;object-fit:cover;box-shadow:0 20px 34px -18px rgba(42,28,30,.45);border:5px solid #fff}
-.bf-stack img:nth-child(1){width:60%;aspect-ratio:4/5;left:0;top:10%;transform:rotate(-6deg);z-index:1}
-.bf-stack img:nth-child(2){width:60%;aspect-ratio:3/4;right:0;top:0;transform:rotate(5deg)}
+.bf-stack img:nth-child(1){width:51%;aspect-ratio:3/4;left:0;top:7%;transform:rotate(-4deg);z-index:1}
+.bf-stack img:nth-child(2){width:51%;aspect-ratio:3/4;right:0;top:0;transform:rotate(4deg);z-index:2}
 .bf-stats{display:grid;gap:16px}
 .bf-stats b{display:block;font-family:var(--display);font-size:34px;color:var(--rose);line-height:1.1;font-weight:500;font-variant-numeric:tabular-nums}
 .bf-stats small{font-size:13px;color:var(--muted)}
@@ -140,7 +140,7 @@ nav.menu a:hover,nav.menu a.on{border-color:var(--ink)}
 .countdown span{background:#fff;border-radius:10px;padding:6px 8px;text-align:center;min-width:48px}
 .countdown span b{font-size:22px;color:var(--ink);font-family:var(--body);font-weight:600}
 .countdown span small{font-size:10px;display:block;letter-spacing:.06em;text-transform:uppercase}
-@media (max-width:960px){.bf-card{grid-template-columns:1fr;padding:32px 24px}.bf-stack{height:min(86vw,360px);max-width:480px;width:100%;justify-self:center}.bf-stack img:nth-child(1),.bf-stack img:nth-child(2){width:64%}}
+@media (max-width:960px){.bf-card{grid-template-columns:1fr;padding:32px 24px}.bf-stack{height:min(66vw,380px);max-width:520px;width:100%;justify-self:center}}
 
 /* Boutique */
 .shop .wrap{padding-block:48px 72px}
@@ -355,8 +355,8 @@ aside.drawer.open{transform:none}
 /* Black Friday : photos qui flottent */
 .bf-stack img:nth-child(1){animation:floatA 6s ease-in-out infinite}
 .bf-stack img:nth-child(2){animation:floatB 6s ease-in-out infinite}
-@keyframes floatA{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(-8deg) translateY(-10px)}}
-@keyframes floatB{0%,100%{transform:rotate(5deg) translateY(0)}50%{transform:rotate(7deg) translateY(-14px)}}
+@keyframes floatA{0%,100%{transform:rotate(-4deg) translateY(0)}50%{transform:rotate(-5deg) translateY(-8px)}}
+@keyframes floatB{0%,100%{transform:rotate(4deg) translateY(0)}50%{transform:rotate(5deg) translateY(-10px)}}
 
 /* Panier qui sautille */
 .bump{animation:bump .5s ease}
