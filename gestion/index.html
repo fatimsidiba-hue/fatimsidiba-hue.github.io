@@ -411,13 +411,14 @@ function countUp(el, to, money){
   const start = performance.now(), dur = 700;
   (function step(t){ const k=Math.min(1,(t-start)/dur), v=Math.round(to*(1-Math.pow(1-k,3))); el.textContent = money ? fmt(v) : v; if(k<1) requestAnimationFrame(step); })(start);
 }
+const net = o => Math.max(0, (o.total||0) - (o.fee||0)); // votre argent : sans les frais de livraison (pour le livreur)
 function renderKpis(){
   const T = today(), O = DATA.orders.filter(o=>o.status!=="Annulée");
   const todayOrders = O.filter(o=>o.date.slice(0,10)===T);
   const weekStart = addDays(T,-6);
-  const week = O.filter(o=>o.date.slice(0,10)>=weekStart).reduce((s,o)=>s+o.total,0);
-  const month = O.filter(o=>o.date.slice(0,7)===T.slice(0,7)).reduce((s,o)=>s+o.total,0);
-  const items = [["Commandes aujourd’hui", todayOrders.length, false, "dark"], ["Ventes aujourd’hui", todayOrders.reduce((s,o)=>s+o.total,0), true], ["7 derniers jours", week, true], ["Ce mois-ci", month, true]];
+  const week = O.filter(o=>o.date.slice(0,10)>=weekStart).reduce((s,o)=>s+net(o),0);
+  const month = O.filter(o=>o.date.slice(0,7)===T.slice(0,7)).reduce((s,o)=>s+net(o),0);
+  const items = [["Commandes aujourd’hui", todayOrders.length, false, "dark"], ["Ventes aujourd’hui", todayOrders.reduce((s,o)=>s+net(o),0), true], ["7 derniers jours", week, true], ["Ce mois-ci", month, true]];
   $("#kpis").innerHTML = items.map((k,i)=>`<div class="kpi ${k[3]||""}" style="--i:${i}"><small>${k[0]}</small><b data-v="${k[1]}" data-m="${k[2]?1:""}">0</b></div>`).join("");
   document.querySelectorAll(".kpi b").forEach(b => countUp(b, +b.dataset.v, !!b.dataset.m));
   const nNew = DATA.orders.filter(o=>o.status==="Nouvelle").length;
@@ -480,7 +481,7 @@ function orderCard(o, i){
   return `<article class="order" style="--i:${i};--st:${STATUS[o.status]||"#ddd"}" data-id="${esc(o.id)}">
     <div class="o-head"><div><div class="o-id">${esc(o.id)} · <span class="o-when">${frDate(o.date)} à ${frTime(o.date)}</span></div><div class="o-name">${esc(o.name)}</div><div class="o-when">${esc(o.place)}${o.place?" · ":""}${esc(o.phone)}</div></div><div class="o-total">${fmt(o.total)}</div></div>
     <div class="o-items">${esc(o.items)}</div>
-    <div class="o-meta"><span class="tag">${esc(o.zone)} · livraison ${fmt(o.fee)}</span>${o.discount?`<span class="tag">−${fmt(o.discount)} site</span>`:""}${o.preorder?`<span class="tag pre">Précommande</span>`:""}<span class="tag ${o.paid?"paid":"unpaid"}">${o.paid?"Payée ✓":esc(o.payment||"Non payée")}</span></div>
+    <div class="o-meta"><span class="tag">${esc(o.zone)} · livraison ${fmt(o.fee)} → livreur</span><span class="tag paid">Pour vous : ${fmt(net(o))}</span>${o.discount?`<span class="tag">−${fmt(o.discount)} site</span>`:""}${o.preorder?`<span class="tag pre">Précommande</span>`:""}<span class="tag ${o.paid?"paid":"unpaid"}">${o.paid?"Payée ✓":esc(o.payment||"Non payée")}</span></div>
     <div class="o-ctrl three">
       <label>Statut<select data-act="status">${st}</select></label>
       <label>Date de livraison<input type="date" data-act="delivery" value="${o.delivery}" class="${o.delivery?"":"empty"}"></label>
@@ -578,10 +579,10 @@ const dayKey = d => d.toISOString().slice(0,10);
 function renderSales(){
   const T = today(), days = [...Array(14)].map((_,k) => addDays(T, k-13));
   const O = DATA.orders.filter(o=>o.status!=="Annulée");
-  const vals = days.map(d => O.filter(o=>o.date.slice(0,10)===d).reduce((s,o)=>s+o.total,0));
+  const vals = days.map(d => O.filter(o=>o.date.slice(0,10)===d).reduce((s,o)=>s+net(o),0));
   const max = Math.max(...vals, 10000), W = Math.max(320, $("#salesChart").clientWidth || 700), H = W < 500 ? 170 : 200, P = 26, bw = (W-2*P)/14;
   const total = vals.reduce((a,b)=>a+b,0);
-  $("#salesSum").textContent = fmt(total) + " · " + O.filter(o=>o.date.slice(0,10)>=days[0]).length + " commande(s)";
+  $("#salesSum").textContent = fmt(total) + " sans livraison · " + O.filter(o=>o.date.slice(0,10)>=days[0]).length + " commande(s)";
   let g = `<svg viewBox="0 0 ${W} ${H+34}" role="img" aria-label="Ventes par jour">`;
   [0,.5,1].forEach(f => { const y = P + (H-P)*(1-f); g += `<line x1="${P}" x2="${W-P}" y1="${y}" y2="${y}" stroke="#f1dfe2" stroke-dasharray="${f?"3 4":""}"/><text class="ax" x="0" y="${y+4}">${f? Math.round(max*f/1000)+"k":"0"}</text>`; });
   vals.forEach((v,k) => {
@@ -632,9 +633,9 @@ function renderStats(){
   $("#stockVal").textContent = pieces + " pièces · " + fmt(value);
   const ce = Object.entries(cats).sort((a,b)=>b[1]-a[1]), cmax = ce.length ? ce[0][1] : 1;
   $("#catChart").innerHTML = ce.length ? ce.map(([n,v],i)=>`<div class="hbar" style="--i:${i}"><span class="n">${esc(n)}</span><span class="v">${v} pièces</span><div class="track"><div class="fill" style="width:${v/cmax*100}%;--i:${i}"></div></div></div>`).join("") : `<div class="empty-chart">Renseignez votre stock dans l’onglet Stock</div>`;
-  const paid = O.filter(o=>o.paid), avg = O.length ? Math.round(O.reduce((a,o)=>a+o.total,0)/O.length) : 0;
+  const paid = O.filter(o=>o.paid), avg = O.length ? Math.round(O.reduce((a,o)=>a+net(o),0)/O.length) : 0;
   const clients = new Set(O.map(o=>String(o.phone).replace(/\D/g,"").slice(-8))).size;
-  $("#brief").innerHTML = `<div><small>Panier moyen</small><b>${fmt(avg)}</b></div><div><small>Clientes</small><b>${clients}</b></div><div><small>Encaissé</small><b>${fmt(paid.reduce((a,o)=>a+o.total,0))}</b></div><div><small>Ensembles vendus</small><b>${O.reduce((a,o)=>a+(String(o.items).match(/Ensemble/g)||[]).length,0)}</b></div>`;
+  $("#brief").innerHTML = `<div><small>Panier moyen</small><b>${fmt(avg)}</b></div><div><small>Clientes</small><b>${clients}</b></div><div><small>Encaissé (sans livraison)</small><b>${fmt(paid.reduce((a,o)=>a+net(o),0))}</b></div><div><small>Ensembles vendus</small><b>${O.reduce((a,o)=>a+(String(o.items).match(/Ensemble/g)||[]).length,0)}</b></div>`;
 }
 
 /* ——— Photos ——— */
@@ -766,7 +767,7 @@ $("#newLot").onclick = lotForm;
 function renderClients(){
   const q = $("#qc").value.trim().toLowerCase(), map = {};
   (DATA.clients||[]).forEach(c => { const k = String(c.phone).replace(/\D/g,"").slice(-8) || c.name; map[k] = {name:c.name, phone:c.phone, place:c.place, n:0, total:0, last:""}; });
-  DATA.orders.filter(o=>o.status!=="Annulée").forEach(o => { const k = String(o.phone).replace(/\D/g,"").slice(-8) || o.name; const c = map[k] || (map[k] = {name:o.name, phone:o.phone, place:o.place, n:0, total:0, last:""}); c.n++; c.total += o.total; if (o.date > c.last) c.last = o.date; });
+  DATA.orders.filter(o=>o.status!=="Annulée").forEach(o => { const k = String(o.phone).replace(/\D/g,"").slice(-8) || o.name; const c = map[k] || (map[k] = {name:o.name, phone:o.phone, place:o.place, n:0, total:0, last:""}); c.n++; c.total += net(o); if (o.date > c.last) c.last = o.date; });
   const L = Object.values(map).filter(c => !q || (c.name+" "+c.phone+" "+c.place).toLowerCase().includes(q)).sort((a,b)=>b.total-a.total);
   $("#clients").innerHTML = L.length ? L.map((c,i)=>`<div class="cl" style="--i:${i}"><span class="av">${esc((c.name||"?")[0].toUpperCase())}</span><span><b>${esc(c.name)}</b>${i<3 && c.total ? " 👑" : ""}<small>${esc(c.place||"")}${c.place?" · ":""}${esc(c.phone||"")}</small><small>${c.n} commande(s) · ${fmt(c.total)}${c.last ? " · dernière le " + frDate(c.last) : ""}</small><small>💕 ${(c.n % 5 === 4) ? "<b style='color:#1f8a4c'>Prochaine commande : −2 000 F 🎁</b>" : "Fidélité " + (c.n % 5) + "/5"}${String(c.phone).replace(/\D/g,"").length >= 6 ? " · code parrain R" + String(c.phone).replace(/\D/g,"").slice(-6) : ""}</small></span>${c.phone ? `<a class="btn wa" style="padding:7px 12px" href="${waUrl(c)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}</div>`).join("") : `<div class="empty-state"><b>Aucune cliente</b>Elles s’ajoutent toutes seules à chaque commande.</div>`;
   $("#livreurs").innerHTML = (DATA.livreurs||[]).length ? DATA.livreurs.map(l=>{ const n = DATA.orders.filter(o=>o.livreur===l.name && !["Livrée","Annulée"].includes(o.status)).length; return `<div class="cl"><span class="av">🛵</span><span><b>${esc(l.name)}</b><small>${esc(l.phone)}${n ? " · " + n + " à livrer" : ""}</small><small><a href="${courierLink(l)}" target="_blank" rel="noopener">Sa page livraisons ↗</a></small></span><a class="btn wa" style="padding:7px 12px" href="${waUrl(l, "Bonjour " + l.name + " 👋 Voici votre page Timfa : vous y voyez vos livraisons et vous appuyez sur « Livré » à chaque colis remis.\n" + courierLink(l))}" target="_blank" rel="noopener">Envoyer son lien</a></div>`; }).join("") : `<div class="empty-chart">Ajoutez vos livreurs.</div>`;
