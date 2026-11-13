@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-15nCMQwSzvTJqi74Dstp3HNezFxK1cdr6Ejq/nVKb8Q='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-xCY/4v4JCumfcu1OK/c8BuVdSR6Zrw8I+th7EfToaYg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -215,6 +215,20 @@ details.acc p{margin:8px 0 0;color:var(--muted);font-size:14px}
 .promo-row .btn{padding:8px 16px}
 .promo-msg{margin:0;font-size:12.5px;font-weight:500}
 .promo-msg.ok{color:#1f8a4c}.promo-msg.bad{color:var(--red)}
+.rev-cta{color:var(--rose);font-weight:600;white-space:nowrap}
+.rev-live{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:22px 0 4px}
+.rcard{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;animation:rise .5s both}
+.rcard img{width:100%;aspect-ratio:4/3;object-fit:cover;cursor:zoom-in}
+.rcard div{padding:14px 16px;display:grid;gap:6px}
+.rcard .stars{color:#d9a441;letter-spacing:2px}
+.rcard p{margin:0;font-family:var(--display);font-style:italic;font-size:16px;line-height:1.4}
+.rcard small{color:var(--muted)}
+/* Me prévenir */
+.notify{border:1px dashed var(--rose);background:#fff5f7;color:var(--rose);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:600}
+.np{display:grid;gap:8px}
+.np input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+.loy-line{font-size:12.5px;border-radius:10px;padding:8px 10px;background:#fff8e6;color:#8a5a00}
+.loy-line.on{background:#e8f6ee;color:#1f8a4c;font-weight:600}
 /* Galerie */
 .media{cursor:zoom-in}
 .media .img2{position:absolute;inset:0;opacity:0;transition:opacity .45s}
@@ -619,7 +633,8 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
 
 <section class="reviews" id="avis">
   <div class="wrap">
-    <div class="rev-head"><h2 class="sec-title">Elles en parlent</h2><p>Messages reçus de nos clientes sur WhatsApp, recopiés mot pour mot.</p></div>
+    <div class="rev-head"><h2 class="sec-title">Elles en parlent</h2><p>Avis de nos clientes, publiés tels quels. <a href="avis/" class="rev-cta">Laisser un avis ★</a></p></div>
+    <div class="rev-live" id="revLive" hidden></div>
     <div class="rev-grid">
       <figure class="rev">
         <div class="bub">Tu me déçois jamais Allahouma Barik 🥺🥺</div>
@@ -760,11 +775,13 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
     </fieldset>
     <div class="fields"><input id="cName" type="text" placeholder="Votre nom" autocomplete="name"><input id="cPhone" type="tel" placeholder="Téléphone" autocomplete="tel" inputmode="tel"><input id="cPlace" class="wide" type="text" placeholder="Quartier / ville" autocomplete="address-level2"></div>
     <p class="pay-note" id="payNote"></p>
-    <div class="promo-row"><input id="pCode" type="text" placeholder="Code promo" maxlength="20" autocomplete="off" autocapitalize="characters"><button type="button" class="btn btn-light" id="pApply">Appliquer</button></div>
+    <div class="promo-row"><input id="pCode" type="text" placeholder="Code promo ou parrain (R…)" maxlength="20" autocomplete="off" autocapitalize="characters"><button type="button" class="btn btn-light" id="pApply">Appliquer</button></div>
     <p class="promo-msg" id="pMsg" hidden></p>
     <div class="sub"><span>Bijoux</span><span id="subtotal">0 F</span></div>
     <div class="sub"><span>Livraison</span><span id="shipFee">1 500 F</span></div>
     <div class="sub promo-line" id="promoLine" hidden><span>Réduction commande sur le site</span><span>−1 000 F</span></div>
+    <p class="loy-line" id="loyLine" hidden></p>
+    <div class="sub promo-line" id="loyOff" hidden><span id="loyLabel"></span><span id="loyVal"></span></div>
     <div class="sub promo-line" id="codeLine" hidden><span id="codeLabel">Code promo</span><span id="codeVal"></span></div>
     <div class="total"><span>Total</span><b id="total">0 F</b></div>
     <a class="btn btn-dark" id="checkout" href="#" target="_blank" rel="noopener">Commander sur WhatsApp</a>
@@ -780,6 +797,12 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
     <div class="pd-gal"><div class="pd-main"><img id="pdImg" alt=""><span class="pd-zoom">Toucher pour agrandir</span></div><div class="pd-thumbs" id="pdThumbs"></div></div>
     <div class="pd-info" id="pdInfo"></div>
   </div>
+</section>
+<section class="sheet" id="np" hidden role="dialog" aria-modal="true" aria-labelledby="npT" style="max-width:420px;padding:24px">
+  <button class="x pd-x" id="npX" type="button" aria-label="Fermer">×</button>
+  <h2 id="npT" style="font-family:var(--display);font-weight:500;margin:0 0 6px">🔔 Me prévenir</h2>
+  <p class="pd-desc" id="npP" style="margin:0 0 14px"></p>
+  <form class="np" id="npF"><input id="npName" placeholder="Votre prénom" maxlength="40"><input id="npPhone" type="tel" inputmode="tel" placeholder="Votre numéro WhatsApp" required><input id="npWeb" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true"><button class="btn btn-dark" type="submit" style="justify-content:center">Prévenez-moi</button></form>
 </section>
 <div class="lightbox" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photos du bijou">
   <button class="lb-x" id="lbX" type="button" aria-label="Fermer">×</button>
@@ -879,6 +902,7 @@ function renderPd(k){
     ${stock}
     <p class="pd-desc">${esc(p.desc||"")}</p>
     ${sw}${sizes}
+    ${out ? `<button class="btn btn-light" type="button" data-notify="${p.id}">🔔 Me prévenir quand il revient</button>` : ""}
     <button class="btn btn-dark" type="button" data-add="${p.id}"${out?" disabled":""}>${out ? "Rupture de stock" : PREORDER && p.isNew ? "Précommander · dispo jeudi 19/11" : "Ajouter au panier"}</button>
     ${SET && (SET.colliers.some(c=>c.split("#")[0]===p.id) || SET.bracelets.some(b=>b.split("#")[0]===p.id)) ? `<button class="btn btn-light" type="button" data-to-set="${p.id}">Composer un ensemble avec ce bijou · 10 000 F</button>` : ""}
     <div class="pd-perks">${gar ? `<div><span>🛡️</span>${esc(gar.replace(/^Garantie /,"Garanti ").replace(/, avec un bon entretien\.?$/,"").replace(/\.$/,""))}</div>` : ""}<div><span>🎁</span>Coffret + sac offerts</div><div><span>💌</span>Carte message offerte</div><div><span>🚚</span>Paiement à la livraison</div></div>
@@ -943,7 +967,7 @@ function card(p, i = 0){
   return `<article class="card" style="--i:${i}">
     <div class="media${allOut ? " soldout" : ""}">${allOut ? `<span class="badge">Rupture</span>` : p.isNew ? (PREORDER ? `<span class="badge pre">Dispo jeudi 19/11</span>` : `<span class="badge new">Nouveau</span>`) : p.was ? `<span class="badge">-${fmt(p.was-p.price)}</span>` : ""}<button class="fav" type="button" data-fav="${p.id}" aria-label="Ajouter aux favoris" aria-pressed="${favs.includes(p.id)}">${HEART}</button><img src="${img}" alt="${p.name}${v ? " " + v.name : ""}" loading="lazy" data-gal="${p.id}">${gal.length > 1 ? `<img class="img2" src="${gal[1]}" alt="" loading="lazy" data-gal="${p.id}"><span class="photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>${gal.length}</span>` : ""}</div>
     <div class="body"><h3 data-open="${p.id}">${p.name}</h3>${sw}${p.adjustable ? `<span class="tag">Réglable · s’adapte à votre doigt</span>` : ""}${p.sizes ? `<div class="sizes-pick" role="group" aria-label="Taille"><span>Taille :</span>${p.sizes.map(z=>`<button type="button" data-size="${p.id}" data-z="${z}" aria-pressed="${chosenSize[p.id]===z}">${z}</button>`).join("")}<a class="size-link" href="#tailles">Ma taille ?</a></div>` : ""}
-      ${stockHtml}<div class="foot"><div class="price">${priceHtml}</div><button class="add" type="button" data-add="${p.id}"${out ? " disabled" : ""} aria-label="${out ? "Rupture de stock" : p.price ? "Ajouter au panier" : "Demander le prix"}">${p.price ? BAG : CHAT}</button></div>
+      ${stockHtml}<div class="foot"><div class="price">${priceHtml}</div><button class="add" type="button" data-add="${p.id}"${out ? " disabled" : ""} aria-label="${out ? "Rupture de stock" : p.price ? "Ajouter au panier" : "Demander le prix"}">${p.price ? BAG : CHAT}</button></div>${out ? `<button type="button" class="notify" data-notify="${p.id}">🔔 Me prévenir</button>` : ""}
     </div></article>`;
 }
 function renderGrid(){
@@ -971,7 +995,7 @@ function orderText(orderId){
   const lines = cart.map(l => `• ${l.qty} × ${l.name}${isPre(l.key) ? " (précommande, disponible le jeudi 19 novembre)" : ""} : ${l.price ? fmt(l.price*l.qty) : "prix à confirmer"}`);
   const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), z = ZONES[zone()], f = feeFor(zone()), d = discountFor(sub);
   const name = $("#cName").value.trim(), phone = $("#cPhone").value.trim(), place = $("#cPlace").value.trim();
-  return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\nLivraison ${z.label}${f!==z.fee ? " (tarif ensemble)" : ""} : ${fmt(f)}\n${d ? "Réduction commande sur le site : -"+fmt(d)+"\n" : ""}${promoOff(sub) ? "Code promo " + PROMO + " : -" + fmt(promoOff(sub)) + "\n" : ""}Total : ${fmt(sub+f-d-promoOff(sub))}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${giftText() ? "\n"+giftText() : ""}${surprise() ? "\n🤫 Cadeau surprise : ne pas mettre le prix" : ""}${recipient() ? "\n📦 Livrer à : " + recipient().name + " · " + recipient().phone + " · " + recipient().place : ""}${remember() ? "\n📅 Date à retenir : " + remember().day : ""}${name ? "\nNom : "+name : ""}${phone ? "\nTéléphone : "+phone : ""}${place ? "\nQuartier / ville : "+place : ""}${orderId ? "\nN° de commande : "+orderId+"\nSuivre ma commande : https://fatimsidiba-hue.github.io/suivi/" : ""}\nMerci !`;
+  return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\nLivraison ${z.label}${f!==z.fee ? " (tarif ensemble)" : ""} : ${fmt(f)}\n${d ? "Réduction commande sur le site : -"+fmt(d)+"\n" : ""}${promoOff(sub) ? "Code promo " + PROMO + " : -" + fmt(promoOff(sub)) + "\n" : ""}${loyOff(sub) ? loyLabel() + " : -" + fmt(loyOff(sub)) + "\n" : ""}Total : ${fmt(sub+f-d-promoOff(sub)-loyOff(sub))}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${giftText() ? "\n"+giftText() : ""}${surprise() ? "\n🤫 Cadeau surprise : ne pas mettre le prix" : ""}${recipient() ? "\n📦 Livrer à : " + recipient().name + " · " + recipient().phone + " · " + recipient().place : ""}${remember() ? "\n📅 Date à retenir : " + remember().day : ""}${name ? "\nNom : "+name : ""}${phone ? "\nTéléphone : "+phone : ""}${place ? "\nQuartier / ville : "+place : ""}${orderId ? "\nN° de commande : "+orderId+"\nSuivre ma commande : https://fatimsidiba-hue.github.io/suivi/" : ""}\nMerci !`;
 }
 const feeFor = z => (z==="abj" && cart.some(l => isSetKey(l.key))) ? 900 : ZONES[z].fee;
 // Nouvelle collection en précommande jusqu'au jeudi 19 novembre 2026 (passe en « Nouveau » automatiquement)
@@ -1033,6 +1057,7 @@ function applyPromo(){
   const c = $("#pCode").value.trim().toUpperCase(), m = $("#pMsg"); m.hidden = false;
   if (!c) { PROMO = ""; m.hidden = true; }
   else if (PROMOS[c]) { PROMO = c; m.className = "promo-msg ok"; m.textContent = `Code ${c} appliqué : −${fmt(PROMOS[c])} ✨`; }
+  else if (/^R\d{6}$/.test(c)) { PROMO = ""; m.className = "promo-msg ok"; m.textContent = "Code parrain enregistré : indiquez votre téléphone, la réduction s’affiche pour une 1re commande."; checkLoyalty(); }
   else { PROMO = ""; m.className = "promo-msg bad"; m.textContent = "Ce code n’existe pas ou n’est plus valable."; }
   try { localStorage.setItem("timfa-promo", PROMO); } catch(e) {}
   renderCart();
@@ -1045,6 +1070,37 @@ const remember = () => { if (!$("#giftOn") || !$("#giftOn").checked) return null
 (function initDates(){ const d = $("#gDay"), m = $("#gMonth"); if (!d) return;
   for (let i=1;i<=31;i++) d.insertAdjacentHTML("beforeend", `<option value="${String(i).padStart(2,"0")}">${i}</option>`);
   ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"].forEach((n,i)=>m.insertAdjacentHTML("beforeend", `<option value="${String(i+1).padStart(2,"0")}">${n}</option>`)); })();
+// ——— Avis publiés ———
+function loadReviews(){
+  if (!API) return;
+  fetch(API + "?action=reviews").then(r=>r.json()).then(d => { const L = (d && d.reviews) || []; if (!L.length) return;
+    $("#revLive").innerHTML = L.slice(0, 9).map((x,i)=>`<article class="rcard" style="animation-delay:${i*60}ms">${/^data:image\//.test(x.photo||"") ? `<img src="${x.photo}" alt="Photo envoyée par ${esc(x.name)}" loading="lazy" data-revimg="${i}">` : ""}<div><span class="stars">${"★".repeat(x.stars||5)}${"☆".repeat(5-(x.stars||5))}</span><p>« ${esc(x.text)} »</p><small>— ${esc(x.name)}${x.product ? " · " + esc(x.product) : ""}</small></div></article>`).join("");
+    $("#revLive").hidden = false; window.__revs = L; }).catch(()=>{});
+}
+document.addEventListener("click", e => { const im = e.target.closest("[data-revimg]"); if (im) { const L = window.__revs || []; const imgs = L.filter(x=>/^data:image\//.test(x.photo||"")).map(x=>x.photo); openLb(imgs, imgs.indexOf(L[+im.dataset.revimg].photo), "Avis de " + L[+im.dataset.revimg].name); } });
+
+// ——— Me prévenir quand c'est disponible ———
+let NP = null;
+function openNp(id){ const p = PRODUCTS.find(x=>x.id===id); if (!p) return; const v = p.variants ? p.variants[chosen[p.id]||0] : null, z = chosenSize[p.id];
+  NP = {code: (p.variants ? p.id+"#"+(chosen[p.id]||0) : p.id) + (z ? "@"+z : (p.sizes ? "@"+p.sizes[0] : "")), product: p.name + (v ? " · " + v.name : "") + (z ? " · taille " + z : "")};
+  $("#npP").textContent = NP.product + " est en rupture. Laissez votre numéro : nous vous écrivons sur WhatsApp dès son retour 💕";
+  $("#np").hidden = $("#pdScrim").hidden = false; }
+function closeNp(){ $("#np").hidden = true; if ($("#pd").hidden) $("#pdScrim").hidden = true; }
+$("#npX").onclick = closeNp;
+document.addEventListener("click", e => { const b = e.target.closest("[data-notify]"); if (b) openNp(b.dataset.notify); });
+$("#npF").addEventListener("submit", e => { e.preventDefault(); const phone = $("#npPhone").value.trim(); if (phone.replace(/\D/g,"").length < 8) { toast("Indiquez un numéro valide"); return; }
+  const btn = e.target.querySelector("button"); btn.disabled = true;
+  fetch(API, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({action:"notify", code:NP.code, product:NP.product, name:$("#npName").value.trim(), phone, website:$("#npWeb").value})})
+    .then(r=>r.json()).then(d => { toast(d.ok ? "C’est noté ! Nous vous prévenons dès son retour 💕" : "Numéro invalide"); if (d.ok) closeNp(); }).catch(()=>toast("Connexion impossible")).finally(()=>{ btn.disabled = false; }); });
+
+// ——— Fidélité et parrainage ———
+let LOY = null, loyT = 0;
+function checkLoyalty(){ clearTimeout(loyT); loyT = setTimeout(() => { const ph = $("#cPhone").value.trim(), code = PROMOS[PROMO] ? "" : $("#pCode").value.trim().toUpperCase();
+  if (!API || ph.replace(/\D/g,"").length < 8) { LOY = null; renderCart(); return; }
+  fetch(API + "?action=loyalty&phone=" + encodeURIComponent(ph) + "&code=" + encodeURIComponent(code)).then(r=>r.json()).then(d => { LOY = d && d.ok ? d : null; renderCart(); }).catch(()=>{}); }, 500); }
+function loyOff(sub){ if (!LOY) return 0; const base = sub - discountFor(sub) - promoOff(sub); let o = 0;
+  if (LOY.rewardNow) o += Math.min(LOY.off, Math.max(0, base - o)); if (LOY.referralOk) o += Math.min(LOY.referralOff, Math.max(0, base - o)); if (LOY.credit) o += Math.min(LOY.credit, Math.max(0, base - o)); return o; }
+function loyLabel(){ if (!LOY) return ""; const a = []; if (LOY.rewardNow) a.push(`🎁 Fidélité (${LOY.count+1}e commande)`); if (LOY.referralOk) a.push(`🤝 Parrainée par ${LOY.referrerName}`); if (LOY.credit) a.push("🤝 Bonus parrainage"); return a.join(" + "); }
 const payMode = () => (document.querySelector('input[name="pay"]:checked')||{value:"cod"}).value;
 const waLink = t => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(t)}`;
 function renderCart(){
@@ -1055,8 +1111,11 @@ function renderCart(){
   $("#promoLine").hidden = !disc;
   $("#feeAbj").textContent = fmt(feeFor("abj"));
   $("#subtotal").textContent = fmt(sub); $("#shipFee").textContent = fmt(fee);
+  const lo = loyOff(sub); $("#loyOff").hidden = !lo || !cart.length; $("#loyLabel").textContent = loyLabel(); $("#loyVal").textContent = "−" + fmt(lo);
+  if (LOY && cart.length) { const left = LOY.every - ((LOY.count) % LOY.every); $("#loyLine").hidden = false; $("#loyLine").className = "loy-line" + (LOY.rewardNow ? " on" : "");
+    $("#loyLine").textContent = LOY.rewardNow ? `🎁 Bravo ! C’est votre ${LOY.count+1}e commande : −${fmt(LOY.off)} offerts` : `💕 Carte fidélité : ${LOY.count} commande(s). Encore ${left-1} avant −${fmt(LOY.off)} !`; } else $("#loyLine").hidden = true;
   const po = promoOff(sub); $("#codeLine").hidden = !po || !cart.length; $("#codeLabel").textContent = "Code promo " + PROMO; $("#codeVal").textContent = "−" + fmt(po);
-  $("#total").textContent = fmt(cart.length ? sub+fee-disc-po : 0);
+  $("#total").textContent = fmt(cart.length ? sub+fee-disc-po-lo : 0);
   $("#payNote").textContent = payText(zone());
   $("#checkout").href = waLink(orderText());
 }
@@ -1080,6 +1139,7 @@ $("#recOn").addEventListener("change", () => { $("#recForm").hidden = !$("#recOn
 $("#pApply").onclick = applyPromo; $("#pCode").addEventListener("keydown", e => { if (e.key==="Enter") { e.preventDefault(); applyPromo(); } });
 if (PROMO && PROMOS[PROMO]) { $("#pCode").value = PROMO; }
 ["#gName","#gNick","#gMsg","#gFrom","#gOccOther"].forEach(id => $(id).addEventListener("input", () => { if (id==="#gName"||id==="#gNick") renderGift(); renderCart(); }));
+$("#cPhone").addEventListener("input", checkLoyalty);
 ["#cName","#cPhone","#cPlace"].forEach(id=>$(id).addEventListener("input",()=>{$("#checkout").href = waLink(orderText());}));
 $("#openCart").onclick = () => openCart(true);
 $("#closeCart").onclick = () => openCart(false);
@@ -1143,12 +1203,12 @@ $("#checkout").addEventListener("click", e => {
   if (!name || phone.replace(/\D/g,"").length < 8) { toast("Indiquez votre nom et votre téléphone"); return; }
   const w = window.open("", "_blank");
   const btn = $("#checkout"); btn.textContent = "Envoi de la commande…";
-  const payload = {name, phone, place, zone: zone(), pay: (payMode()==="wave" || zone()==="exp") ? "wave" : "cod", card: giftText().replace(/^🎁 /,""), surprise: surprise(), recipient: recipient(), remember: remember(), promo: PROMOS[PROMO] ? PROMO : "", items: cart.map(l => ({code: l.key, qty: l.qty}))};
+  const payload = {name, phone, place, zone: zone(), pay: (payMode()==="wave" || zone()==="exp") ? "wave" : "cod", card: giftText().replace(/^🎁 /,""), surprise: surprise(), recipient: recipient(), remember: remember(), promo: PROMOS[PROMO] ? PROMO : ($("#pCode").value.trim().toUpperCase().match(/^R\d{6}$/) ? $("#pCode").value.trim().toUpperCase() : ""), items: cart.map(l => ({code: l.key, qty: l.qty}))};
   fetch(API, {method: "POST", headers: {"Content-Type": "text/plain;charset=utf-8"}, body: JSON.stringify(payload)})
     .then(r => r.json())
     .then(d => {
       if (d && d.ok) {
-        const link = waLink(orderText(d.id));
+        const link = waLink(orderText(d.id) + (d.myCode ? "\n\n💝 Mon code parrainage : " + d.myCode : ""));
         cart = []; write("timfa-cart", cart); renderCart(); loadStock();
         toast("Commande " + d.id + " enregistrée ✓");
         if (w) w.location.href = link; else location.href = link;
@@ -1162,7 +1222,7 @@ $("#checkout").addEventListener("click", e => {
     .catch(() => { const link = waLink(orderText()); if (w) w.location.href = link; else location.href = link; })
     .finally(() => { btn.textContent = "Commander sur WhatsApp"; });
 });
-loadStock();
+loadStock(); loadReviews();
 renderGrid(); renderBuilder(); renderGift(); renderCart();
 </script>
 

@@ -215,6 +215,24 @@ header img{height:46px}
 .lot select{border:1px solid var(--line);border-radius:10px;padding:6px 8px;font-size:13px}
 .st-pill{font-size:12px;font-weight:600;border-radius:999px;padding:3px 10px}
 .st-pill.cmd{background:var(--warn-bg);color:var(--warn)}.st-pill.route{background:var(--info-bg);color:var(--info)}.st-pill.ok{background:var(--ok-bg);color:var(--ok)}
+.o-ctrl.three{grid-template-columns:1fr 1fr 1fr}
+@media (max-width:520px){.o-ctrl.three{grid-template-columns:1fr 1fr}.o-ctrl.three label:last-child{grid-column:1/-1}}
+.rv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;padding-bottom:20px}
+.rv{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;animation:rise .4s both}
+.rv img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.rv .rb{padding:12px 14px;display:grid;gap:6px;flex:1;align-content:start}
+.rv .stars{color:#d9a441;letter-spacing:2px}
+.rv p{margin:0;font-style:italic}
+.rv small{color:var(--muted)}
+.rv .ra{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 14px}
+.rv .st{font-size:11px;font-weight:600;border-radius:999px;padding:2px 9px;justify-self:start}
+.st.Publié{background:#e8f6ee;color:#1f8a4c}.st.Masqué{background:#f3eeee;color:var(--muted)}.st.attente{background:#fff3d6;color:#8a5a00}
+.al-list{display:grid;gap:8px;padding-bottom:60px}
+.ticket{border:2px dashed var(--ink);border-radius:16px;padding:18px;display:grid;gap:8px;font-size:15px;background:#fff;color:#000}
+.ticket img{height:54px;justify-self:center}
+.ticket .big{font-size:28px;font-weight:700;text-align:center;border:2px solid #000;border-radius:12px;padding:8px}
+.ticket .ln{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dotted #999;padding-bottom:4px}
+@media print{body.printing>*{display:none!important}body.printing #modal{display:block!important;position:static;box-shadow:none;max-height:none;transform:none;width:auto}body.printing #modal .f-actions,body.printing #mX{display:none!important}}
 .cl-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;padding-bottom:60px}
 @media (max-width:820px){.cl-grid{grid-template-columns:1fr}}
 .clients{display:grid;gap:8px}
@@ -276,6 +294,7 @@ header img{height:46px}
       <button type="button" role="tab" id="tab-stock" aria-selected="false">Stock</button>
       <button type="button" role="tab" id="tab-lots" aria-selected="false">Fournisseurs</button>
       <button type="button" role="tab" id="tab-clients" aria-selected="false">Clientes</button>
+      <button type="button" role="tab" id="tab-avis" aria-selected="false">Avis & alertes<span class="count" id="avCount" hidden></span></button>
       <button type="button" role="tab" id="tab-stats" aria-selected="false">Statistiques</button>
     </div>
 
@@ -309,6 +328,12 @@ header img{height:46px}
     <section id="view-lots" hidden>
       <div class="toolbar"><button class="btn dark" type="button" id="newLot">＋ Nouveau lot (1688)</button><span class="p-sub" id="lotsSum"></span></div>
       <div class="lots" id="lots"></div>
+    </section>
+
+    <section id="view-avis" hidden>
+      <div class="toolbar"><span class="p-sub">Les avis envoyés depuis le site arrivent ici. Publiez les plus beaux : ils s’affichent sur la page d’accueil.</span><button class="btn soft" type="button" id="copyAvis">Copier le lien « Laisser un avis »</button></div>
+      <h3 class="group-title">Avis clientes</h3><div class="rv-grid" id="reviews"></div>
+      <h3 class="group-title">🔔 Clientes à prévenir (« Me prévenir quand c’est disponible »)</h3><div class="al-list" id="alertList"></div>
     </section>
 
     <section id="view-clients" hidden>
@@ -410,6 +435,10 @@ function renderKpis(){
   if (out) a.push(`<span class="alert bad">${out} bijou${out>1?"x":""} en rupture</span>`);
   if (low) a.push(`<span class="alert warn">${low} en stock faible</span>`);
   if (todo) a.push(`<span class="alert info">${todo} bijou${todo>1?"x":""} sans stock renseigné</span>`);
+  const rvWait = (DATA.reviews||[]).filter(x=>x.status==="En attente").length, back = backAlerts().length;
+  if (rvWait) a.push(`<span class="alert info">⭐ ${rvWait} avis à relire</span>`);
+  if (back) a.push(`<span class="alert bad">🔔 ${back} cliente(s) à prévenir : bijou de retour</span>`);
+  $("#avCount").hidden = !(rvWait + back); $("#avCount").textContent = rvWait + back;
   $("#alerts").innerHTML = a.join("");
   $("#newCount").hidden = !nNew; $("#newCount").textContent = nNew;
   const h = new Date().getHours(); $("#hello").textContent = (h<18 ? "Bonjour" : "Bonsoir") + " ✨";
@@ -419,9 +448,23 @@ function renderKpis(){
 const WA_TPL = [
   ["Confirmer la commande", o => `Bonjour ${o.name} 😊 Merci pour votre commande ${o.id} chez Timfa online shop ✨\n${o.items}\nTotal : ${fmt(o.total)}\n${o.delivery ? "Livraison prévue " + frDate(o.delivery) + "." : "Je vous confirme la date de livraison très vite."}`],
   ["Livreur en route", o => `Bonjour ${o.name} 😊 Votre colis Timfa (${o.id}) est en route 🚚 Le livreur va vous appeler. Pensez à préparer ${fmt(o.total)} pour le paiement à la livraison. Merci !`],
-  ["Merci + demander un avis", o => `Merci beaucoup ${o.name} pour votre confiance 💕 J’espère que votre bijou vous plaît ! Si vous avez une minute, envoyez-moi une petite photo ou un mot : ça aide énormément ma boutique 🙏 N’oubliez jamais : vous êtes une reine 👑`],
+  ["Merci + demander un avis ⭐", o => `Merci beaucoup ${o.name} pour votre confiance 💕 J’espère que votre bijou vous plaît !\nSi vous avez une minute, laissez-moi votre avis (avec une photo si vous voulez 📸) ici : ${avisLink(o)}\nÇa aide énormément ma boutique 🙏 N’oubliez jamais : vous êtes une reine 👑`],
   ["Paiement expédition", o => `Bonjour ${o.name}, pour l’expédition merci d’envoyer ${fmt(o.total)} sur le 07 79 51 25 04, puis la capture du paiement avec votre nom ici. J’expédie dès réception 📦`]
 ];
+const SITE = "https://fatimsidiba-hue.github.io";
+function avisLink(o){ return SITE + "/avis/?id=" + encodeURIComponent(o.id) + "&n=" + encodeURIComponent(String(o.name||"").split(" ")[0]); }
+function courierLink(l){ return SITE + "/livreur/?k=" + encodeURIComponent(l.key||""); }
+function destOf(o){ return (String(o.notes||"").match(/Livrer à : (.*)/) || [])[1] || ""; }
+function ticketText(o){ const dest = destOf(o), surprise = /Cadeau surprise/.test(o.notes||"");
+  return `🧾 TICKET DE LIVRAISON · Timfa online shop\nCommande : ${o.id}${o.delivery ? "\nLivraison : " + frDate(o.delivery) : ""}\n\n👤 ${dest ? "Destinataire : " + dest + "\n(commandé par " + o.name + " · " + o.phone + ")" : o.name + "\n📞 " + o.phone}\n📍 ${o.place}\n\n💍 ${o.items}${surprise ? "\n\n🎁 CADEAU SURPRISE : ne rien dire du contenu" : ""}\n\n💰 ${o.paid ? "DÉJÀ PAYÉ : rien à encaisser" : "À ENCAISSER : " + fmt(o.total)}`; }
+function ticket(o){ const dest = destOf(o), lv = (DATA.livreurs||[]).find(l=>l.name===o.livreur), surprise = /Cadeau surprise/.test(o.notes||"");
+  openModal(`<h2>Ticket de livraison</h2><div class="ticket"><img src="../images/logo-sombre.png" alt="Timfa online shop"><div class="ln"><span>Commande</span><b>${esc(o.id)}</b></div>${o.delivery?`<div class="ln"><span>Livraison</span><b>${frDate(o.delivery)}</b></div>`:""}
+    <div class="ln"><span>${dest?"Destinataire":"Cliente"}</span><b>${esc(dest || o.name)}</b></div>${dest?`<div class="ln"><span>Commandé par</span><b>${esc(o.name)} · ${esc(o.phone)}</b></div>`:`<div class="ln"><span>Téléphone</span><b>${esc(o.phone)}</b></div>`}
+    <div class="ln"><span>Adresse</span><b>${esc(o.place)}</b></div><div style="white-space:pre-line">${esc(o.items)}</div>${surprise?`<b>🎁 Cadeau surprise : ne rien dire du contenu</b>`:""}
+    <div class="big">${o.paid ? "DÉJÀ PAYÉ" : "À encaisser : " + fmt(o.total)}</div>${o.livreur?`<small>Livreur : ${esc(o.livreur)}</small>`:""}</div>
+    <div class="f-actions"><button class="btn soft" type="button" id="tkPrint">🖨️ Imprimer</button>${lv ? `<a class="btn wa" target="_blank" rel="noopener" href="${waUrl(lv, ticketText(o) + "\n\n📱 Toutes vos livraisons : " + courierLink(lv))}">Envoyer à ${esc(lv.name)}</a>` : `<span class="p-sub">Choisissez un livreur sur la commande pour lui envoyer le ticket.</span>`}<button class="btn dark" type="button" id="tkCopy">Copier le texte</button></div>`);
+  $("#tkPrint").onclick = () => { document.body.classList.add("printing"); print(); document.body.classList.remove("printing"); };
+  $("#tkCopy").onclick = () => navigator.clipboard.writeText(ticketText(o)).then(()=>toast("Ticket copié ✓"), ()=>toast("Copie impossible")); }
 function waUrl(o, text){ let d = String(o.phone).replace(/\D/g,""); if (d.length===10) d = "225"+d; return "https://wa.me/"+d+(text?"?text="+encodeURIComponent(text):""); }
 function matchOrder(o){
   const T = today(), q = $("#q").value.trim().toLowerCase();
@@ -438,13 +481,15 @@ function orderCard(o, i){
     <div class="o-head"><div><div class="o-id">${esc(o.id)} · <span class="o-when">${frDate(o.date)} à ${frTime(o.date)}</span></div><div class="o-name">${esc(o.name)}</div><div class="o-when">${esc(o.place)}${o.place?" · ":""}${esc(o.phone)}</div></div><div class="o-total">${fmt(o.total)}</div></div>
     <div class="o-items">${esc(o.items)}</div>
     <div class="o-meta"><span class="tag">${esc(o.zone)} · livraison ${fmt(o.fee)}</span>${o.discount?`<span class="tag">−${fmt(o.discount)} site</span>`:""}${o.preorder?`<span class="tag pre">Précommande</span>`:""}<span class="tag ${o.paid?"paid":"unpaid"}">${o.paid?"Payée ✓":esc(o.payment||"Non payée")}</span></div>
-    <div class="o-ctrl">
+    <div class="o-ctrl three">
       <label>Statut<select data-act="status">${st}</select></label>
       <label>Date de livraison<input type="date" data-act="delivery" value="${o.delivery}" class="${o.delivery?"":"empty"}"></label>
+      <label>Livreur<select data-act="livreur"><option value="">—</option>${(DATA.livreurs||[]).map(l=>`<option ${l.name===o.livreur?"selected":""}>${esc(l.name)}</option>`).join("")}</select></label>
     </div>
     <div class="o-actions">
       <a class="btn wa" href="${waUrl(o)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>WhatsApp</a>
       <div class="menu"><button class="btn soft" type="button" data-act="tpl">Message prêt ▾</button></div>
+      <button class="btn soft" type="button" data-act="ticket">🧾 Ticket</button>
       <button class="btn ${o.paid?"ok":"dark"}" type="button" data-act="paid">${o.paid?"Payée ✓":"Marquer payée"}</button>
     </div>
   </article>`;
@@ -461,11 +506,13 @@ function updateOrder(id, patch, msg){
 $("#orders").addEventListener("change", e => {
   const card = e.target.closest(".order"); if (!card) return; const id = card.dataset.id;
   if (e.target.dataset.act==="status") updateOrder(id, {status:e.target.value}, e.target.value==="Annulée" ? "Commande annulée · stock remis ✓" : "Statut : " + e.target.value + " ✓");
+  if (e.target.dataset.act==="livreur") updateOrder(id, {livreur:e.target.value}, e.target.value ? "Confiée à " + e.target.value + " 🛵" : "Livreur retiré");
   if (e.target.dataset.act==="delivery") updateOrder(id, {delivery:e.target.value}, e.target.value ? "Livraison prévue " + frDate(e.target.value) + " ✓" : "Date retirée");
 });
 $("#orders").addEventListener("click", e => {
   const card = e.target.closest(".order"); if (!card) return; const id = card.dataset.id, o = DATA.orders.find(x=>x.id===id);
   const b = e.target.closest("[data-act]"); if (!b) return;
+  if (b.dataset.act==="ticket") ticket(o);
   if (b.dataset.act==="paid") updateOrder(id, {paid:!o.paid}, o.paid ? "Marquée non payée" : "Paiement enregistré 💰");
   if (b.dataset.act==="tpl") {
     document.querySelectorAll(".menu-list").forEach(m=>m.remove());
@@ -721,22 +768,47 @@ function renderClients(){
   (DATA.clients||[]).forEach(c => { const k = String(c.phone).replace(/\D/g,"").slice(-8) || c.name; map[k] = {name:c.name, phone:c.phone, place:c.place, n:0, total:0, last:""}; });
   DATA.orders.filter(o=>o.status!=="Annulée").forEach(o => { const k = String(o.phone).replace(/\D/g,"").slice(-8) || o.name; const c = map[k] || (map[k] = {name:o.name, phone:o.phone, place:o.place, n:0, total:0, last:""}); c.n++; c.total += o.total; if (o.date > c.last) c.last = o.date; });
   const L = Object.values(map).filter(c => !q || (c.name+" "+c.phone+" "+c.place).toLowerCase().includes(q)).sort((a,b)=>b.total-a.total);
-  $("#clients").innerHTML = L.length ? L.map((c,i)=>`<div class="cl" style="--i:${i}"><span class="av">${esc((c.name||"?")[0].toUpperCase())}</span><span><b>${esc(c.name)}</b>${i<3 && c.total ? " 👑" : ""}<small>${esc(c.place||"")}${c.place?" · ":""}${esc(c.phone||"")}</small><small>${c.n} commande(s) · ${fmt(c.total)}${c.last ? " · dernière le " + frDate(c.last) : ""}</small></span>${c.phone ? `<a class="btn wa" style="padding:7px 12px" href="${waUrl(c)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}</div>`).join("") : `<div class="empty-state"><b>Aucune cliente</b>Elles s’ajoutent toutes seules à chaque commande.</div>`;
-  $("#livreurs").innerHTML = (DATA.livreurs||[]).length ? DATA.livreurs.map(l=>`<div class="cl"><span class="av">🛵</span><span><b>${esc(l.name)}</b><small>${esc(l.phone)}</small></span><a class="btn wa" style="padding:7px 12px" href="${waUrl(l)}" target="_blank" rel="noopener">WhatsApp</a></div>`).join("") : `<div class="empty-chart">Ajoutez vos livreurs.</div>`;
+  $("#clients").innerHTML = L.length ? L.map((c,i)=>`<div class="cl" style="--i:${i}"><span class="av">${esc((c.name||"?")[0].toUpperCase())}</span><span><b>${esc(c.name)}</b>${i<3 && c.total ? " 👑" : ""}<small>${esc(c.place||"")}${c.place?" · ":""}${esc(c.phone||"")}</small><small>${c.n} commande(s) · ${fmt(c.total)}${c.last ? " · dernière le " + frDate(c.last) : ""}</small><small>💕 ${(c.n % 5 === 4) ? "<b style='color:#1f8a4c'>Prochaine commande : −2 000 F 🎁</b>" : "Fidélité " + (c.n % 5) + "/5"}${String(c.phone).replace(/\D/g,"").length >= 6 ? " · code parrain R" + String(c.phone).replace(/\D/g,"").slice(-6) : ""}</small></span>${c.phone ? `<a class="btn wa" style="padding:7px 12px" href="${waUrl(c)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}</div>`).join("") : `<div class="empty-state"><b>Aucune cliente</b>Elles s’ajoutent toutes seules à chaque commande.</div>`;
+  $("#livreurs").innerHTML = (DATA.livreurs||[]).length ? DATA.livreurs.map(l=>{ const n = DATA.orders.filter(o=>o.livreur===l.name && !["Livrée","Annulée"].includes(o.status)).length; return `<div class="cl"><span class="av">🛵</span><span><b>${esc(l.name)}</b><small>${esc(l.phone)}${n ? " · " + n + " à livrer" : ""}</small><small><a href="${courierLink(l)}" target="_blank" rel="noopener">Sa page livraisons ↗</a></small></span><a class="btn wa" style="padding:7px 12px" href="${waUrl(l, "Bonjour " + l.name + " 👋 Voici votre page Timfa : vous y voyez vos livraisons et vous appuyez sur « Livré » à chaque colis remis.\n" + courierLink(l))}" target="_blank" rel="noopener">Envoyer son lien</a></div>`; }).join("") : `<div class="empty-chart">Ajoutez vos livreurs.</div>`;
 }
 $("#qc").addEventListener("input", renderClients);
 $("#newLivreur").onclick = () => { openModal(`<h2>Ajouter un livreur</h2><form id="lvForm" class="f-grid"><label>Nom<input id="lvName" required></label><label>Téléphone<input id="lvPhone" type="tel" required></label><div class="f-actions full"><button class="btn dark" type="submit">Ajouter</button></div></form>`);
   $("#lvForm").addEventListener("submit", e => { e.preventDefault(); post({action:"addLivreur", name:$("#lvName").value.trim(), phone:$("#lvPhone").value.trim()}).then(d=>{ toast(d.ok?"Livreur ajouté ✓":"Erreur"); closeModal(); load(); }); }); };
 
+/* ——— Avis et alertes ——— */
+function stockQty(code){ const s = mergedStock().find(x=>x.code===code); return s ? s.qty : null; }
+function backAlerts(){ return (DATA.alerts||[]).filter(a => { const q = stockQty(a.code); return q === null || q > 0; }); }
+function renderAvis(){
+  const R = DATA.reviews || [];
+  $("#reviews").innerHTML = R.length ? R.map((x,i)=>`<article class="rv" style="--i:${i}">${/^data:image\//.test(x.photo||"") ? `<img src="${x.photo}" alt="Photo de ${esc(x.name)}" loading="lazy">` : ""}<div class="rb"><span class="st ${x.status==="En attente"?"attente":esc(x.status)}">${esc(x.status)}</span><span class="stars">${"★".repeat(x.stars)}${"☆".repeat(5-x.stars)}</span><p>« ${esc(x.text)} »</p><small>${esc(x.name)}${x.product?" · "+esc(x.product):""}${x.order?" · "+esc(x.order):""} · ${frDate(x.date)}</small></div>
+    <div class="ra">${x.status!=="Publié" ? `<button class="btn ok" type="button" data-rv="${x.row}" data-show="1">Publier sur le site</button>` : `<button class="btn soft" type="button" data-rv="${x.row}" data-show="0">Retirer du site</button>`}<button class="btn soft" type="button" data-rv="${x.row}" data-del="1" aria-label="Supprimer">🗑</button></div></article>`).join("")
+    : `<div class="empty-state"><b>Pas encore d’avis</b>Après chaque livraison, envoyez « Merci + demander un avis ⭐ » depuis la commande.</div>`;
+  const A = DATA.alerts || [];
+  $("#alertList").innerHTML = A.length ? A.map(a => { const q = stockQty(a.code), ok = q === null || q > 0;
+    return `<div class="cl"><span class="av">${ok ? "✅" : "⏳"}</span><span><b>${esc(a.name || "Cliente")}</b> · ${esc(a.phone)}<small>${esc(a.product)}</small><small>${ok ? "<b style='color:#1f8a4c'>De retour en stock : prévenez-la !</b>" : "Toujours en rupture"} · demandé le ${esc(a.date)}</small></span>
+      <span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">${ok ? `<a class="btn wa" style="padding:7px 12px" target="_blank" rel="noopener" data-alert="${a.row}" href="${waUrl(a, `Bonjour ${a.name||""} 😊 Bonne nouvelle : le ${a.product} est de retour chez Timfa online shop ✨ Vous m’aviez demandé de vous prévenir. Il part vite, voulez-vous que je vous le réserve ?\n${SITE}`)}">Prévenir</a>` : ""}<button class="btn soft" type="button" style="padding:7px 12px" data-alertdone="${a.row}">Fait ✓</button></span></div>`; }).join("")
+    : `<div class="empty-state"><b>Aucune demande</b>Sur le site, un bouton « Me prévenir » apparaît sur les bijoux en rupture.</div>`;
+}
+$("#view-avis").addEventListener("click", e => {
+  const b = e.target.closest("[data-rv]");
+  if (b) { const row = +b.dataset.rv, del = !!b.dataset.del, show = b.dataset.show === "1";
+    if (del && !confirm("Supprimer cet avis ?")) return;
+    post({action:"setReview", row, del, show}).then(d => { toast(d.ok ? (del ? "Avis supprimé" : show ? "Avis publié sur le site ⭐" : "Avis retiré du site") : "Erreur"); load(); }); }
+  const w = e.target.closest("[data-alert]"), dn = e.target.closest("[data-alertdone]");
+  const row = w ? +w.dataset.alert : dn ? +dn.dataset.alertdone : 0;
+  if (row) { DATA.alerts = DATA.alerts.filter(a => a.row !== row); setTimeout(() => { renderAvis(); renderKpis(); }, w ? 400 : 0); post({action:"alertDone", row}).then(d => { if (!d.ok) toast("Erreur"); else load(); }); }
+});
+$("#copyAvis").onclick = () => navigator.clipboard.writeText(SITE + "/avis/").then(()=>toast("Lien copié ✓"), ()=>toast(SITE + "/avis/"));
+
 /* ——— Onglets et filtres ——— */
 function placePill(){ const b = $("#tab-"+tab), p = $("#pill"); p.style.left = b.offsetLeft+"px"; p.style.width = b.offsetWidth+"px"; }
-const TABS = ["orders","stock","lots","clients","stats"];
+const TABS = ["orders","stock","lots","clients","avis","stats"];
 TABS.forEach(t => $("#tab-"+t).onclick = () => { tab=t; if (innerWidth < 760) $(".tabs").scrollIntoView({behavior:"smooth", block:"start"}); $("#tab-"+t).scrollIntoView({inline:"center", block:"nearest"}); TABS.forEach(x => { $("#tab-"+x).setAttribute("aria-selected", x===t); $("#view-"+x).hidden = x!==t; }); placePill(); renderTab(); });
 document.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { oFilter=b.dataset.f; document.querySelectorAll("[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderOrders(); });
 document.querySelectorAll("[data-s]").forEach(b => b.onclick = () => { sFilter=b.dataset.s; document.querySelectorAll("[data-s]").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderStock(); });
 $("#q").addEventListener("input", renderOrders); $("#qs").addEventListener("input", renderStock);
 addEventListener("resize", placePill);
-function renderTab(){ const f = ({stock:renderStock, stats:renderStats, lots:renderLots, clients:renderClients})[tab]; f ? f() : renderOrders(); }
+function renderTab(){ const f = ({stock:renderStock, stats:renderStats, lots:renderLots, clients:renderClients, avis:renderAvis})[tab]; f ? f() : renderOrders(); }
 function render(){ renderKpis(); renderSales(); renderTab(); }
 
 /* ——— Démarrage ——— */

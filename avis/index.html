@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fcecee">
+<title>Laisser un avis · Timfa online shop</title>
+<meta name="description" content="Donnez votre avis sur votre bijou Timfa online shop, avec une photo si vous le souhaitez.">
+<link rel="icon" type="image/png" href="../images/logo-carre.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;1,500&display=swap">
+<style>
+/* Layout: carte centrée, formulaire puis frise de suivi en 4 étapes. Couleurs du site. */
+:root{--bg:#fffafa;--blush:#fcecee;--blush-2:#f7d9dd;--rose:#c4526e;--ink:#2a1c1e;--muted:#7e6a6e;--line:#f1dfe2;--ok:#1f8a4c;--display:"Playfair Display",Georgia,serif;--body:"Jost","Helvetica Neue",Arial,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{min-height:100vh;background:linear-gradient(150deg,var(--blush) 0%,var(--bg) 50%,var(--blush-2) 100%);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:560px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 50px max(16px,env(safe-area-inset-left,0px))}
+.top{display:flex;justify-content:space-between;align-items:center}
+.top img{height:58px}
+.top a{color:var(--ink);font-size:14px;font-weight:500}
+.card{background:#fff;border-radius:28px;padding:26px 22px;margin-top:18px;box-shadow:0 40px 70px -46px rgba(120,30,60,.45);animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+h1{font-family:var(--display);font-weight:500;font-size:32px;margin:0 0 6px}
+h1 span{color:var(--rose)}
+p.lead{color:var(--muted);margin:0 0 18px}
+label{display:block;font-size:13px;font-weight:500;margin:12px 0 5px}
+input{font:inherit;width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--bg);color:var(--ink)}
+input:focus{outline:none;border-color:var(--rose);box-shadow:0 0 0 3px rgba(196,82,110,.15)}
+button{font:inherit;width:100%;margin-top:16px;border:0;border-radius:999px;background:var(--ink);color:#fff;padding:14px;font-weight:500;cursor:pointer}
+.err{color:#d6334a;font-size:14px;margin-top:10px;min-height:20px}
+.res{margin-top:22px;border-top:1px solid var(--line);padding-top:20px;animation:rise .5s both}
+.res h2{font-family:var(--display);font-weight:500;font-size:24px;margin:0}
+.meta{color:var(--muted);font-size:13.5px}
+.steps{list-style:none;margin:20px 0;padding:0;display:grid;gap:0}
+.steps li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;position:relative;padding-bottom:18px}
+.steps li::before{content:"";position:absolute;left:16px;top:30px;bottom:0;width:2px;background:var(--line)}
+.steps li:last-child::before{display:none}
+.dot{width:34px;height:34px;border-radius:50%;background:var(--blush);display:grid;place-items:center;font-size:16px;position:relative;z-index:1}
+.steps li.done .dot{background:var(--rose);color:#fff}
+.steps li.done::before{background:var(--rose)}
+.steps li.now .dot{box-shadow:0 0 0 6px rgba(196,82,110,.18);animation:pulse 1.8s infinite}
+.steps b{display:block;font-weight:600}
+.steps small{color:var(--muted)}
+.items{background:var(--bg);border-radius:16px;padding:12px 14px;white-space:pre-line;font-size:14px}
+.total{display:flex;justify-content:space-between;margin-top:10px;font-weight:600}
+.total b{font-family:var(--display);font-size:22px;color:var(--rose);font-weight:500}
+.cancel{background:#f3eeee;color:var(--muted);border-radius:14px;padding:12px;text-align:center}
+.wa{display:block;text-align:center;margin-top:16px;color:var(--rose);font-weight:500}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(196,82,110,.05)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+textarea{font:inherit;width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--bg);color:var(--ink);min-height:110px;resize:vertical}
+textarea:focus{outline:none;border-color:var(--rose);box-shadow:0 0 0 3px rgba(196,82,110,.15)}
+.stars{display:flex;gap:6px;flex-direction:row-reverse;justify-content:flex-end}
+.stars input{position:absolute;opacity:0;width:1px;height:1px}
+.stars label{font-size:34px;margin:0;color:#e8d6d9;cursor:pointer;transition:transform .15s,color .15s}
+.stars label:hover,.stars label:hover~label,.stars input:checked~label{color:#d9a441}
+.stars input:focus-visible+label{outline:2px solid var(--rose);border-radius:6px}
+.photo{display:grid;place-items:center;border:2px dashed var(--blush-2);border-radius:18px;padding:18px;color:var(--muted);cursor:pointer;text-align:center;font-size:14px}
+.photo img{max-width:100%;max-height:240px;border-radius:12px}
+.hp{position:absolute;left:-9999px}
+.done{text-align:center;padding:10px 0}
+.done .big{font-size:52px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a href="../"><img src="../images/logo-sombre.png" alt="Timfa online shop"></a><a href="../#boutique">← Boutique</a></div>
+  <div class="card" id="card">
+    <h1>Votre <span>avis</span> compte</h1>
+    <p class="lead">Votre bijou vous plaît ? Dites-le en quelques mots, avec une photo si vous voulez. Votre avis sera publié sur le site après relecture 💕</p>
+    <form id="f">
+      <label>Votre note</label>
+      <div class="stars" role="radiogroup" aria-label="Note sur 5">
+        <input type="radio" name="s" id="s5" value="5" checked><label for="s5" title="5 étoiles">★</label>
+        <input type="radio" name="s" id="s4" value="4"><label for="s4" title="4 étoiles">★</label>
+        <input type="radio" name="s" id="s3" value="3"><label for="s3" title="3 étoiles">★</label>
+        <input type="radio" name="s" id="s2" value="2"><label for="s2" title="2 étoiles">★</label>
+        <input type="radio" name="s" id="s1" value="1"><label for="s1" title="1 étoile">★</label>
+      </div>
+      <label for="name">Votre prénom</label><input id="name" maxlength="40" required autocomplete="given-name">
+      <label for="product">Votre bijou (facultatif)</label><input id="product" maxlength="80" placeholder="ex. Collier Nœud rose">
+      <label for="text">Votre message</label><textarea id="text" maxlength="600" required placeholder="Ce que vous aimez, la qualité, la livraison…"></textarea>
+      <label>Une photo de vous avec votre bijou (facultatif)</label>
+      <label class="photo" id="ph" for="file"><span>📸 Appuyez pour ajouter une photo</span></label>
+      <input type="file" id="file" accept="image/*" hidden>
+      <input class="hp" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button type="submit" id="go">Envoyer mon avis</button>
+      <div class="err" id="err" role="alert"></div>
+    </form>
+  </div>
+</div>
+<script>
+const API = "https://script.google.com/macros/s/AKfycbyZiPC2weLVrD2r8GExmtv_6MxTw0TNZxvXRm4wRLXdy5qTdi2SPsDUQJVgV_s45h7N/exec";
+const $ = s => document.querySelector(s);
+const q = new URLSearchParams(location.search);
+const ORDER = (q.get("id") || "").slice(0, 20); if (q.get("n")) $("#name").value = q.get("n").slice(0, 40); if (q.get("b")) $("#product").value = q.get("b").slice(0, 80);
+let photo = "";
+function resize(file){ return new Promise((ok, ko) => { const fr = new FileReader(); fr.onload = () => { const im = new Image(); im.onload = () => {
+  let w = im.width, h = im.height, max = 900; if (w > h && w > max) { h = h*max/w; w = max; } else if (h > max) { w = w*max/h; h = max; }
+  const c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").drawImage(im, 0, 0, w, h);
+  let qq = .8, out = c.toDataURL("image/jpeg", qq); while (out.length > 150000 && qq > .3) { qq -= .1; out = c.toDataURL("image/jpeg", qq); }
+  if (out.length > 180000) { c.width = w*.6; c.height = h*.6; c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); out = c.toDataURL("image/jpeg", .7); }
+  ok(out); }; im.onerror = ko; im.src = fr.result; }; fr.onerror = ko; fr.readAsDataURL(file); }); }
+$("#file").addEventListener("change", e => { const f = e.target.files[0]; if (!f) return;
+  resize(f).then(d => { photo = d; $("#ph").innerHTML = ""; const im = new Image(); im.src = d; im.alt = "Votre photo"; $("#ph").appendChild(im); })
+    .catch(() => { $("#err").textContent = "Cette photo n’a pas pu être lue, essayez-en une autre."; }); });
+$("#f").addEventListener("submit", e => {
+  e.preventDefault(); $("#err").textContent = "";
+  const text = $("#text").value.trim(); if (text.length < 3) { $("#err").textContent = "Écrivez quelques mots 😊"; return; }
+  $("#go").disabled = true; $("#go").textContent = "Envoi…";
+  fetch(API, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({action:"review", name:$("#name").value.trim(), stars:+document.querySelector("[name=s]:checked").value, text, product:$("#product").value.trim(), order:ORDER, photo, website:$("#website").value})})
+    .then(r => r.json()).then(d => { if (!d.ok) throw 0;
+      $("#card").innerHTML = '<div class="done"><div class="big">💝</div><h1>Merci <span>infiniment</span></h1><p class="lead">Votre avis a bien été envoyé. Il apparaîtra sur le site après relecture. Vous êtes une reine 👑</p><a class="wa" href="../">Retour à la boutique</a></div>'; })
+    .catch(() => { $("#err").textContent = "L’envoi n’a pas marché. Vérifiez votre connexion et réessayez."; $("#go").disabled = false; $("#go").textContent = "Envoyer mon avis"; });
+});
+</script>
+</body>
+</html>
