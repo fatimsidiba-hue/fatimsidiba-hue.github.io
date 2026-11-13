@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-S+73YiR73UjBS3z0/EaGr4PrtbgCc37PJpkcfg9DyuM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-dR10icJDsacFLOh8HOC5zYre62I6Vh5TBPgSe0PKP5Q='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -227,6 +227,8 @@ details.acc p{margin:8px 0 0;color:var(--muted);font-size:14px}
 .notify{border:1px dashed var(--rose);background:#fff5f7;color:var(--rose);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:600}
 .np{display:grid;gap:8px}
 .np input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+.pre-tag{display:inline-block;margin-top:4px;font-size:11.5px;font-weight:600;color:#8a5a00;background:#fff3d6;border-radius:999px;padding:2px 9px}
+.pre-note{font-size:12.5px;line-height:1.45;border-radius:10px;padding:9px 11px;background:#fff3d6;color:#8a5a00;margin:6px 0}
 .loy-line{font-size:12.5px;border-radius:10px;padding:8px 10px;background:#fff8e6;color:#8a5a00}
 .loy-line.on{background:#e8f6ee;color:#1f8a4c;font-weight:600}
 /* Galerie */
@@ -777,6 +779,7 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
     <p class="pay-note" id="payNote"></p>
     <div class="promo-row"><input id="pCode" type="text" placeholder="Code promo ou parrain (R…)" maxlength="20" autocomplete="off" autocapitalize="characters"><button type="button" class="btn btn-light" id="pApply">Appliquer</button></div>
     <p class="promo-msg" id="pMsg" hidden></p>
+    <p class="pre-note" id="preNote" hidden></p>
     <div class="sub"><span>Bijoux</span><span id="subtotal">0 F</span></div>
     <div class="sub"><span>Livraison</span><span id="shipFee">1 500 F</span></div>
     <div class="sub promo-line" id="promoLine" hidden><span>Réduction commande sur le site</span><span>−1 000 F</span></div>
@@ -1115,7 +1118,7 @@ const payMode = () => (document.querySelector('input[name="pay"]:checked')||{val
 const waLink = t => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(t)}`;
 function renderCart(){
   $("#cartCount").textContent = cart.reduce((s,l)=>s+l.qty,0);
-  $("#lines").innerHTML = cart.length ? cart.map((l,i)=>`<div class="line"><img src="${esc(l.img)}" alt=""><div><h4>${esc(l.name)}</h4><small>${l.price ? fmt(l.price) : "Prix sur demande"}</small></div><div class="qty"><button type="button" data-q="${i}" data-d="-1" aria-label="Retirer un">−</button><span>${l.qty}</span><button type="button" data-q="${i}" data-d="1" aria-label="Ajouter un">+</button></div></div>`).join("")
+  $("#lines").innerHTML = cart.length ? cart.map((l,i)=>`<div class="line"><img src="${esc(l.img)}" alt=""><div><h4>${esc(l.name)}</h4><small>${l.price ? fmt(l.price) : "Prix sur demande"}</small>${isPre(l.key) ? `<span class="pre-tag">⏳ Précommande · dispo jeudi 19/11</span>` : ""}</div><div class="qty"><button type="button" data-q="${i}" data-d="-1" aria-label="Retirer un">−</button><span>${l.qty}</span><button type="button" data-q="${i}" data-d="1" aria-label="Ajouter un">+</button></div></div>`).join("")
     : `<p class="empty">Votre panier est vide.<br>Ajoutez un bijou pour commencer.</p>`;
   const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), fee = feeFor(zone()), disc = discountFor(sub);
   $("#promoLine").hidden = !disc;
@@ -1126,6 +1129,9 @@ function renderCart(){
     $("#loyLine").textContent = LOY.rewardNow ? `🎁 Bravo ! C’est votre ${LOY.count+1}e commande : −${fmt(LOY.off)} offerts` : `💕 Carte fidélité : ${LOY.count} commande(s). Encore ${left-1} avant −${fmt(LOY.off)} !`; } else $("#loyLine").hidden = true;
   const po = promoOff(sub); $("#codeLine").hidden = !po || !cart.length; $("#codeLabel").textContent = "Code promo " + PROMO; $("#codeVal").textContent = "−" + fmt(po);
   $("#total").textContent = fmt(cart.length ? sub+fee-disc-po-lo : 0);
+  const nPre = cart.filter(l => isPre(l.key)).length, mixed = nPre && nPre < cart.length;
+  $("#preNote").hidden = !nPre;
+  $("#preNote").textContent = !nPre ? "" : mixed ? "⏳ Votre panier contient des bijoux en précommande, disponibles à partir du jeudi 19 novembre. Nous vous confirmons sur WhatsApp la date de livraison de toute votre commande." : "⏳ Précommande : vos bijoux seront disponibles à partir du jeudi 19 novembre. Nous vous confirmons la date de livraison sur WhatsApp.";
   $("#payNote").textContent = payText(zone());
   $("#checkout").href = waLink(orderText());
 }
