@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-xCY/4v4JCumfcu1OK/c8BuVdSR6Zrw8I+th7EfToaYg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-S+73YiR73UjBS3z0/EaGr4PrtbgCc37PJpkcfg9DyuM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -818,6 +818,12 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
 {"@context":"https://schema.org","@type":"JewelryStore","name":"Timfa online shop","alternateName":"Timfa Jewelry","description":"Bijouterie en ligne : colliers, bagues Toi & Moi, bracelets. Commande sur WhatsApp.","url":"https://fatimsidiba-hue.github.io/","logo":"https://fatimsidiba-hue.github.io/images/logo-carre.png","image":"https://fatimsidiba-hue.github.io/images/couverture.jpg","telephone":"+225 07 04 16 09 52","address":{"@type":"PostalAddress","addressLocality":"Bingerville","addressCountry":"CI"},"areaServed":"Côte d'Ivoire","paymentAccepted":"Paiement à la livraison (Abidjan, Port-Bouët, Grand-Bassam), paiement avant envoi pour les expéditions","priceRange":"3000-7000 XOF","currenciesAccepted":"XOF"}
 </script>
 <script>
+/* Meta Pixel (Facebook / Instagram) */
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1136822595737706'); fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1136822595737706&ev=PageView&noscript=1"></noscript>
+<script>
 // Numéro WhatsApp de la boutique, format international sans + ni espaces (ex. 2250700000000).
 const WHATSAPP = "2250704160952";
 // Lien WhatsApp de la boutique, pour le contact simple (sans message pré-rempli).
@@ -884,7 +890,7 @@ $("#lb").addEventListener("touchend", e => { if (lbX0 === null) return; const dx
 // ——— Fiche détaillée d'un bijou ———
 const INFO = window.TIMFA_INFO || {};
 let PD = null;
-function openPd(id){ PD = PRODUCTS.find(x => x.id === id); if (!PD) return; renderPd(); $("#pd").hidden = $("#pdScrim").hidden = false; document.body.style.overflow = "hidden"; }
+function openPd(id){ PD = PRODUCTS.find(x => x.id === id); if (!PD) return; track("ViewContent", {content_ids:[PD.id], content_name:PD.name, content_type:"product", value:PD.price||0, currency:"XOF"}); renderPd(); $("#pd").hidden = $("#pdScrim").hidden = false; document.body.style.overflow = "hidden"; }
 function closePd(){ $("#pd").hidden = $("#pdScrim").hidden = true; document.body.style.overflow = ""; PD = null; }
 function renderPd(k){
   const p = PD, gal = galleryOf(p), v = p.variants ? p.variants[chosen[p.id]||0] : null, idx = k || 0;
@@ -943,6 +949,7 @@ function addSet(){
   const used = code => cart.reduce((s,l) => s + (l.key===code || (isSetKey(l.key) && setParts(l.key).includes(code)) ? l.qty : 0), 0);
   if ((qc !== null && used(pick.c) >= qc) || (qb !== null && used(pick.b) >= qb)) { toast("Désolée, plus assez de pièces pour cet ensemble"); return; }
   if (ex) ex.qty++; else cart.push({key, name: setName(key), price: SET.price, img: byCode(pick.c).img, qty: 1});
+  track("AddToCart", {content_ids:[key], content_name:setName(key), content_type:"product", value:SET.price, currency:"XOF"});
   write("timfa-cart", cart); renderCart(); bump(); toast(PREORDER ? "Ensemble ajouté · dispo jeudi 19/11" : "Ensemble ajouté au panier ✨");
 }
 document.addEventListener("click", e => {
@@ -988,6 +995,7 @@ function addToCart(id){
   const ex = cart.find(l=>l.key===key), q = qtyOf(key);
   if (q !== null && (q <= 0 || (ex && ex.qty >= q))) { toast(q <= 0 ? "Désolée, ce bijou est en rupture de stock" : `Il ne reste que ${q} pièce${q>1?"s":""}`); return; }
   if (ex) ex.qty++; else { const v = p.variants ? p.variants[i] : null; cart.push({key, name:p.name+(v?" · "+v.name:"")+(z?" · taille "+z:"")+(p.adjustable?" · réglable":""), price:p.price, img:v?v.img:p.img, qty:1}); }
+  track("AddToCart", {content_ids:[key], content_name:p.name, content_type:"product", value:p.price||0, currency:"XOF"});
   write("timfa-cart", cart); renderCart(); bump(); toast(PREORDER && p.isNew ? "Précommande ajoutée · dispo jeudi 19/11" : p.price ? "Ajouté au panier" : "Ajouté, prix à confirmer");
 }
 function orderText(orderId){
@@ -1070,6 +1078,8 @@ const remember = () => { if (!$("#giftOn") || !$("#giftOn").checked) return null
 (function initDates(){ const d = $("#gDay"), m = $("#gMonth"); if (!d) return;
   for (let i=1;i<=31;i++) d.insertAdjacentHTML("beforeend", `<option value="${String(i).padStart(2,"0")}">${i}</option>`);
   ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"].forEach((n,i)=>m.insertAdjacentHTML("beforeend", `<option value="${String(i+1).padStart(2,"0")}">${n}</option>`)); })();
+// ——— Meta Pixel : événements ———
+function track(ev, data, id){ try { if (window.fbq) fbq("track", ev, data, id ? {eventID: id} : undefined); } catch (e) {} }
 // ——— Avis publiés ———
 function loadReviews(){
   if (!API) return;
@@ -1201,6 +1211,8 @@ $("#checkout").addEventListener("click", e => {
   const name = $("#cName").value.trim(), phone = $("#cPhone").value.trim(), place = $("#cPlace").value.trim();
   $("#cName").classList.toggle("err", !name); $("#cPhone").classList.toggle("err", phone.replace(/\D/g,"").length < 8);
   if (!name || phone.replace(/\D/g,"").length < 8) { toast("Indiquez votre nom et votre téléphone"); return; }
+  const value = Number(($("#total").textContent||"").replace(/\D/g,"")) || 0, ids = cart.map(l=>l.key), nItems = cart.reduce((a,l)=>a+l.qty,0);
+  track("InitiateCheckout", {content_ids:ids, num_items:nItems, value, currency:"XOF"});
   const w = window.open("", "_blank");
   const btn = $("#checkout"); btn.textContent = "Envoi de la commande…";
   const payload = {name, phone, place, zone: zone(), pay: (payMode()==="wave" || zone()==="exp") ? "wave" : "cod", card: giftText().replace(/^🎁 /,""), surprise: surprise(), recipient: recipient(), remember: remember(), promo: PROMOS[PROMO] ? PROMO : ($("#pCode").value.trim().toUpperCase().match(/^R\d{6}$/) ? $("#pCode").value.trim().toUpperCase() : ""), items: cart.map(l => ({code: l.key, qty: l.qty}))};
@@ -1209,6 +1221,7 @@ $("#checkout").addEventListener("click", e => {
     .then(d => {
       if (d && d.ok) {
         const link = waLink(orderText(d.id) + (d.myCode ? "\n\n💝 Mon code parrainage : " + d.myCode : ""));
+        track("Purchase", {content_ids:ids, content_type:"product", num_items:nItems, value, currency:"XOF"}, d.id);
         cart = []; write("timfa-cart", cart); renderCart(); loadStock();
         toast("Commande " + d.id + " enregistrée ✓");
         if (w) w.location.href = link; else location.href = link;
