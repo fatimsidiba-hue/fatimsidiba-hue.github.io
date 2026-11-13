@@ -89,3 +89,6 @@ window.TIMFA_INFO = {
   emballage: "Chaque bijou est livré dans son coffret et son sac Timfa, prêt à offrir 🎁",
   carte: "Carte message offerte : écrivez votre mot, ou laissez-nous l’écrire pour vous."
 };
+
+/* Codes promo : code → réduction en F (doit être identique dans le code Apps Script, variable PROMOS) */
+window.TIMFA_PROMOS = { "REINE": 500 };

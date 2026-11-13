@@ -157,6 +157,22 @@ header img{height:46px}
 @keyframes growX{from{transform:scaleX(0)}}
 @keyframes dash{from{stroke-dasharray:0 999}}
 
+.profit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.profit-grid div{background:var(--bg);border-radius:16px;padding:12px 14px}
+.profit-grid small{display:block;color:var(--muted);font-size:12.5px}
+.profit-grid b{font-family:var(--display);font-size:24px;font-weight:500}
+.profit-grid .win{background:linear-gradient(140deg,var(--ink),#4a3034);color:#fff}.profit-grid .win small{color:#e8cfd5}.profit-grid .win b{color:#fff}
+@media (max-width:760px){.profit-grid{grid-template-columns:1fr 1fr}}
+.exp-form{display:grid;grid-template-columns:1.4fr 1fr .8fr 1fr auto;gap:6px;margin-bottom:10px}
+.exp-form input,.exp-form select{font-size:14px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0;background:#fff}
+@media (max-width:760px){.exp-form{grid-template-columns:1fr 1fr}.exp-form input:first-child{grid-column:1/-1}}
+.exp-list{display:grid;gap:6px;max-height:300px;overflow:auto}
+.exp-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;background:var(--bg);border-radius:12px;padding:8px 12px;font-size:13.5px}
+.exp-row small{display:block;color:var(--muted);font-size:12px}
+.exp-row b{color:var(--rose);font-variant-numeric:tabular-nums}
+.exp-row button{border:0;background:none;color:var(--muted);font-size:18px}
+.cost{display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--muted)}
+.cost input{width:70px;border:1px solid var(--line);border-radius:8px;padding:4px 6px;font-size:12.5px}
 /* Toast + chargement */
 .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;z-index:90;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -223,6 +239,11 @@ header img{height:46px}
 
     <section id="view-stats" hidden>
       <div class="stats-grid">
+        <section class="panel profit" style="grid-column:1/-1"><div class="p-head"><h2>Bénéfice du mois</h2><span class="p-sub" id="profitSub"></span></div><div id="profit" class="profit-grid"></div></section>
+        <section class="panel"><div class="p-head"><h2>Dépenses</h2><span class="p-sub" id="expSum"></span></div>
+          <form id="expForm" class="exp-form"><input id="eLabel" placeholder="Libellé (ex. Pub Facebook)" required maxlength="80"><select id="eCat"><option>Publicité</option><option>Achat bijoux</option><option>Emballage</option><option>Livraison</option><option>Site / internet</option><option>Autre</option></select><input id="eAmount" type="number" inputmode="numeric" min="1" placeholder="Montant F" required><input id="eDate" type="date"><button class="btn dark" type="submit">Ajouter</button></form>
+          <div id="expList" class="exp-list"></div></section>
+        <section class="panel"><div class="p-head"><h2>Dates importantes à venir</h2></div><div id="datesList" class="exp-list"></div></section>
         <section class="panel"><div class="p-head"><h2>Bijoux les plus vendus</h2></div><div id="topChart"></div></section>
         <section class="panel"><div class="p-head"><h2>Commandes par statut</h2></div><div id="donut" class="donut-wrap"></div></section>
         <section class="panel"><div class="p-head"><h2>Votre stock</h2><span class="p-sub" id="stockVal"></span></div><div id="catChart"></div></section>
@@ -409,7 +430,7 @@ function renderStock(){
   let html = "", lastNew = null, i = 0;
   list.forEach(s => {
     if (lastNew !== s.isNew) { html += `<div class="group-title">${s.isNew ? "Nouvelle collection" : "Collection"}</div>`; lastNew = s.isNew; }
-    html += `<div class="s-row${s.missing?" missing":""}" style="--i:${i++}" data-code="${esc(s.code)}"><div class="s-name">${esc(s.name)}<small>${[esc(s.variant||""), s.price?fmt(s.price):""].filter(Boolean).join(" · ")}</small></div>${sBadge(s.qty)}
+    html += `<div class="s-row${s.missing?" missing":""}" style="--i:${i++}" data-code="${esc(s.code)}"><div class="s-name">${esc(s.name)}<small>${[esc(s.variant||""), s.price?fmt(s.price):""].filter(Boolean).join(" · ")}</small>${s.missing ? "" : `<label class="cost">Prix d’achat <input type="number" inputmode="numeric" min="0" data-cost="${esc(s.code)}" value="${s.cost||""}" placeholder="–"> F</label>`}</div>${sBadge(s.qty)}
       <div class="stepper"><button type="button" data-d="-1" aria-label="Retirer une pièce">−</button><input type="number" inputmode="numeric" min="0" value="${s.qty===null?"":s.qty}" placeholder="–" aria-label="Pièces en stock"><button type="button" data-d="1" aria-label="Ajouter une pièce">+</button></div></div>`;
   });
   $("#stock").innerHTML = html || `<div class="empty-state"><b>Aucun bijou</b>Changez de filtre.</div>`;
@@ -430,6 +451,7 @@ $("#stock").addEventListener("click", e => {
   setStock(code, Math.max(0, (s.qty||0) + Number(b.dataset.d)));
 });
 $("#stock").addEventListener("change", e => {
+  if (e.target.dataset.cost !== undefined) { const code = e.target.dataset.cost, v = parseInt(e.target.value,10)||0, s = DATA.stock.find(x=>x.code===code); if (s) s.cost = v; post({action:"setCost", code, cost:v}).then(d=>toast(d.ok?"Prix d’achat enregistré ✓":"Erreur")); return; }
   if (e.target.tagName!=="INPUT") return; const code = e.target.closest(".s-row").dataset.code;
   setStock(code, e.target.value==="" ? null : Math.max(0, parseInt(e.target.value,10)||0));
 });
@@ -453,7 +475,29 @@ function renderSales(){
   });
   $("#salesChart").innerHTML = g + "</svg>";
 }
+function costOf(code){ const s = (DATA.stock||[]).find(x=>x.code===code); return s ? (s.cost||0) : 0; }
+function renderMoney(){
+  const T = today(), M = T.slice(0,7), O = DATA.orders.filter(o=>o.status!=="Annulée" && o.date.slice(0,7)===M);
+  const ca = O.reduce((a,o)=>a+o.total-o.fee,0);
+  let cogs = 0, missing = 0; O.forEach(o => String(o.codes||"").split(",").forEach(c => { const m = c.trim().match(/^(.+) x(\d+)$/); if (!m) return; const k = costOf(m[1]); if (!k) missing++; cogs += k*(+m[2]); }));
+  const EX = (DATA.expenses||[]).filter(x=>x.date.slice(0,7)===M), dep = EX.reduce((a,x)=>a+x.amount,0), ben = ca - cogs - dep;
+  $("#profitSub").textContent = new Date().toLocaleDateString("fr-FR",{month:"long",year:"numeric"}) + (missing ? ` · ${missing} bijou(x) vendu(s) sans prix d’achat` : "");
+  $("#profit").innerHTML = `<div><small>Ventes (hors livraison)</small><b>${fmt(ca)}</b></div><div><small>Coût des bijoux vendus</small><b>${fmt(cogs)}</b></div><div><small>Dépenses</small><b>${fmt(dep)}</b></div><div class="win"><small>Bénéfice</small><b>${fmt(ben)}</b></div>`;
+  const all = (DATA.expenses||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+  $("#expSum").textContent = "Ce mois : " + fmt(dep);
+  $("#expList").innerHTML = all.length ? all.map(x=>`<div class="exp-row"><span>${esc(x.label||x.cat)}<small>${esc(x.cat)} · ${frDate(x.date)}</small></span><b>${fmt(x.amount)}</b><button type="button" data-delexp="${x.row}" aria-label="Supprimer">×</button></div>`).join("") : `<div class="empty-chart">Ajoutez vos dépenses (pub, achats, emballages…) pour voir votre vrai bénéfice.</div>`;
+  const now = new Date(), up = [];
+  for (let k=0;k<45;k++){ const d = new Date(now); d.setDate(d.getDate()+k); const key = String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0");
+    (DATA.dates||[]).forEach(x => { if (String(x.day).replace(/^'/,"")===key) up.push(Object.assign({k}, x)); }); }
+  $("#datesList").innerHTML = up.length ? up.map(x=>`<div class="exp-row"><span>${esc(x.occasion)} de ${esc(x.forWho||"?")}<small>${x.k ? "Dans "+x.k+" jour"+(x.k>1?"s":"") : "Aujourd’hui !"} · cliente ${esc(x.client)}</small></span><b>${esc(String(x.day).replace(/^'/,""))}</b><a class="btn wa" style="padding:6px 10px" target="_blank" rel="noopener" href="${waUrl({phone:x.phone}, `Bonjour ${x.client} 😊 Le ${String(x.day).replace(/^'/,"")} approche : ${x.occasion.toLowerCase()} de ${x.forWho} ✨ On vous prépare un joli bijou cette année aussi ? Voici nos nouveautés : https://fatimsidiba-hue.github.io`)}">Écrire</a></div>`).join("") : `<div class="empty-chart">Les anniversaires notés par vos clientes apparaîtront ici, avec un bouton pour leur écrire.</div>`;
+}
+$("#expForm") && $("#expForm").addEventListener("submit", e => { e.preventDefault();
+  const x = {label:$("#eLabel").value.trim(), cat:$("#eCat").value, amount:parseInt($("#eAmount").value,10)||0, date:$("#eDate").value || today()};
+  DATA.expenses = (DATA.expenses||[]).concat([Object.assign({row:0}, x)]); renderMoney();
+  post(Object.assign({action:"addExpense"}, x)).then(d => { toast(d.ok ? "Dépense ajoutée ✓" : "Erreur"); load(); }); e.target.reset(); });
+document.addEventListener("click", e => { const b = e.target.closest("[data-delexp]"); if (!b) return; post({action:"delExpense", row:+b.dataset.delexp}).then(()=>{ toast("Dépense supprimée"); load(); }); });
 function renderStats(){
+  renderMoney();
   const O = DATA.orders.filter(o=>o.status!=="Annulée"), count = {};
   O.forEach(o => String(o.items).split("\n").forEach(line => { const m = line.match(/^(\d+) × (.+) : [\d\s]+F$/); if (!m) return;
     m[2] = m[2].replace(/ \(précommande\)$/,"");
