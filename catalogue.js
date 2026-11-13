@@ -24,7 +24,7 @@ window.TIMFA_CATALOGUE = [
   {id:"bracelet-arc-en-ciel", cat:"Bracelets & parures", name:"Bracelet Arc-en-ciel", desc:"Baguettes multicolores et brillants, doré.", price:3500, img:"images/n-bracelet-arc-en-ciel.jpg"},
   {id:"bracelet-or", cat:"Bracelets & parures", name:"Bracelet Éclat Doré", desc:"Pierres claires serties en vagues, doré.", price:3500, img:"images/n-bracelet-or.jpg"},
   // ——— Collection ———
-  {id:"toi-moi", cat:"Bagues", sub:"toi-moi", name:"Bague Toi & Moi", desc:"Deux pierres qui se rencontrent. Choisissez votre duo.", price:5000, was:7000, sizes:["6","7"],
+  {id:"toi-moi", cat:"Bagues", sub:"toi-moi", name:"Bague Toi & Moi", desc:"Deux pierres qui se rencontrent. Choisissez votre duo.", matiere:"Acier plaqué or, pierres en zircon.", garantie:"Garantie 1 an et plus.", price:5000, was:7000, sizes:["6","7"],
    variants:[
      {name:"Rose & Bleu ciel · doré", color:"linear-gradient(135deg,#f06aa8 50%,#7cc8ef 50%)", img:"images/tm-rose-ciel.jpg"},
      {name:"Émeraude & Cristal · doré", color:"linear-gradient(135deg,#1f9a5a 50%,#e8ecef 50%)", img:"images/tm-emeraude.jpg"},
@@ -76,11 +76,16 @@ window.TIMFA_SET = {
    garantie : laissez vide pour ne pas afficher la rubrique. */
 window.TIMFA_INFO = {
   matiere: {
-    "Colliers": "Chaîne et pendentif en métal doré, pierres en zircon.",
-    "Bracelets & parures": "Métal doré ou argenté, pierres en zircon.",
-    "Bagues": "Métal doré ou argenté, pierres en zircon."
+    "Colliers": "Acier inoxydable, pierres en zircon.",
+    "Bracelets & parures": "Acier inoxydable, pierres en zircon.",
+    "Bagues": "Acier inoxydable, pierres en zircon."
   },
+  garantie: {
+    "Colliers": "Garantie 2 ans et plus.",
+    "Bracelets & parures": "Garantie 6 mois et plus, avec un bon entretien.",
+    "Bagues": "Garantie 5 mois et plus."
+  },
+  entretien: "Pour garder l’éclat : rangez le bijou dans son coffret, évitez le parfum et les produits ménagers, essuyez-le avec un chiffon doux.",
   emballage: "Chaque bijou est livré dans son coffret et son sac Timfa, prêt à offrir 🎁",
-  garantie: "",
   carte: "Carte message offerte : écrivez votre mot, ou laissez-nous l’écrire pour vous."
 };
