@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-oM5MMZHZtdlzRAFliJLrIUuynvHbPuIvZHeTSOFA2zs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-HtnjWw1NNXMyqc3UHaumff347YNoP0JMR9ZxhrGzWh4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -701,7 +701,7 @@ $("#catGrid").innerHTML = CATS.map(c => `<button class="cat" type="button" data-
 
 // ——— Stock et commandes (tableau Google « Timfa online shop · Gestion ») ———
 // Lien de l'application Web Apps Script (Déployer → Application Web). Vide = mode WhatsApp seul.
-const API = "";
+const API = "https://script.google.com/macros/s/AKfycbyZiPC2weLVrD2r8GExmtv_6MxTw0TNZxvXRm4wRLXdy5qTdi2SPsDUQJVgV_s45h7N/exec";
 let STOCK = {};
 const qtyOf = code => (code in STOCK && STOCK[code] !== null && STOCK[code] !== "") ? Number(STOCK[code]) : null;
 const codesOf = p => { const out = []; (p.variants ? p.variants.map((_,i)=>p.id+"#"+i) : [p.id]).forEach(c => (p.sizes ? p.sizes.map(z=>c+"@"+z) : [c]).forEach(x => out.push(x))); return out; };
