@@ -64,7 +64,7 @@ header img{height:46px}
 .alert.warn{background:var(--warn-bg);color:var(--warn)}.alert.bad{background:var(--bad-bg);color:var(--bad)}.alert.info{background:var(--info-bg);color:var(--info)}
 
 /* Onglets */
-.tabs{display:flex;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px;margin-block:14px 12px;width:fit-content;position:relative}
+.tabs{display:flex;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px;margin-block:14px 12px;width:fit-content;max-width:100%;overflow-x:auto;scrollbar-width:none;position:relative}
 .tabs button{border:0;background:none;border-radius:999px;padding:9px 18px;white-space:nowrap;font-weight:500;position:relative;z-index:1;transition:color .3s}
 .tabs button[aria-selected="true"]{color:#fff}
 @media (max-width:420px){.tabs button{padding:9px 12px;font-size:14px}.count{margin-left:4px}}
@@ -173,6 +173,58 @@ header img{height:46px}
 .exp-row button{border:0;background:none;color:var(--muted);font-size:18px}
 .cost{display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--muted)}
 .cost input{width:70px;border:1px solid var(--line);border-radius:8px;padding:4px 6px;font-size:12.5px}
+/* Photos, modales, lots, clientes */
+.s-row{grid-template-columns:56px 1fr auto auto}
+.s-img{width:56px;height:56px;border-radius:14px;object-fit:cover;background:var(--blush);cursor:pointer}
+.s-img.ph{display:grid;place-items:center;color:var(--muted);font-size:20px}
+@media (max-width:560px){.s-row{grid-template-columns:52px 1fr auto}.s-img{grid-row:1/span 2;width:52px;height:52px}.s-badge{grid-column:2}.stepper{grid-row:1/span 2;grid-column:3}}
+.s-tag{font-size:10.5px;font-weight:600;background:var(--info-bg);color:var(--info);border-radius:999px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+.modal-scrim{position:fixed;inset:0;background:rgba(42,28,30,.45);z-index:80;animation:rise .2s}
+.modal{position:fixed;z-index:85;left:50%;top:50%;transform:translate(-50%,-50%);width:min(640px,94vw);max-height:90vh;overflow:auto;background:#fff;border-radius:26px;padding:22px;box-shadow:0 40px 80px -30px rgba(42,28,30,.5);animation:pop .3s}
+.m-x{position:absolute;top:14px;right:14px;font-size:20px}
+.modal h2{font-family:var(--display);font-weight:500;font-size:24px;margin:0 0 14px}
+.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.f-grid .full{grid-column:1/-1}
+.f-grid label{display:grid;gap:4px;font-size:12.5px;color:var(--muted)}
+.f-grid input,.f-grid select,.f-grid textarea{font-size:14px;border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;color:var(--ink);min-width:0;width:100%}
+.f-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.photo-drop{border:2px dashed #e7c7cf;border-radius:18px;padding:14px;text-align:center;color:var(--muted);cursor:pointer;display:grid;place-items:center;gap:6px;min-height:140px;position:relative}
+.photo-drop img{max-height:180px;border-radius:12px}
+.photo-drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.pick-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;max-height:280px;overflow:auto;padding:2px}
+.pick{border:2px solid var(--line);border-radius:14px;background:#fff;padding:0;overflow:hidden;text-align:left;font-size:11.5px;line-height:1.25}
+.pick img,.pick .ph{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--blush)}
+.pick span{display:block;padding:5px 7px}
+.pick small{color:var(--muted)}
+.pick:disabled{opacity:.4}
+.o-lines{display:grid;gap:6px;margin:10px 0}
+.o-line{display:grid;grid-template-columns:44px 1fr 64px 84px 28px;gap:8px;align-items:center;background:var(--bg);border-radius:12px;padding:6px 8px;font-size:13px}
+.o-line img{width:44px;height:44px;border-radius:10px;object-fit:cover}
+.o-line input{border:1px solid var(--line);border-radius:8px;padding:5px 6px;width:100%;font-size:13px}
+.o-line button{border:0;background:none;font-size:18px;color:var(--muted)}
+.o-sum{display:flex;justify-content:space-between;align-items:baseline;font-weight:600}
+.o-sum b{font-family:var(--display);font-size:24px;color:var(--rose);font-weight:500}
+.lots{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding-bottom:60px}
+@media (max-width:820px){.lots{grid-template-columns:1fr}}
+.lot{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px 16px;display:grid;gap:8px;animation:rise .45s both}
+.lot-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.lot-head b{font-family:var(--display);font-size:19px;font-weight:500}
+.lot-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.lot-nums div{background:var(--bg);border-radius:12px;padding:7px 9px;font-size:12px;color:var(--muted)}
+.lot-nums b{display:block;color:var(--ink);font-size:15px;font-variant-numeric:tabular-nums}
+.lot select{border:1px solid var(--line);border-radius:10px;padding:6px 8px;font-size:13px}
+.st-pill{font-size:12px;font-weight:600;border-radius:999px;padding:3px 10px}
+.st-pill.cmd{background:var(--warn-bg);color:var(--warn)}.st-pill.route{background:var(--info-bg);color:var(--info)}.st-pill.ok{background:var(--ok-bg);color:var(--ok)}
+.cl-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;padding-bottom:60px}
+@media (max-width:820px){.cl-grid{grid-template-columns:1fr}}
+.clients{display:grid;gap:8px}
+.cl{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 12px;animation:rise .4s both}
+.cl .av{width:42px;height:42px;border-radius:50%;background:var(--blush);color:var(--rose);display:grid;place-items:center;font-weight:600;font-family:var(--display);font-size:18px}
+.cl small{display:block;color:var(--muted);font-size:12.5px}
+.moves{display:grid;gap:6px;max-height:60vh;overflow:auto}
+.mv{display:grid;grid-template-columns:1fr auto;gap:8px;background:var(--bg);border-radius:12px;padding:8px 10px;font-size:13px}
+.mv small{display:block;color:var(--muted)}
+.mv b.up{color:var(--ok)}.mv b.down{color:var(--bad)}
 /* Toast + chargement */
 .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;z-index:90;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -222,11 +274,14 @@ header img{height:46px}
       <span class="pill" id="pill"></span>
       <button type="button" role="tab" id="tab-orders" aria-selected="true">Commandes<span class="count" id="newCount" hidden></span></button>
       <button type="button" role="tab" id="tab-stock" aria-selected="false">Stock</button>
+      <button type="button" role="tab" id="tab-lots" aria-selected="false">Fournisseurs</button>
+      <button type="button" role="tab" id="tab-clients" aria-selected="false">Clientes</button>
       <button type="button" role="tab" id="tab-stats" aria-selected="false">Statistiques</button>
     </div>
 
     <section id="view-orders">
       <div class="toolbar">
+        <button class="btn dark" type="button" id="newOrder">＋ Nouvelle commande</button>
         <input class="search" id="q" type="search" placeholder="Rechercher un nom, un numéro, un bijou…" aria-label="Rechercher">
         <button class="chip" type="button" data-f="todo" aria-pressed="true">À traiter</button>
         <button class="chip" type="button" data-f="new" aria-pressed="false">Nouvelles</button>
@@ -251,8 +306,20 @@ header img{height:46px}
       </div>
     </section>
 
+    <section id="view-lots" hidden>
+      <div class="toolbar"><button class="btn dark" type="button" id="newLot">＋ Nouveau lot (1688)</button><span class="p-sub" id="lotsSum"></span></div>
+      <div class="lots" id="lots"></div>
+    </section>
+
+    <section id="view-clients" hidden>
+      <div class="toolbar"><input class="search" id="qc" type="search" placeholder="Rechercher une cliente…" aria-label="Rechercher une cliente"><button class="btn soft" type="button" id="newLivreur">＋ Livreur</button></div>
+      <div class="cl-grid"><div><h3 class="group-title">Clientes</h3><div class="clients" id="clients"></div></div><div><h3 class="group-title">Livreurs</h3><div class="clients" id="livreurs"></div></div></div>
+    </section>
+
     <section id="view-stock" hidden>
       <div class="toolbar">
+        <button class="btn dark" type="button" id="newProduct">＋ Ajouter un article</button>
+        <button class="btn soft" type="button" id="showMoves">Historique</button>
         <input class="search" id="qs" type="search" placeholder="Rechercher un bijou…" aria-label="Rechercher un bijou">
         <button class="chip" type="button" data-s="all" aria-pressed="true">Tous</button>
         <button class="chip" type="button" data-s="low" aria-pressed="false">Stock faible</button>
@@ -263,6 +330,8 @@ header img{height:46px}
     </section>
   </main>
 </div>
+<div class="modal-scrim" id="mScrim" hidden></div>
+<section class="modal" id="modal" hidden role="dialog" aria-modal="true"><button class="icon-btn m-x" id="mX" type="button" aria-label="Fermer">×</button><div id="mBody"></div></section>
 <div class="toast" id="toast" role="status"></div>
 
 <script src="../catalogue.js"></script>
@@ -430,7 +499,8 @@ function renderStock(){
   let html = "", lastNew = null, i = 0;
   list.forEach(s => {
     if (lastNew !== s.isNew) { html += `<div class="group-title">${s.isNew ? "Nouvelle collection" : "Collection"}</div>`; lastNew = s.isNew; }
-    html += `<div class="s-row${s.missing?" missing":""}" style="--i:${i++}" data-code="${esc(s.code)}"><div class="s-name">${esc(s.name)}<small>${[esc(s.variant||""), s.price?fmt(s.price):""].filter(Boolean).join(" · ")}</small>${s.missing ? "" : `<label class="cost">Prix d’achat <input type="number" inputmode="numeric" min="0" data-cost="${esc(s.code)}" value="${s.cost||""}" placeholder="–"> F</label>`}</div>${sBadge(s.qty)}
+    const im = photoOf(s.code);
+    html += `<div class="s-row${s.missing?" missing":""}" style="--i:${i++}" data-code="${esc(s.code)}">${im ? `<img class="s-img" src="${im}" alt="" loading="lazy" data-edit="${esc(s.code)}">` : `<span class="s-img ph" data-edit="${esc(s.code)}">📷</span>`}<div class="s-name">${esc(s.name)}${s.added==="Oui" ? `<span class="s-tag">ajouté</span>` : s.added==="Masqué" ? `<span class="s-tag">masqué</span>` : ""}<small>${[esc(s.variant||""), s.price?fmt(s.price):""].filter(Boolean).join(" · ")}</small>${s.missing ? "" : `<label class="cost">Prix d’achat <input type="number" inputmode="numeric" min="0" data-cost="${esc(s.code)}" value="${s.cost||""}" placeholder="–"> F</label>`}</div>${sBadge(s.qty)}
       <div class="stepper"><button type="button" data-d="-1" aria-label="Retirer une pièce">−</button><input type="number" inputmode="numeric" min="0" value="${s.qty===null?"":s.qty}" placeholder="–" aria-label="Pièces en stock"><button type="button" data-d="1" aria-label="Ajouter une pièce">+</button></div></div>`;
   });
   $("#stock").innerHTML = html || `<div class="empty-state"><b>Aucun bijou</b>Changez de filtre.</div>`;
@@ -520,14 +590,153 @@ function renderStats(){
   $("#brief").innerHTML = `<div><small>Panier moyen</small><b>${fmt(avg)}</b></div><div><small>Clientes</small><b>${clients}</b></div><div><small>Encaissé</small><b>${fmt(paid.reduce((a,o)=>a+o.total,0))}</b></div><div><small>Ensembles vendus</small><b>${O.reduce((a,o)=>a+(String(o.items).match(/Ensemble/g)||[]).length,0)}</b></div>`;
 }
 
+/* ——— Photos ——— */
+function catImg(code){ const [id, rest] = String(code).split("#"); const p = (window.TIMFA_CATALOGUE||[]).find(x=>x.id===id.split("@")[0]); if (!p) return ""; const i = rest ? parseInt(rest,10) : 0; return "../" + (p.variants ? (p.variants[i]||p.variants[0]).img : p.img); }
+const photoOf = code => (DATA.photos||{})[code] || catImg(code);
+function resizeImage(file){ return new Promise((ok, ko) => { const fr = new FileReader(); fr.onload = () => { const im = new Image(); im.onload = () => {
+  let w = im.width, h = im.height, max = 900; if (w > h && w > max) { h = h*max/w; w = max; } else if (h > max) { w = w*max/h; h = max; }
+  const c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").drawImage(im, 0, 0, w, h);
+  let q = .82, out = c.toDataURL("image/jpeg", q); while (out.length > 170000 && q > .3) { q -= .1; out = c.toDataURL("image/jpeg", q); }
+  if (out.length > 185000) { c.width = w*.7; c.height = h*.7; c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); out = c.toDataURL("image/jpeg", .7); }
+  ok(out); }; im.onerror = ko; im.src = fr.result; }; fr.onerror = ko; fr.readAsDataURL(file); }); }
+
+/* ——— Fenêtres (modales) ——— */
+function openModal(html){ $("#mBody").innerHTML = html; $("#modal").hidden = $("#mScrim").hidden = false; document.body.style.overflow = "hidden"; }
+function closeModal(){ $("#modal").hidden = $("#mScrim").hidden = true; document.body.style.overflow = ""; }
+$("#mX").onclick = closeModal; $("#mScrim").onclick = closeModal;
+document.addEventListener("keydown", e => { if (e.key==="Escape" && !$("#modal").hidden) closeModal(); });
+const CATS = ["Colliers","Bracelets & parures","Bagues","Boucles d’oreilles","Ensembles","Autre"];
+
+/* ——— Ajouter / modifier un article ——— */
+let newPhoto = "";
+function productForm(s){
+  newPhoto = ""; const edit = !!s, im = s ? photoOf(s.code) : "";
+  openModal(`<h2>${edit ? "Modifier l’article" : "Ajouter un article"}</h2>
+  <form id="pForm" class="f-grid" data-code="${edit ? esc(s.code) : ""}">
+    <label class="photo-drop full">${im ? `<img src="${im}" id="pPrev" alt="">` : `<span id="pPrev">📷<br>Ajouter une photo</span>`}<input type="file" accept="image/*" id="pFile"></label>
+    <label class="full">Nom<input id="pName" required maxlength="80" value="${edit ? esc(s.name) : ""}"></label>
+    <label>Catégorie<select id="pCat">${CATS.map(c=>`<option ${edit && s.cat===c ? "selected":""}>${c}</option>`).join("")}</select></label>
+    <label>Prix de vente (F)<input id="pPrice" type="number" inputmode="numeric" min="0" value="${edit ? s.price||"" : ""}"></label>
+    ${edit ? "" : `<label>Prix d’achat (F)<input id="pCost" type="number" inputmode="numeric" min="0"></label><label>Pièces en stock<input id="pQty" type="number" inputmode="numeric" min="0" value="1"></label>`}
+    <label class="full">Description<textarea id="pDesc" rows="2" maxlength="300">${edit ? esc(s.desc||"") : ""}</textarea></label>
+    ${!edit || s.added ? `<label class="full" style="display:flex;gap:8px;align-items:center;color:var(--ink)"><input type="checkbox" id="pOnline" ${!edit || s.added==="Oui" ? "checked" : ""} style="width:auto"> Afficher sur le site (les clientes peuvent le commander)</label>
+    ${edit ? "" : `<label class="full" style="display:flex;gap:8px;align-items:center;color:var(--ink)"><input type="checkbox" id="pNew" checked style="width:auto"> Badge « Nouveau »</label>`}` : `<p class="full p-sub">Cet article fait partie du site : pour changer sa photo principale ou son nom sur le site, écrivez à Claude.</p>`}
+    <div class="f-actions full"><button type="button" class="btn soft" onclick="closeModal()">Annuler</button><button class="btn dark" type="submit">${edit ? "Enregistrer" : "Ajouter l’article"}</button></div>
+  </form>`);
+  $("#pFile").addEventListener("change", e => { const f = e.target.files[0]; if (!f) return; resizeImage(f).then(d => { newPhoto = d; $("#pPrev").outerHTML = `<img src="${d}" id="pPrev" alt="">`; }).catch(()=>toast("Photo illisible")); });
+  $("#pForm").addEventListener("submit", e => { e.preventDefault(); const code = e.target.dataset.code;
+    const body = {name:$("#pName").value.trim(), cat:$("#pCat").value, price:+$("#pPrice").value||0, desc:$("#pDesc").value.trim()};
+    if ($("#pOnline")) body.online = $("#pOnline").checked;
+    if (newPhoto) body.photo = newPhoto;
+    const btn = e.target.querySelector("[type=submit]"); btn.disabled = true; btn.textContent = "Envoi…";
+    const req = code ? post(Object.assign({action:"updateProduct", code}, body)) : post(Object.assign({action:"addProduct", cost:+$("#pCost").value||0, qty:+$("#pQty").value||0, isNew:$("#pNew").checked}, body));
+    req.then(d => { if (d.ok) { toast(code ? "Article modifié ✓" : "Article ajouté ✨"); closeModal(); load(); } else { toast("Erreur : " + (d.error||"réessayez")); btn.disabled = false; } }).catch(()=>{ toast("Connexion impossible"); btn.disabled = false; });
+  });
+}
+$("#newProduct").onclick = () => productForm(null);
+$("#stock").addEventListener("click", e => { const t = e.target.closest("[data-edit]"); if (!t) return; const s = mergedStock().find(x=>x.code===t.dataset.edit); if (s && !s.missing) productForm(s); });
+$("#showMoves").onclick = () => openModal(`<h2>Historique du stock</h2><div class="moves">${(DATA.moves||[]).length ? DATA.moves.map(m=>`<div class="mv"><span>${esc(m.name)}<small>${frDate(m.date)} ${frTime(m.date)} · ${esc(m.reason)}</small></span><b class="${m.delta>0?"up":"down"}">${m.delta>0?"+":""}${m.delta}</b></div>`).join("") : `<div class="empty-chart">Les entrées et sorties de stock apparaîtront ici.</div>`}</div>`);
+
+/* ——— Nouvelle commande (WhatsApp, boutique…) ——— */
+let OL = [];
+function stockForPick(){ return mergedStock().filter(s => !s.missing && !/^ensemble/.test(s.code) && s.added !== "Masqué"); }
+function orderForm(){
+  OL = [];
+  const cls = (DATA.clients||[]).map(c=>`<option value="${esc(c.name)}" data-ph="${esc(c.phone)}" data-pl="${esc(c.place)}">`).join("");
+  openModal(`<h2>Nouvelle commande</h2>
+  <form id="oForm" class="f-grid">
+    <label>Cliente<input id="oName" list="clList" required placeholder="Nom"></label><datalist id="clList">${cls}</datalist>
+    <label>Téléphone<input id="oPhone" type="tel" inputmode="tel"></label>
+    <label class="full">Quartier / ville<input id="oPlace"></label>
+    <div class="full"><div class="p-sub" style="margin-bottom:6px">Touchez un article pour l’ajouter</div><input class="search" id="oSearch" placeholder="Rechercher un article…" style="width:100%;margin-bottom:8px"><div class="pick-list" id="oPick"></div></div>
+    <div class="full o-lines" id="oLines"></div>
+    <label>Canal<select id="oChannel"><option>WhatsApp</option><option>Instagram</option><option>Facebook</option><option>TikTok</option><option>Boutique / main propre</option><option>Autre</option></select></label>
+    <label>Livreur<select id="oLiv"><option value="">—</option>${(DATA.livreurs||[]).map(l=>`<option>${esc(l.name)}</option>`).join("")}</select></label>
+    <label>Livraison (F)<input id="oFee" type="number" inputmode="numeric" min="0" value="1500"></label>
+    <label style="flex-direction:row;display:flex;gap:6px;align-items:center;color:var(--ink);margin-top:18px"><input type="checkbox" id="oFree" style="width:auto"> Livraison offerte</label>
+    <label>Remise (F)<input id="oDisc" type="number" inputmode="numeric" min="0" value="0"></label>
+    <label>Date de livraison<input id="oDate" type="date"></label>
+    <label>Statut<select id="oStatus"><option>Confirmée</option><option>Nouvelle</option><option>En livraison</option><option>Livrée</option></select></label>
+    <label>Paiement<select id="oPay"><option value="cod">À la livraison</option><option value="wave">Wave</option></select></label>
+    <label style="flex-direction:row;display:flex;gap:6px;align-items:center;color:var(--ink);margin-top:18px"><input type="checkbox" id="oPaid" style="width:auto"> Déjà payée</label>
+    <label class="full">Notes<input id="oNotes" maxlength="300"></label>
+    <div class="full o-sum"><span>Total</span><b id="oTotal">0 F</b></div>
+    <div class="f-actions full"><button type="button" class="btn soft" onclick="closeModal()">Annuler</button><button class="btn dark" type="submit">Enregistrer la commande</button></div>
+  </form>`);
+  const drawPick = () => { const q = $("#oSearch").value.trim().toLowerCase();
+    $("#oPick").innerHTML = stockForPick().filter(s => !q || (s.name+" "+s.variant).toLowerCase().includes(q)).map(s => { const im = photoOf(s.code);
+      return `<button type="button" class="pick" data-pick="${esc(s.code)}"${s.qty===0?" disabled":""}>${im?`<img src="${im}" alt="" loading="lazy">`:`<span class="ph"></span>`}<span>${esc(s.name)}${s.variant?`<small><br>${esc(s.variant)}</small>`:""}<small><br>${fmt(s.price)} · ${s.qty===null?"stock ?":s.qty+" en stock"}</small></span></button>`; }).join(""); };
+  const drawLines = () => { $("#oLines").innerHTML = OL.map((l,i)=>`<div class="o-line"><img src="${photoOf(l.code)}" alt=""><span>${esc(l.label)}</span><input type="number" min="1" value="${l.qty}" data-ol="${i}" data-k="qty" aria-label="Quantité"><input type="number" min="0" value="${l.price}" data-ol="${i}" data-k="price" aria-label="Prix"><button type="button" data-olx="${i}" aria-label="Retirer">×</button></div>`).join("");
+    const sub = OL.reduce((a,l)=>a+l.qty*l.price,0), fee = $("#oFree").checked ? 0 : (+$("#oFee").value||0); $("#oTotal").textContent = fmt(sub + fee - (+$("#oDisc").value||0)); };
+  drawPick(); $("#oSearch").addEventListener("input", drawPick);
+  $("#oPick").addEventListener("click", e => { const b = e.target.closest("[data-pick]"); if (!b) return; const s = mergedStock().find(x=>x.code===b.dataset.pick); const ex = OL.find(l=>l.code===s.code); if (ex) ex.qty++; else OL.push({code:s.code, label:s.name+(s.variant?" · "+s.variant:""), qty:1, price:s.price||0}); drawLines(); });
+  $("#oLines").addEventListener("input", e => { const i = e.target.dataset.ol; if (i===undefined) return; OL[+i][e.target.dataset.k] = Math.max(e.target.dataset.k==="qty"?1:0, +e.target.value||0); const sub = OL.reduce((a,l)=>a+l.qty*l.price,0), fee = $("#oFree").checked ? 0 : (+$("#oFee").value||0); $("#oTotal").textContent = fmt(sub + fee - (+$("#oDisc").value||0)); });
+  $("#oLines").addEventListener("click", e => { const x = e.target.closest("[data-olx]"); if (x) { OL.splice(+x.dataset.olx,1); drawLines(); } });
+  ["#oFee","#oDisc","#oFree"].forEach(id => $(id).addEventListener("input", drawLines)); $("#oFree").addEventListener("change", drawLines);
+  $("#oName").addEventListener("change", () => { const o = [...document.querySelectorAll("#clList option")].find(x=>x.value===$("#oName").value); if (o) { if (!$("#oPhone").value) $("#oPhone").value = o.dataset.ph; if (!$("#oPlace").value) $("#oPlace").value = o.dataset.pl; } });
+  $("#oForm").addEventListener("submit", e => { e.preventDefault(); if (!OL.length) { toast("Ajoutez au moins un article"); return; }
+    const btn = e.target.querySelector("[type=submit]"); btn.disabled = true; btn.textContent = "Enregistrement…";
+    post({action:"addOrder", name:$("#oName").value.trim(), phone:$("#oPhone").value.trim(), place:$("#oPlace").value.trim(), items:OL.map(l=>({code:l.code, qty:l.qty, price:l.price, label:l.label})),
+      channel:$("#oChannel").value, livreur:$("#oLiv").value, fee:+$("#oFee").value||0, feeOffered:$("#oFree").checked, discount:+$("#oDisc").value||0, delivery:$("#oDate").value, status:$("#oStatus").value, pay:$("#oPay").value, paid:$("#oPaid").checked, notes:$("#oNotes").value.trim()})
+    .then(d => { if (d.ok) { toast("Commande " + d.id + " enregistrée ✓"); closeModal(); load(); } else { toast("Erreur : " + (d.error||"")); btn.disabled = false; } }).catch(()=>{ toast("Connexion impossible"); btn.disabled = false; }); });
+}
+$("#newOrder").onclick = orderForm;
+
+/* ——— Fournisseurs (lots 1688) ——— */
+const LOT_ST = {"Commandé":"cmd","En route":"route","Reçu":"ok"};
+function renderLots(){
+  const L = (DATA.lots||[]).slice().reverse(), tot = L.reduce((a,l)=>a+l.total,0);
+  $("#lotsSum").textContent = L.length ? `${L.length} lot(s) · ${fmt(tot)} investis` : "";
+  $("#lots").innerHTML = L.length ? L.map((l,i)=>{ const s = l.code ? mergedStock().find(x=>x.code===l.code) : null;
+    return `<article class="lot" style="--i:${i}" data-lot="${l.row}"><div class="lot-head"><div><b>${esc(l.name)}</b><div class="p-sub">${frDate(l.date)}${l.supplier?" · "+esc(l.supplier):""}${l.link?` · <a href="${esc(l.link)}" target="_blank" rel="noopener">voir sur 1688</a>`:""}</div></div><span class="st-pill ${LOT_ST[l.status]||"cmd"}">${esc(l.status)}</span></div>
+      <div class="lot-nums"><div>Prix<b>${l.yuan} ¥</b></div><div>Taux<b>${l.taux}</b></div><div>Frais Chine<b>${l.fraisCN} ¥</b></div><div>Fret<b>${fmt(l.fret)}</b></div><div>Autres<b>${fmt(l.autres)}</b></div><div>Coût total<b>${fmt(l.total)}</b></div></div>
+      <div class="p-sub">${l.pieces ? `${l.pieces} pièce(s) · <b style="color:var(--rose)">${fmt(l.unit)} / pièce</b>` : "Nombre de pièces non indiqué"}${s ? ` · pour <b>${esc(s.name)}${s.variant?" · "+esc(s.variant):""}</b>` : ""}${l.added ? " · stock ajouté ✓" : ""}</div>
+      <label class="p-sub">Statut <select data-lotst="${l.row}">${Object.keys(LOT_ST).map(k=>`<option ${k===l.status?"selected":""}>${k}</option>`).join("")}</select></label></article>`; }).join("")
+    : `<div class="empty-state" style="grid-column:1/-1"><b>Aucun lot</b>Ajoutez vos achats 1688 pour suivre vos coûts et recevoir le stock en un clic.</div>`;
+}
+$("#lots").addEventListener("change", e => { const s = e.target.dataset.lotst; if (!s) return; post({action:"updateLot", row:+s, status:e.target.value}).then(d => { toast(d.ok ? (e.target.value==="Reçu" ? "Lot reçu · stock et prix d’achat mis à jour ✓" : "Statut mis à jour ✓") : "Erreur"); load(); }); });
+function lotForm(){
+  openModal(`<h2>Nouveau lot fournisseur</h2><form id="lForm" class="f-grid">
+    <label class="full">Nom du lot<input id="lName" required placeholder="Ex. Colliers cygne x10"></label>
+    <label>Fournisseur<input id="lSup" placeholder="Boutique 1688"></label><label>Date<input id="lDate" type="date" value="${today()}"></label>
+    <label class="full">Lien 1688<input id="lLink" type="url" placeholder="https://detail.1688.com/…"></label>
+    <label>Prix des articles (¥)<input id="lYuan" type="number" step="0.01" min="0" required></label><label>Taux (F pour 1 ¥)<input id="lTaux" type="number" step="0.1" min="0" value="85" required></label>
+    <label>Frais en Chine (¥)<input id="lCN" type="number" step="0.01" min="0" value="0"></label><label>Fret (F)<input id="lFret" type="number" min="0" value="0"></label>
+    <label>Autres frais (F)<input id="lAutres" type="number" min="0" value="0"></label><label>Nombre de pièces<input id="lPieces" type="number" min="0"></label>
+    <label class="full">Article concerné (pour ajouter le stock à la réception)<select id="lCode"><option value="">— plusieurs articles / plus tard —</option>${stockForPick().map(s=>`<option value="${esc(s.code)}">${esc(s.name)}${s.variant?" · "+esc(s.variant):""}</option>`).join("")}</select></label>
+    <label>Statut<select id="lSt"><option>Commandé</option><option>En route</option><option>Reçu</option></select></label>
+    <div class="o-sum full"><span>Coût total · par pièce</span><b id="lCalc">0 F</b></div>
+    <div class="f-actions full"><button type="button" class="btn soft" onclick="closeModal()">Annuler</button><button class="btn dark" type="submit">Enregistrer le lot</button></div></form>`);
+  const calc = () => { const t = Math.round(((+$("#lYuan").value||0)+(+$("#lCN").value||0))*(+$("#lTaux").value||0)+(+$("#lFret").value||0)+(+$("#lAutres").value||0)), p = +$("#lPieces").value||0; $("#lCalc").textContent = fmt(t) + (p ? " · " + fmt(Math.round(t/p)) + " / pièce" : ""); };
+  $("#lForm").addEventListener("input", calc);
+  $("#lForm").addEventListener("submit", e => { e.preventDefault(); const btn = e.target.querySelector("[type=submit]"); btn.disabled = true;
+    post({action:"addLot", name:$("#lName").value.trim(), supplier:$("#lSup").value.trim(), date:$("#lDate").value, link:$("#lLink").value.trim(), yuan:+$("#lYuan").value||0, taux:+$("#lTaux").value||0, fraisCN:+$("#lCN").value||0, fret:+$("#lFret").value||0, autres:+$("#lAutres").value||0, pieces:+$("#lPieces").value||0, code:$("#lCode").value, status:$("#lSt").value})
+    .then(d => { toast(d.ok ? "Lot enregistré ✓" : "Erreur"); closeModal(); load(); }); });
+}
+$("#newLot").onclick = lotForm;
+
+/* ——— Clientes et livreurs ——— */
+function renderClients(){
+  const q = $("#qc").value.trim().toLowerCase(), map = {};
+  (DATA.clients||[]).forEach(c => { const k = String(c.phone).replace(/\D/g,"").slice(-8) || c.name; map[k] = {name:c.name, phone:c.phone, place:c.place, n:0, total:0, last:""}; });
+  DATA.orders.filter(o=>o.status!=="Annulée").forEach(o => { const k = String(o.phone).replace(/\D/g,"").slice(-8) || o.name; const c = map[k] || (map[k] = {name:o.name, phone:o.phone, place:o.place, n:0, total:0, last:""}); c.n++; c.total += o.total; if (o.date > c.last) c.last = o.date; });
+  const L = Object.values(map).filter(c => !q || (c.name+" "+c.phone+" "+c.place).toLowerCase().includes(q)).sort((a,b)=>b.total-a.total);
+  $("#clients").innerHTML = L.length ? L.map((c,i)=>`<div class="cl" style="--i:${i}"><span class="av">${esc((c.name||"?")[0].toUpperCase())}</span><span><b>${esc(c.name)}</b>${i<3 && c.total ? " 👑" : ""}<small>${esc(c.place||"")}${c.place?" · ":""}${esc(c.phone||"")}</small><small>${c.n} commande(s) · ${fmt(c.total)}${c.last ? " · dernière le " + frDate(c.last) : ""}</small></span>${c.phone ? `<a class="btn wa" style="padding:7px 12px" href="${waUrl(c)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}</div>`).join("") : `<div class="empty-state"><b>Aucune cliente</b>Elles s’ajoutent toutes seules à chaque commande.</div>`;
+  $("#livreurs").innerHTML = (DATA.livreurs||[]).length ? DATA.livreurs.map(l=>`<div class="cl"><span class="av">🛵</span><span><b>${esc(l.name)}</b><small>${esc(l.phone)}</small></span><a class="btn wa" style="padding:7px 12px" href="${waUrl(l)}" target="_blank" rel="noopener">WhatsApp</a></div>`).join("") : `<div class="empty-chart">Ajoutez vos livreurs.</div>`;
+}
+$("#qc").addEventListener("input", renderClients);
+$("#newLivreur").onclick = () => { openModal(`<h2>Ajouter un livreur</h2><form id="lvForm" class="f-grid"><label>Nom<input id="lvName" required></label><label>Téléphone<input id="lvPhone" type="tel" required></label><div class="f-actions full"><button class="btn dark" type="submit">Ajouter</button></div></form>`);
+  $("#lvForm").addEventListener("submit", e => { e.preventDefault(); post({action:"addLivreur", name:$("#lvName").value.trim(), phone:$("#lvPhone").value.trim()}).then(d=>{ toast(d.ok?"Livreur ajouté ✓":"Erreur"); closeModal(); load(); }); }); };
+
 /* ——— Onglets et filtres ——— */
 function placePill(){ const b = $("#tab-"+tab), p = $("#pill"); p.style.left = b.offsetLeft+"px"; p.style.width = b.offsetWidth+"px"; }
-["orders","stock","stats"].forEach(t => $("#tab-"+t).onclick = () => { tab=t; ["orders","stock","stats"].forEach(x => { $("#tab-"+x).setAttribute("aria-selected", x===t); $("#view-"+x).hidden = x!==t; }); placePill(); renderTab(); });
+const TABS = ["orders","stock","lots","clients","stats"];
+TABS.forEach(t => $("#tab-"+t).onclick = () => { tab=t; if (innerWidth < 760) $(".tabs").scrollIntoView({behavior:"smooth", block:"start"}); $("#tab-"+t).scrollIntoView({inline:"center", block:"nearest"}); TABS.forEach(x => { $("#tab-"+x).setAttribute("aria-selected", x===t); $("#view-"+x).hidden = x!==t; }); placePill(); renderTab(); });
 document.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { oFilter=b.dataset.f; document.querySelectorAll("[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderOrders(); });
 document.querySelectorAll("[data-s]").forEach(b => b.onclick = () => { sFilter=b.dataset.s; document.querySelectorAll("[data-s]").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderStock(); });
 $("#q").addEventListener("input", renderOrders); $("#qs").addEventListener("input", renderStock);
 addEventListener("resize", placePill);
-function renderTab(){ tab==="stock" ? renderStock() : tab==="stats" ? renderStats() : renderOrders(); }
+function renderTab(){ const f = ({stock:renderStock, stats:renderStats, lots:renderLots, clients:renderClients})[tab]; f ? f() : renderOrders(); }
 function render(){ renderKpis(); renderSales(); renderTab(); }
 
 /* ——— Démarrage ——— */

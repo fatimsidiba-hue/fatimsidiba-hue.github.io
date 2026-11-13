@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-6cE/jA3hzEqqabZIQZQLIct0NhCQSlNUKbuWga2PCYk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-15nCMQwSzvTJqi74Dstp3HNezFxK1cdr6Ejq/nVKb8Q='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -831,9 +831,19 @@ const qtyOf = code => (code in STOCK && STOCK[code] !== null && STOCK[code] !== 
 const codesOf = p => { const out = []; (p.variants ? p.variants.map((_,i)=>p.id+"#"+i) : [p.id]).forEach(c => (p.sizes ? p.sizes.map(z=>c+"@"+z) : [c]).forEach(x => out.push(x))); return out; };
 function selCodes(p){ const base = p.variants ? p.id+"#"+(chosen[p.id]||0) : p.id; if (!p.sizes) return [base]; return chosenSize[p.id] ? [base+"@"+chosenSize[p.id]] : p.sizes.map(z=>base+"@"+z); }
 function availOf(codes){ const q = codes.map(qtyOf); if (q.some(x=>x===null)) return null; return q.reduce((a,b)=>a+b,0); }
+// Articles ajoutés depuis l'espace de gestion (avec leur photo)
+const PH = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10" fill="#fcecee"/></svg>');
+let photosAsked = false;
+function addExtra(list){
+  let added = 0;
+  list.forEach(x => { if (!x || !/^p-[a-z0-9-]+$/.test(x.code) || PRODUCTS.some(p => p.id === x.code)) return;
+    PRODUCTS.push({id:x.code, cat:String(x.cat||"Colliers"), isNew:!!x.isNew, name:String(x.name||""), desc:String(x.desc||""), price:Number(x.price)||null, img:PH, extra:true}); added++; });
+  if (added && !photosAsked) { photosAsked = true;
+    fetch(API + "?action=photos").then(r => r.json()).then(d => { Object.entries((d && d.photos) || {}).forEach(([k,v]) => { const p = PRODUCTS.find(x => x.id === k); if (p && /^data:image\//.test(v)) p.img = v; }); renderGrid(); renderCart(); }).catch(() => {}); }
+}
 function loadStock(){
   if (!API) return;
-  fetch(API + "?action=stock").then(r => r.json()).then(d => { if (d && d.stock) { STOCK = d.stock; renderGrid(); renderBuilder(); } }).catch(() => {});
+  fetch(API + "?action=stock").then(r => r.json()).then(d => { if (d && d.stock) { STOCK = d.stock; addExtra(d.extra || []); renderGrid(); renderBuilder(); } }).catch(() => {});
 }
 // ——— Galerie photos ———
 function galleryOf(p){ const v = p.variants ? p.variants[chosen[p.id]||0] : null; const first = v ? v.img : p.img; return [first, ...(p.imgs||[]).filter(x => x !== first)]; }
