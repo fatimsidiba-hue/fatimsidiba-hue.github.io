@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /gestion/
 Sitemap: https://fatimsidiba-hue.github.io/sitemap.xml
