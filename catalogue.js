@@ -21,6 +21,10 @@ window.TIMFA_CATALOGUE = [
   {id:"bracelet-coeur-rose", cat:"Bracelets & parures", isNew:true, name:"Bracelet Cœur Rose", desc:"Cœur rose entouré de brillants, fleurs roses.", price:5000, img:"images/n-bracelet-coeur.jpg", imgs:["images/n-ens-sirene-coeur.jpg"]},
   {id:"bracelet-papillon", cat:"Bracelets & parures", isNew:true, name:"Bracelet Papillon", desc:"Papillon rose et petites fleurs, doré.", price:5000, img:"images/n-bracelet-papillon.jpg"},
   {id:"bracelet-fleurs-violet", cat:"Bracelets & parures", isNew:true, name:"Bracelet Fleur Violette", desc:"Double rang de pierres violettes et une fleur, doré.", price:5000, img:"images/n-bracelet-fleurs-violet.jpg"},
+  {id:"collier-trait", cat:"Colliers", name:"Collier Trait de Lumière", desc:"Fine barre pavée de brillants, chaîne dorée.", price:5000, img:"images/n-collier-trait.jpg"},
+  {id:"collier-noeud-rose", cat:"Colliers", name:"Collier Nœud Rose", desc:"Nœud de pierres roses, chaîne argentée.", price:5000, img:"images/n-collier-noeud-rose.jpg"},
+  {id:"collier-emeraude", cat:"Colliers", name:"Collier Émeraude", desc:"Pierre verte coussin et goutte claire, chaîne dorée.", price:5000, img:"images/n-collier-emeraude.jpg"},
+  {id:"parure-feuilles", cat:"Bracelets & parures", name:"Parure Feuilles Vertes", desc:"Collier et bracelet assortis, feuilles vertes et cristal, dorés.", price:7000, img:"images/n-ensemble-feuilles.jpg"},
   {id:"bracelet-arc-en-ciel", cat:"Bracelets & parures", name:"Bracelet Arc-en-ciel", desc:"Baguettes multicolores et brillants, doré.", price:3500, img:"images/n-bracelet-arc-en-ciel.jpg"},
   {id:"bracelet-or", cat:"Bracelets & parures", name:"Bracelet Éclat Doré", desc:"Pierres claires serties en vagues, doré.", price:3500, img:"images/n-bracelet-or.jpg"},
   // ——— Collection ———
