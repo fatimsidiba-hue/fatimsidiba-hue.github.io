@@ -70,3 +70,17 @@ window.TIMFA_SET = {
     {c:"collier-halo-violet", b:"bracelet-liane#2", img:"images/n-ens-halo-liane.jpg"}
   ]
 };
+
+/* Informations affichées dans la fiche de chaque bijou.
+   matiere : texte par défaut selon la catégorie (un bijou peut avoir son propre champ « matiere »).
+   garantie : laissez vide pour ne pas afficher la rubrique. */
+window.TIMFA_INFO = {
+  matiere: {
+    "Colliers": "Chaîne et pendentif en métal doré, pierres en zircon.",
+    "Bracelets & parures": "Métal doré ou argenté, pierres en zircon.",
+    "Bagues": "Métal doré ou argenté, pierres en zircon."
+  },
+  emballage: "Chaque bijou est livré dans son coffret et son sac Timfa, prêt à offrir 🎁",
+  garantie: "",
+  carte: "Carte message offerte : écrivez votre mot, ou laissez-nous l’écrire pour vous."
+};

@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-I15KjvcL5Scl/LBy/hhsS1FGeYDAo/zIUOTBdyObDFc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-E5qRQ98yAqbTFI2f7riDVxiDvOFyhHOVRso7CufUyTE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -158,6 +158,55 @@ nav.menu a:hover,nav.menu a.on{border-color:var(--ink)}
 .card:hover .media img{transform:scale(1.05)}
 .badge{position:absolute;z-index:2;top:12px;left:12px;background:var(--red);color:#fff;font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px}
 .badge.new{background:var(--ink)}
+/* Fiche bijou */
+.sheet-scrim{position:fixed;inset:0;background:rgba(42,28,30,.45);z-index:72;animation:lbIn .25s}
+.sheet{position:fixed;z-index:74;left:50%;top:50%;transform:translate(-50%,-50%);width:min(960px,94vw);max-height:90vh;overflow:auto;background:#fff;border-radius:28px;box-shadow:0 40px 80px -30px rgba(42,28,30,.5);animation:sheetIn .4s cubic-bezier(.2,.8,.2,1)}
+.pd-x{position:absolute;top:14px;right:14px;z-index:3}
+.pd-grid{display:grid;grid-template-columns:1.05fr 1fr}
+.pd-gal{padding:18px;display:grid;gap:10px;align-content:start}
+.pd-main{position:relative;border-radius:20px;overflow:hidden;background:var(--blush);cursor:zoom-in}
+.pd-main img{width:100%;aspect-ratio:1;object-fit:cover;display:block;animation:imgIn .4s}
+.pd-zoom{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.9);border-radius:999px;padding:3px 10px;font-size:11.5px}
+.pd-thumbs{display:flex;gap:8px;overflow-x:auto}
+.pd-thumbs button{flex:none;width:64px;height:64px;border-radius:12px;overflow:hidden;border:2px solid transparent;padding:0;background:none}
+.pd-thumbs button[aria-pressed="true"]{border-color:var(--rose)}
+.pd-thumbs img{width:100%;height:100%;object-fit:cover}
+.pd-info{padding:26px 26px 22px 6px;display:flex;flex-direction:column;gap:12px}
+.pd-info h2{font-family:var(--display);font-weight:500;font-size:30px;margin:0;line-height:1.15}
+.pd-price{display:flex;align-items:baseline;gap:10px}
+.pd-price b{font-family:var(--display);font-size:30px;color:var(--rose);font-weight:500}
+.pd-price s{color:var(--muted)}
+.pd-desc{color:var(--muted);margin:0}
+.pd-info .btn{justify-content:center}
+.pd-perks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pd-perks div{background:var(--bg);border-radius:14px;padding:10px;text-align:center;font-size:12px;line-height:1.3}
+.pd-perks span{display:block;font-size:20px;margin-bottom:2px}
+details.acc{border-top:1px solid var(--line);padding:10px 0}
+details.acc summary{cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between}
+details.acc summary::after{content:"+";color:var(--rose);font-size:20px;line-height:1}
+details.acc[open] summary::after{content:"−"}
+details.acc p{margin:8px 0 0;color:var(--muted);font-size:14px}
+@keyframes sheetIn{from{opacity:0;transform:translate(-50%,-46%) scale(.97)}}
+@media (max-width:760px){.sheet{left:0;right:0;top:auto;bottom:0;transform:none;width:100%;max-height:92vh;border-radius:26px 26px 0 0;animation:sheetUp .4s cubic-bezier(.2,.8,.2,1);padding-bottom:env(safe-area-inset-bottom,0px)}.pd-grid{grid-template-columns:1fr}.pd-info{padding:4px 18px 22px}@keyframes sheetUp{from{transform:translateY(100%)}}}
+.card h3{cursor:pointer}
+/* Carte message + paiement */
+.giftbox{border:1px dashed #e7c7cf;border-radius:16px;padding:10px 12px;background:#fffafb}
+.gift-toggle{display:flex;gap:10px;align-items:center;cursor:pointer}
+.gift-toggle small{display:block;color:var(--muted);font-size:12px}
+.gift-form{display:grid;gap:8px;margin-top:10px}
+.g-label{font-size:12.5px;font-weight:600;margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button,.seg button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 11px;font-size:12.5px}
+.chips button[aria-pressed="true"]{background:var(--rose);border-color:var(--rose);color:#fff}
+.seg{display:flex;background:var(--blush);border-radius:999px;padding:3px;gap:3px}
+.seg button{flex:1;border:0;background:none}
+.seg button[aria-pressed="true"]{background:#fff;box-shadow:0 2px 8px -4px rgba(0,0,0,.2);font-weight:600}
+.g-ideas{display:grid;gap:6px}
+.idea-msg{text-align:left;border:1px solid var(--line);background:#fff;border-radius:14px;padding:9px 11px;font-size:13px;line-height:1.4;font-family:var(--display);font-style:italic}
+.idea-msg[aria-pressed="true"]{border-color:var(--rose);background:#fff5f7;box-shadow:inset 3px 0 0 var(--rose)}
+.g-more{justify-self:start;border:0;background:none;color:var(--rose);font-size:12.5px;font-weight:600;padding:2px 0}
+.gift-form textarea,.gift-form input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;width:100%;background:#fff;color:var(--ink)}
+.g-hint{margin:0;font-size:13px;color:var(--muted)}
 /* Galerie */
 .media{cursor:zoom-in}
 .media .img2{position:absolute;inset:0;opacity:0;transition:opacity .45s}
@@ -323,7 +372,8 @@ footer img{height:46px}
 .scrim.open{opacity:1;pointer-events:auto}
 aside.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);z-index:80;background:#fff;transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;padding:calc(20px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) 22px;box-shadow:-20px 0 40px -20px rgba(0,0,0,.2)}
 aside.drawer.open{transform:none}
-.lines{min-height:80px}
+.lines{min-height:80px;flex:none!important;overflow:visible!important}
+aside.drawer{overflow-y:auto;overscroll-behavior:contain}
 .drawer-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line)}
 .drawer-head h2{font-size:24px}
 .x{background:var(--blush);border:0;border-radius:50%;width:36px;height:36px;font-size:18px}
@@ -658,6 +708,36 @@ aside.drawer.open{transform:none}
       <label><input type="radio" name="zone" id="zone-pb" value="pb"> Port-Bouët · Bassam <b>2 000 F</b></label>
       <label><input type="radio" name="zone" id="zone-exp" value="exp"> Expédition <b>2 500 F</b></label>
     </fieldset>
+    <div class="giftbox">
+      <label class="gift-toggle"><input type="checkbox" id="giftOn"> <span><b>🎁 Ajouter une carte message</b><small>Offerte · glissée dans le coffret</small></span></label>
+      <div class="gift-form" id="giftForm" hidden>
+        <div class="fields">
+          <input id="gName" type="text" placeholder="Prénom de la personne" maxlength="40">
+          <input id="gNick" type="text" placeholder="Son surnom (facultatif)" maxlength="40">
+        </div>
+        <div class="g-label">Pour qui ?</div>
+        <div class="chips" id="gRel">
+          <button type="button" data-rel="amoureux">Mon amour ❤️</button><button type="button" data-rel="amie">Une amie</button><button type="button" data-rel="ami">Un ami</button><button type="button" data-rel="maman">Maman</button><button type="button" data-rel="soeur">Ma sœur</button><button type="button" data-rel="autre">Autre</button>
+        </div>
+        <div class="g-label">L’occasion</div>
+        <div class="chips" id="gOcc">
+          <button type="button" data-occ="anniversaire">Anniversaire 🎂</button><button type="button" data-occ="pardon">Demander pardon 🙏</button><button type="button" data-occ="amour">Dire je t’aime</button><button type="button" data-occ="merci">Dire merci</button><button type="button" data-occ="fete">Fête / Noël</button><button type="button" data-occ="juste">Juste comme ça</button>
+        </div>
+        <input id="gOccOther" type="text" placeholder="Précisez l’occasion (facultatif)" maxlength="60">
+        <div class="g-label">Le message</div>
+        <div class="seg" id="gMode">
+          <button type="button" data-mode="ideas" aria-pressed="true">✨ Propositions</button><button type="button" data-mode="own" aria-pressed="false">J’écris</button><button type="button" data-mode="shop" aria-pressed="false">Écrivez pour moi</button>
+        </div>
+        <div id="gIdeas" class="g-ideas"></div>
+        <textarea id="gMsg" rows="3" maxlength="300" placeholder="Votre message…" hidden></textarea>
+        <p class="g-hint" id="gShop" hidden>Timfa écrira un joli mot à la main selon la personne et l’occasion 💌</p>
+        <input id="gFrom" type="text" placeholder="Signé (votre prénom)" maxlength="40">
+      </div>
+    </div>
+    <fieldset class="zones pays"><legend>Paiement</legend>
+      <label><input type="radio" name="pay" id="pay-cod" value="cod" checked> À la livraison <b>espèces</b></label>
+      <label><input type="radio" name="pay" id="pay-wave" value="wave"> Wave <b>07 79 51 25 04</b></label>
+    </fieldset>
     <div class="fields"><input id="cName" type="text" placeholder="Votre nom" autocomplete="name"><input id="cPhone" type="tel" placeholder="Téléphone" autocomplete="tel" inputmode="tel"><input id="cPlace" class="wide" type="text" placeholder="Quartier / ville" autocomplete="address-level2"></div>
     <p class="pay-note" id="payNote"></p>
     <div class="sub"><span>Bijoux</span><span id="subtotal">0 F</span></div>
@@ -670,6 +750,14 @@ aside.drawer.open{transform:none}
   </div>
 </aside>
 <a class="wa-float" id="waFloat" href="https://wa.me/message/IEI3IPYSG7YJA1" target="_blank" rel="noopener" aria-label="Nous écrire sur WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.6c-2 0-3.9-.5-5.6-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5.9-1.6.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.1 1.3 3.3c.2.2 2.3 3.5 5.6 4.9 2.1.9 2.9 1 4 .8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5l-.6-.3Z"/></svg></a>
+<div class="sheet-scrim" id="pdScrim" hidden></div>
+<section class="sheet" id="pd" hidden role="dialog" aria-modal="true" aria-labelledby="pdName">
+  <button class="x pd-x" id="pdX" type="button" aria-label="Fermer la fiche">×</button>
+  <div class="pd-grid">
+    <div class="pd-gal"><div class="pd-main"><img id="pdImg" alt=""><span class="pd-zoom">Toucher pour agrandir</span></div><div class="pd-thumbs" id="pdThumbs"></div></div>
+    <div class="pd-info" id="pdInfo"></div>
+  </div>
+</section>
 <div class="lightbox" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photos du bijou">
   <button class="lb-x" id="lbX" type="button" aria-label="Fermer">×</button>
   <button class="lb-nav prev" id="lbPrev" type="button" aria-label="Photo précédente">‹</button>
@@ -737,6 +825,39 @@ document.addEventListener("keydown", e => { if ($("#lb").hidden) return; if (e.k
 let lbX0 = null; $("#lb").addEventListener("touchstart", e => { lbX0 = e.touches[0].clientX; }, {passive:true});
 $("#lb").addEventListener("touchend", e => { if (lbX0 === null) return; const dx = e.changedTouches[0].clientX - lbX0; if (Math.abs(dx) > 40) moveLb(dx < 0 ? 1 : -1); lbX0 = null; });
 
+// ——— Fiche détaillée d'un bijou ———
+const INFO = window.TIMFA_INFO || {};
+let PD = null;
+function openPd(id){ PD = PRODUCTS.find(x => x.id === id); if (!PD) return; renderPd(); $("#pd").hidden = $("#pdScrim").hidden = false; document.body.style.overflow = "hidden"; }
+function closePd(){ $("#pd").hidden = $("#pdScrim").hidden = true; document.body.style.overflow = ""; PD = null; }
+function renderPd(k){
+  const p = PD, gal = galleryOf(p), v = p.variants ? p.variants[chosen[p.id]||0] : null, idx = k || 0;
+  $("#pdImg").src = gal[idx]; $("#pdImg").alt = p.name;
+  $("#pdThumbs").innerHTML = gal.length > 1 ? gal.map((g,i)=>`<button type="button" data-th="${i}" aria-pressed="${i===idx}"><img src="${g}" alt=""></button>`).join("") : "";
+  const left = availOf(selCodes(p)), out = left === 0;
+  const stock = left === null ? "" : out ? `<span class="stock out">Rupture de stock</span>` : left <= 3 ? `<span class="stock low">Plus que ${left} pièce${left>1?"s":""}</span>` : `<span class="stock" style="background:#dff3e6;color:#1f8a4c">En stock</span>`;
+  const sw = p.variants ? `<div class="swatches" role="group" aria-label="Couleur">${p.variants.map((x,i)=>`<button type="button" style="background:${x.color}" title="${x.name}" aria-label="${x.name}" aria-pressed="${i===(chosen[p.id]||0)}" data-sw="${p.id}" data-i="${i}"></button>`).join("")}</div><p class="pd-desc">${esc(v.name)}</p>` : "";
+  const sizes = p.sizes ? `<div class="sizes-pick" role="group" aria-label="Taille"><span>Taille :</span>${p.sizes.map(z=>`<button type="button" data-size="${p.id}" data-z="${z}" aria-pressed="${chosenSize[p.id]===z}">${z}</button>`).join("")}<a class="size-link" href="#tailles" data-close-pd>Ma taille ?</a></div>` : p.adjustable ? `<span class="tag">Réglable · s’adapte à votre doigt</span>` : "";
+  const mat = p.matiere || (INFO.matiere||{})[p.cat] || "";
+  $("#pdInfo").innerHTML = `
+    <div class="eyebrow">${esc(p.cat)}${p.isNew ? " · Nouvelle collection" : ""}</div>
+    <h2 id="pdName">${esc(p.name)}</h2>
+    <div class="pd-price">${p.price ? `<b>${fmt(p.price)}</b>${p.was?`<s>${fmt(p.was)}</s>`:""}` : `<b>Prix sur demande</b>`}</div>
+    ${stock}
+    <p class="pd-desc">${esc(p.desc||"")}</p>
+    ${sw}${sizes}
+    <button class="btn btn-dark" type="button" data-add="${p.id}"${out?" disabled":""}>${out ? "Rupture de stock" : PREORDER && p.isNew ? "Précommander · dispo jeudi 19/11" : "Ajouter au panier"}</button>
+    ${SET && (SET.colliers.some(c=>c.split("#")[0]===p.id) || SET.bracelets.some(b=>b.split("#")[0]===p.id)) ? `<button class="btn btn-light" type="button" data-to-set="${p.id}">Composer un ensemble avec ce bijou · 10 000 F</button>` : ""}
+    <div class="pd-perks"><div><span>🎁</span>Coffret + sac offerts</div><div><span>💌</span>Carte message offerte</div><div><span>🚚</span>Paiement à la livraison</div></div>
+    ${mat ? `<details class="acc" open><summary>Matière</summary><p>${esc(mat)}</p></details>` : ""}
+    <details class="acc"><summary>Emballage</summary><p>${esc(INFO.emballage||"")}</p></details>
+    ${INFO.garantie ? `<details class="acc"><summary>Garantie</summary><p>${esc(INFO.garantie)}</p></details>` : ""}
+    <details class="acc"><summary>Livraison & paiement</summary><p>Abidjan 1 500 F (900 F pour un ensemble) · Port-Bouët / Bassam 2 000 F · Expédition 2 500 F.<br>Paiement à la livraison, ou par Wave au 07 79 51 25 04 (envoyez la capture sur WhatsApp).</p></details>
+    <details class="acc"><summary>Carte message</summary><p>${esc(INFO.carte||"")}</p></details>`;
+}
+$("#pdX").onclick = closePd; $("#pdScrim").onclick = closePd;
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#pd").hidden && $("#lb").hidden) closePd(); });
+
 // ——— Ensembles à composer ———
 const byCode = code => { const [id, i] = code.split("#"); const p = PRODUCTS.find(x => x.id === id); if (!p) return null; const v = p.variants ? p.variants[+i||0] : null; return {code, p, v, name: p.name + (v ? " · " + v.name : ""), short: p.name.replace(/^(Collier|Bracelet) /,"") + (v ? " " + v.name.split(" ·")[0].toLowerCase() : ""), img: v ? v.img : p.img, price: p.price}; };
 const isSetKey = k => String(k).startsWith("set:");
@@ -771,7 +892,11 @@ document.addEventListener("click", e => {
   const o = e.target.closest("[data-pick]"); if (o) { pick[o.dataset.pick] = o.dataset.code; renderBuilder(); return; }
   const d = e.target.closest("[data-idea]"); if (d) { const it = SET.ideas[+d.dataset.idea]; pick = {c: it.c, b: it.b}; renderBuilder(); return; }
   if (e.target.closest("#bAdd")) { addSet(); return; }
-  const g = e.target.closest("[data-gal]"); if (g) { const p = PRODUCTS.find(x => x.id === g.dataset.gal); openLb(galleryOf(p), g.classList.contains("img2") ? 1 : 0, p.name); }
+  const th = e.target.closest("[data-th]"); if (th) { renderPd(+th.dataset.th); return; }
+  if (e.target.closest(".pd-main")) { const k = [...document.querySelectorAll("#pdThumbs button")].findIndex(b=>b.getAttribute("aria-pressed")==="true"); openLb(galleryOf(PD), Math.max(0,k), PD.name); return; }
+  if (e.target.closest("[data-close-pd]")) { closePd(); return; }
+  const ts = e.target.closest("[data-to-set]"); if (ts) { const id = ts.dataset.toSet, p = PRODUCTS.find(x=>x.id===id), code = p.variants ? id+"#"+(chosen[id]||0) : id; if (SET.colliers.includes(code)) pick.c = code; else if (SET.bracelets.includes(code)) pick.b = code; else if (p.cat==="Colliers") pick.c = SET.colliers.find(c=>c.startsWith(id)); else pick.b = SET.bracelets.find(b=>b.startsWith(id)); closePd(); renderBuilder(); $("#ensembles").scrollIntoView({behavior:"smooth"}); return; }
+  const g = e.target.closest("[data-gal],[data-open]"); if (g) { openPd(g.dataset.gal || g.dataset.open); }
 });
 
 function card(p, i = 0){
@@ -784,7 +909,7 @@ function card(p, i = 0){
   const sw = p.variants ? `<div class="swatches" role="group" aria-label="Couleur">${p.variants.map((x,i)=>`<button type="button" style="background:${x.color}" title="${x.name}" aria-label="${x.name}" aria-pressed="${i===(chosen[p.id]||0)}" data-sw="${p.id}" data-i="${i}"></button>`).join("")}</div><p>${v.name}</p>` : `<p>${p.desc}</p>`;
   return `<article class="card" style="--i:${i}">
     <div class="media${allOut ? " soldout" : ""}">${allOut ? `<span class="badge">Rupture</span>` : p.isNew ? (PREORDER ? `<span class="badge pre">Dispo jeudi 19/11</span>` : `<span class="badge new">Nouveau</span>`) : p.was ? `<span class="badge">-${fmt(p.was-p.price)}</span>` : ""}<button class="fav" type="button" data-fav="${p.id}" aria-label="Ajouter aux favoris" aria-pressed="${favs.includes(p.id)}">${HEART}</button><img src="${img}" alt="${p.name}${v ? " " + v.name : ""}" loading="lazy" data-gal="${p.id}">${gal.length > 1 ? `<img class="img2" src="${gal[1]}" alt="" loading="lazy" data-gal="${p.id}"><span class="photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>${gal.length}</span>` : ""}</div>
-    <div class="body"><h3>${p.name}</h3>${sw}${p.adjustable ? `<span class="tag">Réglable · s’adapte à votre doigt</span>` : ""}${p.sizes ? `<div class="sizes-pick" role="group" aria-label="Taille"><span>Taille :</span>${p.sizes.map(z=>`<button type="button" data-size="${p.id}" data-z="${z}" aria-pressed="${chosenSize[p.id]===z}">${z}</button>`).join("")}<a class="size-link" href="#tailles">Ma taille ?</a></div>` : ""}
+    <div class="body"><h3 data-open="${p.id}">${p.name}</h3>${sw}${p.adjustable ? `<span class="tag">Réglable · s’adapte à votre doigt</span>` : ""}${p.sizes ? `<div class="sizes-pick" role="group" aria-label="Taille"><span>Taille :</span>${p.sizes.map(z=>`<button type="button" data-size="${p.id}" data-z="${z}" aria-pressed="${chosenSize[p.id]===z}">${z}</button>`).join("")}<a class="size-link" href="#tailles">Ma taille ?</a></div>` : ""}
       ${stockHtml}<div class="foot"><div class="price">${priceHtml}</div><button class="add" type="button" data-add="${p.id}"${out ? " disabled" : ""} aria-label="${out ? "Rupture de stock" : p.price ? "Ajouter au panier" : "Demander le prix"}">${p.price ? BAG : CHAT}</button></div>
     </div></article>`;
 }
@@ -813,7 +938,7 @@ function orderText(orderId){
   const lines = cart.map(l => `• ${l.qty} × ${l.name}${isPre(l.key) ? " (précommande, disponible le jeudi 19 novembre)" : ""} : ${l.price ? fmt(l.price*l.qty) : "prix à confirmer"}`);
   const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), z = ZONES[zone()], f = feeFor(zone()), d = discountFor(sub);
   const name = $("#cName").value.trim(), phone = $("#cPhone").value.trim(), place = $("#cPlace").value.trim();
-  return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\nLivraison ${z.label}${f!==z.fee ? " (tarif ensemble)" : ""} : ${fmt(f)}\n${d ? "Réduction commande sur le site : -"+fmt(d)+"\n" : ""}Total : ${fmt(sub+f-d)}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${name ? "\nNom : "+name : ""}${phone ? "\nTéléphone : "+phone : ""}${place ? "\nQuartier / ville : "+place : ""}${orderId ? "\nN° de commande : "+orderId : ""}\nMerci !`;
+  return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\nLivraison ${z.label}${f!==z.fee ? " (tarif ensemble)" : ""} : ${fmt(f)}\n${d ? "Réduction commande sur le site : -"+fmt(d)+"\n" : ""}Total : ${fmt(sub+f-d)}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${giftText() ? "\n"+giftText() : ""}${name ? "\nNom : "+name : ""}${phone ? "\nTéléphone : "+phone : ""}${place ? "\nQuartier / ville : "+place : ""}${orderId ? "\nN° de commande : "+orderId : ""}\nMerci !`;
 }
 const feeFor = z => (z==="abj" && cart.some(l => isSetKey(l.key))) ? 900 : ZONES[z].fee;
 // Nouvelle collection en précommande jusqu'au jeudi 19 novembre 2026 (passe en « Nouveau » automatiquement)
@@ -824,7 +949,49 @@ const SITE_DISCOUNT = 1000;
 const discountFor = sub => sub >= SITE_DISCOUNT ? SITE_DISCOUNT : 0;
 const ZONES = {abj:{label:"Abidjan", fee:1500}, pb:{label:"Port-Bouët / Bassam", fee:2000}, exp:{label:"Expédition", fee:2500}};
 const zone = () => (document.querySelector('input[name="zone"]:checked')||{value:"abj"}).value;
-const payText = z => z==="exp" ? "Paiement avant l'envoi sur le 07 79 51 25 04, puis envoyez la capture avec votre nom." : "Paiement à la livraison.";
+const payText = z => (payMode()==="wave" || z==="exp") ? "Paiement par Wave au 07 79 51 25 04 : envoyez la capture avec votre nom sur WhatsApp." : "Paiement à la livraison (espèces).";
+// ——— Carte message ———
+const GIFT = {rel:"", occ:"", mode:"ideas", pick:-1, seed:0};
+const REL = {amoureux:{to:"mon amour", t:"amour"}, amie:{to:"ma chérie", t:"amitie"}, ami:{to:"mon ami", t:"amitie"}, maman:{to:"maman", t:"famille"}, soeur:{to:"ma sœur", t:"famille"}, autre:{to:"", t:"autre"}};
+const IDEAS = {
+  anniversaire:["Joyeux anniversaire {n} ✨ Que cette nouvelle année brille autant que toi.","{n}, pour ton anniversaire, un bijou aussi précieux que toi. Je t’aime fort 💕","Happy birthday {n} 🎂 Que tous tes vœux se réalisent, tu le mérites tellement.","Un an de plus, et toujours aussi rayonnante. Joyeux anniversaire {n} 👑"],
+  pardon:["{n}, je suis désolé(e). Ce petit bijou pour te dire que tu comptes énormément pour moi 🙏","Pardonne-moi {n}. Tu mérites tout l’amour du monde, et je veux te le prouver 💕","Je n’ai pas toujours les bons mots, alors je t’offre ce bijou. Pardon {n} ❤️","{n}, je regrette sincèrement. Notre lien est plus précieux que tout."],
+  amour:["{n}, tu es mon bijou le plus précieux. Je t’aime ❤️","Pour toi {n}, qui illumines chacune de mes journées ✨","Un bijou pour te rappeler combien tu es aimé(e), {n} 💕","{n}, avec toi tout brille. Je t’aime plus que tout."],
+  merci:["Merci {n} pour tout ce que tu fais. Tu es en or ✨","{n}, un petit merci pour un grand cœur 💕","Merci d’être toujours là, {n}. Tu comptes tellement pour moi.","Pour te dire merci, {n}, du fond du cœur 🙏"],
+  fete:["Joyeuses fêtes {n} ✨ Que cette période te comble de bonheur.","{n}, un petit cadeau pour fêter ensemble ce moment 🎁","Belle fête à toi {n} ! Brille de mille feux 👑","Pour toi {n}, avec tout mon amour, bonne fête 💕"],
+  juste:["Juste comme ça, parce que tu le mérites {n} ✨","{n}, un petit bijou pour te faire sourire aujourd’hui 💕","Parce que tu es une reine, {n} 👑","Pensée pour toi {n}, tout simplement."]
+};
+const giftName = () => ($("#gNick").value.trim() || $("#gName").value.trim() || (REL[GIFT.rel]||{}).to || "toi");
+function ideasFor(){
+  const list = IDEAS[GIFT.occ] || IDEAS.juste, n = giftName();
+  const rot = GIFT.seed % list.length, out = [...list.slice(rot), ...list.slice(0, rot)].slice(0, 3);
+  return out.map(t => t.replace(/\{n\}/g, n).replace(/^toi, /,"").replace(/^(.)/, c => c.toUpperCase()));
+}
+function renderGift(){
+  if (!$("#giftOn")) return;
+  $("#giftForm").hidden = !$("#giftOn").checked;
+  document.querySelectorAll("#gRel button").forEach(b => b.setAttribute("aria-pressed", b.dataset.rel===GIFT.rel));
+  document.querySelectorAll("#gOcc button").forEach(b => b.setAttribute("aria-pressed", b.dataset.occ===GIFT.occ));
+  document.querySelectorAll("#gMode button").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode===GIFT.mode));
+  $("#gIdeas").hidden = GIFT.mode !== "ideas"; $("#gMsg").hidden = GIFT.mode !== "own"; $("#gShop").hidden = GIFT.mode !== "shop";
+  if (GIFT.mode === "ideas") $("#gIdeas").innerHTML = ideasFor().map((t,i)=>`<button type="button" class="idea-msg" data-gidea="${i}" aria-pressed="${i===GIFT.pick}">${esc(t)}</button>`).join("") + `<button type="button" class="g-more" id="gMore">↻ Autres propositions</button>`;
+}
+function giftText(){
+  if (!$("#giftOn") || !$("#giftOn").checked) return "";
+  const occ = $("#gOccOther").value.trim() || ({anniversaire:"Anniversaire",pardon:"Demander pardon",amour:"Dire je t’aime",merci:"Dire merci",fete:"Fête",juste:"Juste comme ça"})[GIFT.occ] || "";
+  const rel = ({amoureux:"Amoureux / amoureuse",amie:"Amie",ami:"Ami",maman:"Maman",soeur:"Sœur",autre:"Autre"})[GIFT.rel] || "";
+  let msg = GIFT.mode==="own" ? $("#gMsg").value.trim() : GIFT.mode==="shop" ? "(à écrire par Timfa)" : (GIFT.pick>=0 ? ideasFor()[GIFT.pick] : "");
+  const who = [$("#gName").value.trim(), $("#gNick").value.trim() && "surnom « " + $("#gNick").value.trim() + " »", rel].filter(Boolean).join(", ");
+  return `🎁 Carte message${who ? " pour " + who : ""}${occ ? " · " + occ : ""}${msg ? "\nMessage : " + msg : ""}${$("#gFrom").value.trim() ? "\nSigné : " + $("#gFrom").value.trim() : ""}`;
+}
+document.addEventListener("click", e => {
+  const r1 = e.target.closest("[data-rel]"); if (r1) { GIFT.rel = r1.dataset.rel; GIFT.pick = -1; renderGift(); renderCart(); return; }
+  const o1 = e.target.closest("[data-occ]"); if (o1) { GIFT.occ = o1.dataset.occ; GIFT.pick = -1; renderGift(); renderCart(); return; }
+  const m1 = e.target.closest("[data-mode]"); if (m1) { GIFT.mode = m1.dataset.mode; renderGift(); renderCart(); return; }
+  const i1 = e.target.closest("[data-gidea]"); if (i1) { GIFT.pick = +i1.dataset.gidea; renderGift(); renderCart(); return; }
+  if (e.target.closest("#gMore")) { GIFT.seed++; GIFT.pick = -1; renderGift(); renderCart(); }
+});
+const payMode = () => (document.querySelector('input[name="pay"]:checked')||{value:"cod"}).value;
 const waLink = t => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(t)}`;
 function renderCart(){
   $("#cartCount").textContent = cart.reduce((s,l)=>s+l.qty,0);
@@ -844,13 +1011,15 @@ function openCart(o){ $("#drawer").classList.toggle("open",o); $("#scrim").class
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-add]"); if (a) return addToCart(a.dataset.add);
   const f2 = e.target.closest("[data-fav]"); if (f2) { const id=f2.dataset.fav; favs = favs.includes(id) ? favs.filter(x=>x!==id) : [...favs,id]; write("timfa-favs", favs); f2.setAttribute("aria-pressed", String(favs.includes(id))); return; }
-  const s = e.target.closest("[data-sw]"); if (s) { chosen[s.dataset.sw] = +s.dataset.i; return renderGrid(); }
-  const sz = e.target.closest("[data-size]"); if (sz) { chosenSize[sz.dataset.size] = sz.dataset.z; return renderGrid(); }
+  const s = e.target.closest("[data-sw]"); if (s) { chosen[s.dataset.sw] = +s.dataset.i; renderGrid(); if (PD) renderPd(); return; }
+  const sz = e.target.closest("[data-size]"); if (sz) { chosenSize[sz.dataset.size] = sz.dataset.z; renderGrid(); if (PD) renderPd(); return; }
   const q = e.target.closest("[data-q]"); if (q) { const l = cart[+q.dataset.q]; l.qty += +q.dataset.d; if (l.qty<=0) cart.splice(+q.dataset.q,1); write("timfa-cart", cart); return renderCart(); }
   const f = e.target.closest("[data-filter]"); if (f) return setFilter(f.dataset.filter);
   const j = e.target.closest("[data-jump]"); if (j && j.dataset.jump==="Ensembles") { $("#ensembles").scrollIntoView({behavior:"smooth"}); return; } if (j) { setFilter(j.dataset.jump); if (j.tagName==="BUTTON") $("#boutique").scrollIntoView({behavior:"smooth"}); }
 });
-document.querySelectorAll('input[name="zone"]').forEach(x=>x.addEventListener("change",renderCart));
+document.querySelectorAll('input[name="zone"],input[name="pay"]').forEach(x=>x.addEventListener("change",renderCart));
+$("#giftOn").addEventListener("change", () => { renderGift(); renderCart(); });
+["#gName","#gNick","#gMsg","#gFrom","#gOccOther"].forEach(id => $(id).addEventListener("input", () => { if (id==="#gName"||id==="#gNick") renderGift(); renderCart(); }));
 ["#cName","#cPhone","#cPlace"].forEach(id=>$(id).addEventListener("input",()=>{$("#checkout").href = waLink(orderText());}));
 $("#openCart").onclick = () => openCart(true);
 $("#closeCart").onclick = () => openCart(false);
@@ -914,7 +1083,7 @@ $("#checkout").addEventListener("click", e => {
   if (!name || phone.replace(/\D/g,"").length < 8) { toast("Indiquez votre nom et votre téléphone"); return; }
   const w = window.open("", "_blank");
   const btn = $("#checkout"); btn.textContent = "Envoi de la commande…";
-  const payload = {name, phone, place, zone: zone(), items: cart.map(l => ({code: l.key, qty: l.qty}))};
+  const payload = {name, phone, place, zone: zone(), pay: (payMode()==="wave" || zone()==="exp") ? "wave" : "cod", card: giftText().replace(/^🎁 /,""), items: cart.map(l => ({code: l.key, qty: l.qty}))};
   fetch(API, {method: "POST", headers: {"Content-Type": "text/plain;charset=utf-8"}, body: JSON.stringify(payload)})
     .then(r => r.json())
     .then(d => {
@@ -934,7 +1103,7 @@ $("#checkout").addEventListener("click", e => {
     .finally(() => { btn.textContent = "Commander sur WhatsApp"; });
 });
 loadStock();
-renderGrid(); renderBuilder(); renderCart();
+renderGrid(); renderBuilder(); renderGift(); renderCart();
 </script>
 
 </body>
