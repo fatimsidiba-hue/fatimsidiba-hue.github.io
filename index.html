@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8HBBNkCQgW4VNYIa22wjpPEL+VItGh8cwiFw+Pmf7zY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-oM5MMZHZtdlzRAFliJLrIUuynvHbPuIvZHeTSOFA2zs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -291,6 +291,13 @@ aside.drawer.open{transform:none}
 .zones label:has(input:checked){border-color:var(--ink);background:var(--blush)}
 .zones b{margin-left:auto;font-weight:500;font-variant-numeric:tabular-nums}
 .fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fields .wide{grid-column:span 2}
+.fields input.err{border-color:var(--red);background:#fff4f5}
+.stock{font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;align-self:flex-start}
+.stock.low{background:#fff1d6;color:#9a5b00}
+.stock.out{background:#fde3e6;color:var(--red)}
+.media.soldout img{filter:grayscale(.6) opacity(.75)}
+.add:disabled{opacity:.35;cursor:not-allowed}
 .fields input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0;background:#fff;color:var(--ink)}
 .pay-note{margin:0;font-size:13px;background:var(--blush);border-radius:10px;padding:8px 12px}
 .promo-line{color:var(--rose)!important;font-weight:500}
@@ -581,7 +588,7 @@ aside.drawer.open{transform:none}
       <label><input type="radio" name="zone" id="zone-pb" value="pb"> Port-Bouët · Bassam <b>2 000 F</b></label>
       <label><input type="radio" name="zone" id="zone-exp" value="exp"> Expédition <b>2 500 F</b></label>
     </fieldset>
-    <div class="fields"><input id="cName" type="text" placeholder="Votre nom" autocomplete="name"><input id="cPlace" type="text" placeholder="Quartier / ville" autocomplete="address-level2"></div>
+    <div class="fields"><input id="cName" type="text" placeholder="Votre nom" autocomplete="name"><input id="cPhone" type="tel" placeholder="Téléphone" autocomplete="tel" inputmode="tel"><input id="cPlace" class="wide" type="text" placeholder="Quartier / ville" autocomplete="address-level2"></div>
     <p class="pay-note" id="payNote"></p>
     <div class="sub"><span>Bijoux</span><span id="subtotal">0 F</span></div>
     <div class="sub"><span>Livraison</span><span id="shipFee">1 500 F</span></div>
@@ -692,15 +699,29 @@ const CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
 
 $("#catGrid").innerHTML = CATS.map(c => `<button class="cat" type="button" data-jump="${c.filter}"><img src="${c.img}" alt="" loading="lazy"><div><strong>${c.label}</strong><small>${c.count ? PRODUCTS.filter(c.count).length + " bijoux" : c.text}</small></div></button>`).join("");
 
+// ——— Stock et commandes (tableau Google « Timfa online shop · Gestion ») ———
+// Lien de l'application Web Apps Script (Déployer → Application Web). Vide = mode WhatsApp seul.
+const API = "";
+let STOCK = {};
+const qtyOf = code => (code in STOCK && STOCK[code] !== null && STOCK[code] !== "") ? Number(STOCK[code]) : null;
+const codesOf = p => { const out = []; (p.variants ? p.variants.map((_,i)=>p.id+"#"+i) : [p.id]).forEach(c => (p.sizes ? p.sizes.map(z=>c+"@"+z) : [c]).forEach(x => out.push(x))); return out; };
+function selCodes(p){ const base = p.variants ? p.id+"#"+(chosen[p.id]||0) : p.id; if (!p.sizes) return [base]; return chosenSize[p.id] ? [base+"@"+chosenSize[p.id]] : p.sizes.map(z=>base+"@"+z); }
+function availOf(codes){ const q = codes.map(qtyOf); if (q.some(x=>x===null)) return null; return q.reduce((a,b)=>a+b,0); }
+function loadStock(){
+  if (!API) return;
+  fetch(API + "?action=stock").then(r => r.json()).then(d => { if (d && d.stock) { STOCK = d.stock; renderGrid(); } }).catch(() => {});
+}
 function card(p, i = 0){
   const v = p.variants ? p.variants[chosen[p.id]||0] : null;
   const img = v ? v.img : p.img;
+  const left = availOf(selCodes(p)), allOut = availOf(codesOf(p)) === 0, out = left === 0;
+  const stockHtml = left === null ? "" : out ? `<span class="stock out">Rupture de stock</span>` : left <= 3 ? `<span class="stock low">Plus que ${left} pièce${left>1?"s":""}</span>` : "";
   const priceHtml = p.price ? `<span class="now">${fmt(p.price)}</span>${p.was ? `<span class="was">${fmt(p.was)}</span>` : ""}` : `<span class="ask">Prix sur demande</span>`;
   const sw = p.variants ? `<div class="swatches" role="group" aria-label="Couleur">${p.variants.map((x,i)=>`<button type="button" style="background:${x.color}" title="${x.name}" aria-label="${x.name}" aria-pressed="${i===(chosen[p.id]||0)}" data-sw="${p.id}" data-i="${i}"></button>`).join("")}</div><p>${v.name}</p>` : `<p>${p.desc}</p>`;
   return `<article class="card" style="--i:${i}">
-    <div class="media">${p.isNew ? (PREORDER ? `<span class="badge pre">Dispo jeudi 19/11</span>` : `<span class="badge new">Nouveau</span>`) : p.was ? `<span class="badge">-${fmt(p.was-p.price)}</span>` : ""}<button class="fav" type="button" data-fav="${p.id}" aria-label="Ajouter aux favoris" aria-pressed="${favs.includes(p.id)}">${HEART}</button><img src="${img}" alt="${p.name}${v ? " " + v.name : ""}" loading="lazy"></div>
+    <div class="media${allOut ? " soldout" : ""}">${allOut ? `<span class="badge">Rupture</span>` : p.isNew ? (PREORDER ? `<span class="badge pre">Dispo jeudi 19/11</span>` : `<span class="badge new">Nouveau</span>`) : p.was ? `<span class="badge">-${fmt(p.was-p.price)}</span>` : ""}<button class="fav" type="button" data-fav="${p.id}" aria-label="Ajouter aux favoris" aria-pressed="${favs.includes(p.id)}">${HEART}</button><img src="${img}" alt="${p.name}${v ? " " + v.name : ""}" loading="lazy"></div>
     <div class="body"><h3>${p.name}</h3>${sw}${p.adjustable ? `<span class="tag">Réglable · s’adapte à votre doigt</span>` : ""}${p.sizes ? `<div class="sizes-pick" role="group" aria-label="Taille"><span>Taille :</span>${p.sizes.map(z=>`<button type="button" data-size="${p.id}" data-z="${z}" aria-pressed="${chosenSize[p.id]===z}">${z}</button>`).join("")}<a class="size-link" href="#tailles">Ma taille ?</a></div>` : ""}
-      <div class="foot"><div class="price">${priceHtml}</div><button class="add" type="button" data-add="${p.id}" aria-label="${p.price ? "Ajouter au panier" : "Demander le prix"}">${p.price ? BAG : CHAT}</button></div>
+      ${stockHtml}<div class="foot"><div class="price">${priceHtml}</div><button class="add" type="button" data-add="${p.id}"${out ? " disabled" : ""} aria-label="${out ? "Rupture de stock" : p.price ? "Ajouter au panier" : "Demander le prix"}">${p.price ? BAG : CHAT}</button></div>
     </div></article>`;
 }
 function renderGrid(){
@@ -718,16 +739,17 @@ function addToCart(id){
   const p = PRODUCTS.find(x=>x.id===id);
   if (p.sizes && !chosenSize[p.id]) { toast("Choisissez d’abord votre taille (6 ou 7)"); const g=document.querySelector(`[data-size="${p.id}"]`); if (g) g.parentElement.classList.add("need"), setTimeout(()=>g.parentElement.classList.remove("need"),1200); return; }
   const i = chosen[p.id]||0, z = chosenSize[p.id], key = (p.variants ? p.id+"#"+i : p.id) + (z ? "@"+z : "");
-  const ex = cart.find(l=>l.key===key);
+  const ex = cart.find(l=>l.key===key), q = qtyOf(key);
+  if (q !== null && (q <= 0 || (ex && ex.qty >= q))) { toast(q <= 0 ? "Désolée, ce bijou est en rupture de stock" : `Il ne reste que ${q} pièce${q>1?"s":""}`); return; }
   if (ex) ex.qty++; else { const v = p.variants ? p.variants[i] : null; cart.push({key, name:p.name+(v?" · "+v.name:"")+(z?" · taille "+z:"")+(p.adjustable?" · réglable":""), price:p.price, img:v?v.img:p.img, qty:1}); }
   write("timfa-cart", cart); renderCart(); bump(); toast(PREORDER && p.isNew ? "Précommande ajoutée · dispo jeudi 19/11" : p.price ? "Ajouté au panier" : "Ajouté, prix à confirmer");
 }
-function orderText(){
+function orderText(orderId){
   if (!cart.length) return "Bonjour Timfa online shop, j'ai une question sur vos bijoux.";
   const lines = cart.map(l => `• ${l.qty} × ${l.name}${isPre(l.key) ? " (précommande, disponible le jeudi 19 novembre)" : ""} : ${l.price ? fmt(l.price*l.qty) : "prix à confirmer"}`);
   const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), z = ZONES[zone()], f = feeFor(zone()), d = discountFor(sub);
-  const name = $("#cName").value.trim(), place = $("#cPlace").value.trim();
-  return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\nLivraison ${z.label}${f!==z.fee ? " (tarif ensemble)" : ""} : ${fmt(f)}\n${d ? "Réduction commande sur le site : -"+fmt(d)+"\n" : ""}Total : ${fmt(sub+f-d)}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${name ? "\nNom : "+name : ""}${place ? "\nQuartier / ville : "+place : ""}\nMerci !`;
+  const name = $("#cName").value.trim(), phone = $("#cPhone").value.trim(), place = $("#cPlace").value.trim();
+  return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\nLivraison ${z.label}${f!==z.fee ? " (tarif ensemble)" : ""} : ${fmt(f)}\n${d ? "Réduction commande sur le site : -"+fmt(d)+"\n" : ""}Total : ${fmt(sub+f-d)}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${name ? "\nNom : "+name : ""}${phone ? "\nTéléphone : "+phone : ""}${place ? "\nQuartier / ville : "+place : ""}${orderId ? "\nN° de commande : "+orderId : ""}\nMerci !`;
 }
 const feeFor = z => (z==="abj" && cart.some(l => String(l.key).startsWith("ensemble"))) ? 900 : ZONES[z].fee;
 // Nouvelle collection en précommande jusqu'au jeudi 19 novembre 2026 (passe en « Nouveau » automatiquement)
@@ -765,7 +787,7 @@ document.addEventListener("click", e => {
   const j = e.target.closest("[data-jump]"); if (j) { setFilter(j.dataset.jump); if (j.tagName==="BUTTON") $("#boutique").scrollIntoView({behavior:"smooth"}); }
 });
 document.querySelectorAll('input[name="zone"]').forEach(x=>x.addEventListener("change",renderCart));
-["#cName","#cPlace"].forEach(id=>$(id).addEventListener("input",()=>{$("#checkout").href = waLink(orderText());}));
+["#cName","#cPhone","#cPlace"].forEach(id=>$(id).addEventListener("input",()=>{$("#checkout").href = waLink(orderText());}));
 $("#openCart").onclick = () => openCart(true);
 $("#closeCart").onclick = () => openCart(false);
 $("#scrim").onclick = () => openCart(false);
@@ -818,6 +840,33 @@ cart = (Array.isArray(cart) ? cart : []).map(l => {
   return {key: l.key, name: p.name + (v ? " · " + v.name : "") + (z ? " · taille " + z : "") + (p.adjustable ? " · réglable" : ""), price: p.price, img: v ? v.img : p.img, qty};
 }).filter(Boolean);
 favs = (Array.isArray(favs) ? favs : []).filter(id => PRODUCTS.some(p => p.id === id));
+// Envoi de la commande au tableau, puis ouverture de WhatsApp avec le numéro de commande
+$("#checkout").addEventListener("click", e => {
+  if (!API || !cart.length) return;
+  e.preventDefault();
+  const name = $("#cName").value.trim(), phone = $("#cPhone").value.trim(), place = $("#cPlace").value.trim();
+  $("#cName").classList.toggle("err", !name); $("#cPhone").classList.toggle("err", phone.replace(/\D/g,"").length < 8);
+  if (!name || phone.replace(/\D/g,"").length < 8) { toast("Indiquez votre nom et votre téléphone"); return; }
+  const w = window.open("", "_blank");
+  const btn = $("#checkout"); btn.textContent = "Envoi de la commande…";
+  const payload = {name, phone, place, zone: zone(), items: cart.map(l => ({code: l.key, qty: l.qty}))};
+  fetch(API, {method: "POST", headers: {"Content-Type": "text/plain;charset=utf-8"}, body: JSON.stringify(payload)})
+    .then(r => r.json())
+    .then(d => {
+      if (d && d.ok) {
+        const link = waLink(orderText(d.id));
+        cart = []; write("timfa-cart", cart); renderCart(); loadStock();
+        toast("Commande " + d.id + " enregistrée ✓");
+        if (w) w.location.href = link; else location.href = link;
+      } else if (d && d.error === "rupture") {
+        if (w) w.close();
+        loadStock(); toast("Un bijou de votre panier vient d’être épuisé. Vérifiez votre panier.");
+      } else { throw new Error(d && d.error); }
+    })
+    .catch(() => { const link = waLink(orderText()); if (w) w.location.href = link; else location.href = link; })
+    .finally(() => { btn.textContent = "Commander sur WhatsApp"; });
+});
+loadStock();
 renderGrid(); renderCart();
 </script>
 
