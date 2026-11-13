@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-HtnjWw1NNXMyqc3UHaumff347YNoP0JMR9ZxhrGzWh4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-IElrSjItc5zHVun0c7QdG6rvS9DWHPJvJKuIq21qi8Q='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -647,6 +647,9 @@ const PRODUCTS = [
    ]},
   {id:"bracelet-coeur-rose", cat:"Bracelets & parures", isNew:true, name:"Bracelet Cœur Rose", desc:"Cœur rose entouré de brillants, fleurs roses.", price:5000, img:"images/n-bracelet-coeur.jpg"},
   {id:"bracelet-papillon", cat:"Bracelets & parures", isNew:true, name:"Bracelet Papillon", desc:"Papillon rose et petites fleurs, doré.", price:5000, img:"images/n-bracelet-papillon.jpg"},
+  {id:"bracelet-fleurs-violet", cat:"Bracelets & parures", isNew:true, name:"Bracelet Fleur Violette", desc:"Double rang de pierres violettes et une fleur, doré.", price:5000, img:"images/n-bracelet-fleurs-violet.jpg"},
+  {id:"bracelet-arc-en-ciel", cat:"Bracelets & parures", name:"Bracelet Arc-en-ciel", desc:"Baguettes multicolores et brillants, doré.", price:3500, img:"images/n-bracelet-arc-en-ciel.jpg"},
+  {id:"bracelet-or", cat:"Bracelets & parures", name:"Bracelet Éclat Doré", desc:"Pierres claires serties en vagues, doré.", price:3500, img:"images/n-bracelet-or.jpg"},
   // ——— Collection ———
   {id:"toi-moi", cat:"Bagues", sub:"toi-moi", name:"Bague Toi & Moi", desc:"Deux pierres qui se rencontrent. Choisissez votre duo.", price:5000, was:7000, sizes:["6","7"],
    variants:[
@@ -858,6 +861,8 @@ $("#checkout").addEventListener("click", e => {
         cart = []; write("timfa-cart", cart); renderCart(); loadStock();
         toast("Commande " + d.id + " enregistrée ✓");
         if (w) w.location.href = link; else location.href = link;
+      } else if (d && d.error === "rupture" && (d.out||[]).some(c => !(c in STOCK))) {
+        const link = waLink(orderText()); if (w) w.location.href = link; else location.href = link;
       } else if (d && d.error === "rupture") {
         if (w) w.close();
         loadStock(); toast("Un bijou de votre panier vient d’être épuisé. Vérifiez votre panier.");
