@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-dR10icJDsacFLOh8HOC5zYre62I6Vh5TBPgSe0PKP5Q='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-n7r8GvzKrWySq3OHhMUw6uTrowG/WbeVzMZIa0PKeHY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -171,6 +171,9 @@ nav.menu a:hover,nav.menu a.on{border-color:var(--ink)}
 .pd-thumbs button{flex:none;width:64px;height:64px;border-radius:12px;overflow:hidden;border:2px solid transparent;padding:0;background:none}
 .pd-thumbs button[aria-pressed="true"]{border-color:var(--rose)}
 .pd-thumbs img{width:100%;height:100%;object-fit:cover}
+.pd-thumbs .th-vid{position:relative}
+.pd-thumbs .th-vid span{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:20px;background:rgba(42,28,30,.35)}
+#pdVid{width:100%;height:100%;object-fit:cover;display:block;background:#000}
 .pd-info{padding:26px 26px 22px 6px;display:flex;flex-direction:column;gap:12px}
 .pd-info h2{font-family:var(--display);font-weight:500;font-size:30px;margin:0;line-height:1.15}
 .pd-price{display:flex;align-items:baseline;gap:10px}
@@ -357,7 +360,8 @@ details.acc p{margin:8px 0 0;color:var(--muted);font-size:14px}
 .reels-card{background:var(--blush);border-radius:24px;padding:44px 48px;display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:center}
 .reels-card p{color:var(--muted);max-width:40ch}
 .promo-video{display:block;width:100%;max-width:340px;aspect-ratio:9/16;object-fit:cover;border-radius:20px;background:#000;margin-top:22px;box-shadow:0 24px 40px -24px rgba(42,28,30,.5)}
-.reel-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.reel-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:700px){.reel-row{grid-template-columns:repeat(2,1fr)}}
 .reel-row video{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:16px;background:#000}
 @media (max-width:860px){.reels-card{grid-template-columns:1fr;padding:28px 20px}}
 
@@ -672,6 +676,7 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
         <video src="videos/toi-et-moi.mp4" poster="videos/toi-et-moi.jpg" muted playsinline loop controls preload="none" aria-label="Vidéo des bagues Toi &amp; Moi"></video>
         <video src="videos/colliers.mp4" poster="videos/colliers.jpg" muted playsinline loop controls preload="none" aria-label="Vidéo des colliers"></video>
         <video src="videos/collier-halo-violet.mp4" poster="videos/collier-halo-violet.jpg" muted playsinline loop controls preload="none" aria-label="Vidéo du collier Halo Violet dans son écrin"></video>
+        <video src="videos/collier-noeud-rose.mp4" poster="videos/collier-noeud-rose.jpg" muted playsinline loop controls preload="none" aria-label="Vidéo du collier Nœud Rose dans son écrin"></video>
       </div>
     </div>
   </div>
@@ -797,7 +802,7 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
 <section class="sheet" id="pd" hidden role="dialog" aria-modal="true" aria-labelledby="pdName">
   <button class="x pd-x" id="pdX" type="button" aria-label="Fermer la fiche">×</button>
   <div class="pd-grid">
-    <div class="pd-gal"><div class="pd-main"><img id="pdImg" alt=""><span class="pd-zoom">Toucher pour agrandir</span></div><div class="pd-thumbs" id="pdThumbs"></div></div>
+    <div class="pd-gal"><div class="pd-main"><img id="pdImg" alt=""><video id="pdVid" playsinline controls loop muted data-noauto hidden></video><span class="pd-zoom" id="pdZoom">Toucher pour agrandir</span></div><div class="pd-thumbs" id="pdThumbs"></div></div>
     <div class="pd-info" id="pdInfo"></div>
   </div>
 </section>
@@ -894,11 +899,13 @@ $("#lb").addEventListener("touchend", e => { if (lbX0 === null) return; const dx
 const INFO = window.TIMFA_INFO || {};
 let PD = null;
 function openPd(id){ PD = PRODUCTS.find(x => x.id === id); if (!PD) return; track("ViewContent", {content_ids:[PD.id], content_name:PD.name, content_type:"product", value:PD.price||0, currency:"XOF"}); renderPd(); $("#pd").hidden = $("#pdScrim").hidden = false; document.body.style.overflow = "hidden"; }
-function closePd(){ $("#pd").hidden = $("#pdScrim").hidden = true; document.body.style.overflow = ""; PD = null; }
+function closePd(){ $("#pdVid").pause(); $("#pd").hidden = $("#pdScrim").hidden = true; document.body.style.overflow = ""; PD = null; }
 function renderPd(k){
   const p = PD, gal = galleryOf(p), v = p.variants ? p.variants[chosen[p.id]||0] : null, idx = k || 0;
-  $("#pdImg").src = gal[idx]; $("#pdImg").alt = p.name;
-  $("#pdThumbs").innerHTML = gal.length > 1 ? gal.map((g,i)=>`<button type="button" data-th="${i}" aria-pressed="${i===idx}"><img src="${g}" alt=""></button>`).join("") : "";
+  const showVid = k === "v" && p.video, vid = $("#pdVid");
+  $("#pdImg").hidden = !!showVid; $("#pdZoom").hidden = !!showVid; vid.hidden = !showVid;
+  if (showVid) { if (vid.getAttribute("src") !== p.video) { vid.src = p.video; vid.poster = p.poster || ""; } vid.play().catch(()=>{}); } else { vid.pause(); $("#pdImg").src = gal[idx]; $("#pdImg").alt = p.name; }
+  $("#pdThumbs").innerHTML = gal.length > 1 || p.video ? gal.map((g,i)=>`<button type="button" data-th="${i}" aria-pressed="${!showVid && i===idx}"><img src="${g}" alt=""></button>`).join("") + (p.video ? `<button type="button" class="th-vid" data-th="v" aria-pressed="${!!showVid}" aria-label="Voir la vidéo"><img src="${p.poster || gal[0]}" alt=""><span>▶</span></button>` : "") : "";
   const left = availOf(selCodes(p)), out = left === 0;
   const stock = left === null ? "" : out ? `<span class="stock out">Rupture de stock</span>` : left <= 3 ? `<span class="stock low">Plus que ${left} pièce${left>1?"s":""}</span>` : `<span class="stock" style="background:#dff3e6;color:#1f8a4c">En stock</span>`;
   const sw = p.variants ? `<div class="swatches" role="group" aria-label="Couleur">${p.variants.map((x,i)=>`<button type="button" style="background:${x.color}" title="${x.name}" aria-label="${x.name}" aria-pressed="${i===(chosen[p.id]||0)}" data-sw="${p.id}" data-i="${i}"></button>`).join("")}</div><p class="pd-desc">${esc(v.name)}</p>` : "";
@@ -959,8 +966,8 @@ document.addEventListener("click", e => {
   const o = e.target.closest("[data-pick]"); if (o) { pick[o.dataset.pick] = o.dataset.code; renderBuilder(); return; }
   const d = e.target.closest("[data-idea]"); if (d) { const it = SET.ideas[+d.dataset.idea]; pick = {c: it.c, b: it.b}; renderBuilder(); return; }
   if (e.target.closest("#bAdd")) { addSet(); return; }
-  const th = e.target.closest("[data-th]"); if (th) { renderPd(+th.dataset.th); return; }
-  if (e.target.closest(".pd-main")) { const k = [...document.querySelectorAll("#pdThumbs button")].findIndex(b=>b.getAttribute("aria-pressed")==="true"); openLb(galleryOf(PD), Math.max(0,k), PD.name); return; }
+  const th = e.target.closest("[data-th]"); if (th) { renderPd(th.dataset.th === "v" ? "v" : +th.dataset.th); return; }
+  if (e.target.closest(".pd-main") && $("#pdVid").hidden) { const k = [...document.querySelectorAll("#pdThumbs button")].findIndex(b=>b.getAttribute("aria-pressed")==="true"); openLb(galleryOf(PD), Math.max(0,k), PD.name); return; }
   if (e.target.closest("[data-close-pd]")) { closePd(); return; }
   const ts = e.target.closest("[data-to-set]"); if (ts) { const id = ts.dataset.toSet, p = PRODUCTS.find(x=>x.id===id), code = p.variants ? id+"#"+(chosen[id]||0) : id; if (SET.colliers.includes(code)) pick.c = code; else if (SET.bracelets.includes(code)) pick.b = code; else if (p.cat==="Colliers") pick.c = SET.colliers.find(c=>c.startsWith(id)); else pick.b = SET.bracelets.find(b=>b.startsWith(id)); closePd(); renderBuilder(); $("#ensembles").scrollIntoView({behavior:"smooth"}); return; }
   const g = e.target.closest("[data-gal],[data-open]"); if (g) { openPd(g.dataset.gal || g.dataset.open); }
