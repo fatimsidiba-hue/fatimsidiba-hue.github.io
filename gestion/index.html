@@ -464,13 +464,15 @@ const SITE = "https://fatimsidiba-hue.github.io";
 function avisLink(o){ return SITE + "/avis/?id=" + encodeURIComponent(o.id) + "&n=" + encodeURIComponent(String(o.name||"").split(" ")[0]); }
 function courierLink(l){ return SITE + "/livreur/?k=" + encodeURIComponent(l.key||""); }
 function destOf(o){ return (String(o.notes||"").match(/Livrer à : (.*)/) || [])[1] || ""; }
+function moneyRows(o){ const fee = o.fee||0, disc = o.discount||0, sub = (o.total||0) - fee + disc; const rows = [["Bijoux", fmt(sub)], ["Livraison" + (o.zone ? " (" + o.zone + ")" : ""), fmt(fee)]]; if (disc) rows.push(["Réduction", "−" + fmt(disc)]); rows.push(["TOTAL", fmt(o.total)]); return rows; }
 function ticketText(o){ const dest = destOf(o), surprise = /Cadeau surprise/.test(o.notes||"");
-  return `🧾 TICKET DE LIVRAISON · Timfa online shop\nCommande : ${o.id}${o.delivery ? "\nLivraison : " + frDate(o.delivery) : ""}\n\n👤 ${dest ? "Destinataire : " + dest + "\n(commandé par " + o.name + " · " + o.phone + ")" : o.name + "\n📞 " + o.phone}\n📍 ${o.place}\n\n💍 ${o.items}${surprise ? "\n\n🎁 CADEAU SURPRISE : ne rien dire du contenu" : ""}\n\n💰 ${o.paid ? "DÉJÀ PAYÉ : rien à encaisser" : "À ENCAISSER : " + fmt(o.total)}`; }
+  return `🧾 TICKET DE LIVRAISON · Timfa online shop\nCommande : ${o.id}${o.delivery ? "\nLivraison : " + frDate(o.delivery) : ""}\n\n👤 ${dest ? "Destinataire : " + dest + "\n(commandé par " + o.name + " · " + o.phone + ")" : o.name + "\n📞 " + o.phone}\n📍 ${o.place}\n\n💍 ${o.items}${surprise ? "\n\n🎁 CADEAU SURPRISE : ne rien dire du contenu" : ""}\n\n${moneyRows(o).map(([k,v]) => (k==="TOTAL" ? "💰 TOTAL : " : k + " : ") + v).join("\n")}\n${o.paid ? "✅ DÉJÀ PAYÉ : rien à encaisser" : "👉 À ENCAISSER : " + fmt(o.total)}`; }
 function ticket(o){ const dest = destOf(o), lv = (DATA.livreurs||[]).find(l=>l.name===o.livreur), surprise = /Cadeau surprise/.test(o.notes||"");
   openModal(`<h2>Ticket de livraison</h2><div class="ticket"><img src="../images/logo-sombre.png" alt="Timfa online shop"><div class="ln"><span>Commande</span><b>${esc(o.id)}</b></div>${o.delivery?`<div class="ln"><span>Livraison</span><b>${frDate(o.delivery)}</b></div>`:""}
     <div class="ln"><span>${dest?"Destinataire":"Cliente"}</span><b>${esc(dest || o.name)}</b></div>${dest?`<div class="ln"><span>Commandé par</span><b>${esc(o.name)} · ${esc(o.phone)}</b></div>`:`<div class="ln"><span>Téléphone</span><b>${esc(o.phone)}</b></div>`}
     <div class="ln"><span>Adresse</span><b>${esc(o.place)}</b></div><div style="white-space:pre-line">${esc(o.items)}</div>${surprise?`<b>🎁 Cadeau surprise : ne rien dire du contenu</b>`:""}
-    <div class="big">${o.paid ? "DÉJÀ PAYÉ" : "À encaisser : " + fmt(o.total)}</div>${o.livreur?`<small>Livreur : ${esc(o.livreur)}</small>`:""}</div>
+    ${moneyRows(o).map(([k,v]) => `<div class="ln"${k==="TOTAL" ? ' style="font-size:17px"' : ""}><span>${k==="TOTAL" ? "<b>Total</b>" : esc(k)}</span><b>${v}</b></div>`).join("")}
+    <div class="big">${o.paid ? "DÉJÀ PAYÉ ✓ (" + fmt(o.total) + ")" : "À encaisser : " + fmt(o.total)}</div>${o.livreur?`<small>Livreur : ${esc(o.livreur)}</small>`:""}</div>
     <div class="tk-share"><button class="btn dark" type="button" id="tkShare">📤 Partager le ticket (imprimante)</button><button class="btn soft" type="button" id="tkLabel">🏷️ Étiquette du colis</button><label>Papier <select id="tkPaper"><option value="384">58 mm</option><option value="576">80 mm</option></select></label></div>
     <div class="f-actions"><button class="btn soft" type="button" id="tkPrint">🖨️ Imprimer</button>${lv ? `<a class="btn wa" target="_blank" rel="noopener" href="${waUrl(lv, ticketText(o) + "\n\n📱 Toutes vos livraisons : " + courierLink(lv))}">Envoyer à ${esc(lv.name)}</a>` : `<span class="p-sub">Choisissez un livreur sur la commande pour lui envoyer le ticket.</span>`}<button class="btn dark" type="button" id="tkCopy">Copier le texte</button></div>`);
   try { $("#tkPaper").value = localStorage.getItem("timfaPaper") || "384"; } catch (e) {}
@@ -501,10 +503,12 @@ async function ticketImage(o, W){
   y += 4; wrap("Adresse : " + (o.place || "à confirmer"), fs); rule(true);
   String(o.items).split(/\n/).filter(Boolean).forEach(l => wrap(l, fs)); 
   if (surprise) { y += 6; wrap("CADEAU SURPRISE : ne rien dire du contenu", fs, true); }
+  rule(true);
+  moneyRows(o).forEach(([k,v]) => { if (k === "TOTAL") { x.font = "bold " + (fs+4) + "px " + F; x.textAlign = "left"; x.fillText("TOTAL", pad, y); x.textAlign = "right"; x.fillText(v, W-pad, y); y += (fs+4)*1.4; } else row(k, v); });
   rule(false); y += 4;
   const big = o.paid ? "DÉJÀ PAYÉ" : "À ENCAISSER : " + fmt(o.total); let bs = W >= 576 ? 40 : 30;
   x.font = "bold " + bs + "px " + F; while (x.measureText(big).width > W - 2*pad - 20 && bs > 16) { bs--; x.font = "bold " + bs + "px " + F; } const bh = bs*1.6; x.lineWidth = 4; x.strokeRect(pad, y, W-2*pad, bh); x.textAlign = "center"; x.fillText(big, W/2, y + (bh-bs)/2); y += bh + 14;
-  if (!o.paid && o.fee) wrap("dont livraison : " + fmt(o.fee), fs-2, false, "center");
+  if (o.paid) wrap("Rien à encaisser", fs-2, false, "center");
   y += 6; wrap("Merci ! Timfa online shop", fs-4, false, "center"); wrap("WhatsApp 07 04 16 09 52", fs-4, false, "center"); y += pad*2;
   const out = document.createElement("canvas"); out.width = W; out.height = Math.ceil(y); out.getContext("2d").drawImage(c, 0, 0);
   return new Promise(ok => out.toBlob(ok, "image/png"));
