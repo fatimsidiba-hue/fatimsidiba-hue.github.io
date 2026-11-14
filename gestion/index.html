@@ -8,7 +8,10 @@
 <meta name="theme-color" content="#fcecee">
 <title>Gestion Timfa</title>
 <link rel="icon" type="image/png" href="../images/logo-carre.png">
-<link rel="apple-touch-icon" href="../images/logo-carre.png">
+<link rel="apple-touch-icon" href="../images/app-gestion-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Timfa Gestion">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap">
 <style>
 /* Layout: application mobile d'abord — en-tête collant, chiffres clés, onglets Commandes / Stock, cartes. Couleurs du site Timfa. */
@@ -228,6 +231,18 @@ header img{height:46px}
 .rv .st{font-size:11px;font-weight:600;border-radius:999px;padding:2px 9px;justify-self:start}
 .st.Publié{background:#e8f6ee;color:#1f8a4c}.st.Masqué{background:#f3eeee;color:var(--muted)}.st.attente{background:#fff3d6;color:#8a5a00}
 .al-list{display:grid;gap:8px;padding-bottom:60px}
+.clk{cursor:pointer}.clk:hover{border-color:var(--rose)}
+.fc{display:block;font-size:11.5px;font-weight:600;margin-top:2px}.fc.hot{color:#d6334a}.fc.warm{color:#8a5a00}.fc.ok{color:#1f8a4c}
+.icon-btn#bell{font-size:16px}
+.rs-row{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding:8px 0}
+.rs-row img,.rs-row .ph{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--blush);display:grid;place-items:center}
+.rs-row input{width:64px;border:1px solid var(--line);border-radius:10px;padding:6px;text-align:center;font:inherit}
+.gm-list{display:grid;gap:6px;max-height:46vh;overflow:auto;margin-top:10px}
+.gm-row{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.gm-row.sent{opacity:.5}
+.report h3{font-family:var(--display);font-weight:500;margin:16px 0 6px}
+.report table{width:100%;border-collapse:collapse;font-size:13.5px}.report td{padding:5px 4px;border-bottom:1px solid var(--line)}.report td:last-child{text-align:right;font-weight:600}
+.report .kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}.report .kp div{background:var(--bg,#fffafa);border:1px solid var(--line);border-radius:12px;padding:10px}.report .kp b{display:block;font-size:18px}
 .owed{display:flex;gap:6px;align-items:center;flex-wrap:wrap;color:#8a5a00!important;font-weight:600}
 .tk-share{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0 4px}.tk-share .btn{flex:1;justify-content:center;min-width:200px}.tk-share label{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}.tk-share select{border:1px solid var(--line);border-radius:10px;padding:6px 8px;background:#fff}
 .ticket.receipt{border:0;padding:0;background:#eee;border-radius:14px;padding:14px;display:block}.ticket.receipt img{display:block;width:100%;max-width:360px;height:auto;margin:0 auto;box-shadow:0 10px 24px -14px rgba(0,0,0,.4)}
@@ -281,6 +296,7 @@ header img{height:46px}
     <img src="../images/logo-rose.png" alt="Timfa online shop">
     <span class="hello" id="hello">Bonjour ✨</span>
     <div style="display:flex;gap:8px">
+      <button class="icon-btn" id="bell" type="button" aria-label="Alertes de nouvelles commandes" title="Alertes de nouvelles commandes">🔕</button>
       <button class="icon-btn" id="refresh" type="button" aria-label="Actualiser"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button>
       <button class="icon-btn" id="logout" type="button" aria-label="Se déconnecter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></svg></button>
     </div>
@@ -306,6 +322,7 @@ header img{height:46px}
         <button class="btn dark" type="button" id="newOrder">＋ Nouvelle commande</button>
         <button class="btn soft" type="button" id="dayTickets">🧾 Tickets du jour</button>
         <button class="btn soft" type="button" id="dayPoint">📊 Point du jour</button>
+        <button class="btn soft" type="button" id="monthReport">📄 Bilan du mois</button>
         <input class="search" id="q" type="search" placeholder="Rechercher un nom, un numéro, un bijou…" aria-label="Rechercher">
         <button class="chip" type="button" data-f="todo" aria-pressed="true">À traiter</button>
         <button class="chip" type="button" data-f="new" aria-pressed="false">Nouvelles</button>
@@ -331,7 +348,7 @@ header img{height:46px}
     </section>
 
     <section id="view-lots" hidden>
-      <div class="toolbar"><button class="btn dark" type="button" id="newLot">＋ Nouveau lot (1688)</button><span class="p-sub" id="lotsSum"></span></div>
+      <div class="toolbar"><button class="btn dark" type="button" id="newLot">＋ Nouveau lot (1688)</button><button class="btn soft" type="button" id="restock">🛒 Liste de réassort</button><span class="p-sub" id="lotsSum"></span></div>
       <div class="lots" id="lots"></div>
     </section>
 
@@ -343,7 +360,7 @@ header img{height:46px}
     </section>
 
     <section id="view-clients" hidden>
-      <div class="toolbar"><input class="search" id="qc" type="search" placeholder="Rechercher une cliente…" aria-label="Rechercher une cliente"><button class="btn soft" type="button" id="newLivreur">＋ Livreur</button></div>
+      <div class="toolbar"><input class="search" id="qc" type="search" placeholder="Rechercher une cliente…" aria-label="Rechercher une cliente"><button class="btn soft" type="button" id="groupMsg">📣 Message groupé</button><button class="btn soft" type="button" id="newLivreur">＋ Livreur</button></div>
       <div class="cl-grid"><div><h3 class="group-title">Clientes</h3><div class="clients" id="clients"></div></div><div><h3 class="group-title">Livreurs</h3><div class="clients" id="livreurs"></div></div></div>
     </section>
 
@@ -395,7 +412,7 @@ function tryLogin(pin){
     else { $("#loginErr").textContent = "Code incorrect"; $("#pin").classList.remove("shake"); void $("#pin").offsetWidth; $("#pin").classList.add("shake"); pins.forEach(p=>p.value=""); pins[0].focus(); }
   });
 }
-function showApp(){ $("#login").hidden = true; $("#app").hidden = false; render(); placePill(); }
+function showApp(){ $("#login").hidden = true; $("#app").hidden = false; render(); placePill(); bellIcon(); checkNew(); }
 $("#logout").onclick = () => { try{localStorage.removeItem("timfa-pin")}catch(e){} location.reload(); };
 
 /* ——— Données ——— */
@@ -403,7 +420,7 @@ function load(pin = PIN){
   $("#refresh").classList.add("spin");
   return fetch(API + "?action=admin&pin=" + encodeURIComponent(pin)).then(r=>r.json()).then(d => {
     if (!d.ok) return false;
-    DATA = d; if (!$("#app").hidden) render(); return true;
+    DATA = d; SALES30 = null; if (!$("#app").hidden) render(); return true;
   }).catch(() => { toast("Connexion impossible, réessayez"); return false; }).finally(() => $("#refresh").classList.remove("spin"));
 }
 function post(body){
@@ -442,6 +459,7 @@ function renderKpis(){
   if (out) a.push(`<span class="alert bad">${out} bijou${out>1?"x":""} en rupture</span>`);
   if (low) a.push(`<span class="alert warn">${low} en stock faible</span>`);
   if (todo) a.push(`<span class="alert info">${todo} bijou${todo>1?"x":""} sans stock renseigné</span>`);
+  const soonOut = mergedStock().filter(s => { const d = daysLeft(s); return d !== null && d > 0 && d <= 7; }).length; if (soonOut) a.push(`<span class="alert warn">⏳ ${soonOut} bijou(x) bientôt épuisé(s)</span>`);
   const soonDates = upcomingDates(7).length; if (soonDates) a.push(`<span class="alert info">🎂 ${soonDates} anniversaire(s)/fête(s) dans les 7 jours</span>`);
   const owedAll = (DATA.livreurs||[]).reduce((t,l)=>t+courierOwed(l.name).amount,0); if (owedAll > 0) a.push(`<span class="alert warn">🛵 ${fmt(owedAll)} à récupérer chez les livreurs</span>`);
   const rvWait = (DATA.reviews||[]).filter(x=>x.status==="En attente").length, back = backAlerts().length, carts = staleCarts().length;
@@ -462,7 +480,7 @@ const WA_TPL = [
   ["Paiement expédition", o => `Bonjour ${o.name}, pour l’expédition merci d’envoyer ${fmt(o.total)} sur le 07 79 51 25 04, puis la capture du paiement avec votre nom ici. J’expédie dès réception 📦`]
 ];
 const SITE = "https://fatimsidiba-hue.github.io";
-function avisLink(o){ return SITE + "/avis/?id=" + encodeURIComponent(o.id) + "&n=" + encodeURIComponent(String(o.name||"").split(" ")[0]); }
+function avisLink(o){ const first = (parseItems(o)[0]||{}).name || ""; return SITE + "/avis/?id=" + encodeURIComponent(o.id) + "&n=" + encodeURIComponent(String(o.name||"").split(" ")[0]) + (first ? "&b=" + encodeURIComponent(first.replace(/\s*\(précommande\)/,"").slice(0,80)) : ""); }
 function courierLink(l){ return SITE + "/livreur/?k=" + encodeURIComponent(l.key||""); }
 function destOf(o){ return (String(o.notes||"").match(/Livrer à : (.*)/) || [])[1] || ""; }
 function moneyRows(o){ const fee = o.fee||0, disc = o.discount||0, sub = (o.total||0) - fee + disc; const rows = [["Bijoux", fmt(sub)], ["Livraison" + (o.zone ? " (" + o.zone + ")" : ""), fmt(fee)]]; if (disc) rows.push(["Réduction", "−" + fmt(disc)]); rows.push(["TOTAL", fmt(o.total)]); return rows; }
@@ -678,7 +696,7 @@ function renderStock(){
   list.forEach(s => {
     if (lastNew !== s.isNew) { html += `<div class="group-title">${s.isNew ? "Nouvelle collection" : "Collection"}</div>`; lastNew = s.isNew; }
     const im = photoOf(s.code);
-    html += `<div class="s-row${s.missing?" missing":""}" style="--i:${i++}" data-code="${esc(s.code)}">${im ? `<img class="s-img" src="${im}" alt="" loading="lazy" data-edit="${esc(s.code)}">` : `<span class="s-img ph" data-edit="${esc(s.code)}">📷</span>`}<div class="s-name">${esc(s.name)}${s.added==="Oui" ? `<span class="s-tag">ajouté</span>` : s.added==="Masqué" ? `<span class="s-tag">masqué</span>` : ""}<small>${[esc(s.variant||""), s.price?fmt(s.price):""].filter(Boolean).join(" · ")}</small>${s.missing ? "" : `<label class="cost">Prix d’achat <input type="number" inputmode="numeric" min="0" data-cost="${esc(s.code)}" value="${s.cost||""}" placeholder="–"> F</label>`}</div>${sBadge(s.qty)}
+    html += `<div class="s-row${s.missing?" missing":""}" style="--i:${i++}" data-code="${esc(s.code)}">${im ? `<img class="s-img" src="${im}" alt="" loading="lazy" data-edit="${esc(s.code)}">` : `<span class="s-img ph" data-edit="${esc(s.code)}">📷</span>`}<div class="s-name">${esc(s.name)}${s.added==="Oui" ? `<span class="s-tag">ajouté</span>` : s.added==="Masqué" ? `<span class="s-tag">masqué</span>` : ""}<small>${[esc(s.variant||""), s.price?fmt(s.price):""].filter(Boolean).join(" · ")}</small>${forecastHtml(s)}${s.missing ? "" : `<label class="cost">Prix d’achat <input type="number" inputmode="numeric" min="0" data-cost="${esc(s.code)}" value="${s.cost||""}" placeholder="–"> F</label>`}</div>${sBadge(s.qty)}
       <div class="stepper"><button type="button" data-d="-1" aria-label="Retirer une pièce">−</button><input type="number" inputmode="numeric" min="0" value="${s.qty===null?"":s.qty}" placeholder="–" aria-label="Pièces en stock"><button type="button" data-d="1" aria-label="Ajouter une pièce">+</button></div></div>`;
   });
   $("#stock").innerHTML = html || `<div class="empty-state"><b>Aucun bijou</b>Changez de filtre.</div>`;
@@ -899,7 +917,7 @@ function renderClients(){
   (DATA.clients||[]).forEach(c => { const k = String(c.phone).replace(/\D/g,"").slice(-8) || c.name; map[k] = {name:c.name, phone:c.phone, place:c.place, n:0, total:0, last:""}; });
   DATA.orders.filter(o=>o.status!=="Annulée").forEach(o => { const k = String(o.phone).replace(/\D/g,"").slice(-8) || o.name; const c = map[k] || (map[k] = {name:o.name, phone:o.phone, place:o.place, n:0, total:0, last:""}); c.n++; c.total += net(o); if (o.date > c.last) c.last = o.date; });
   const L = Object.values(map).filter(c => !q || (c.name+" "+c.phone+" "+c.place).toLowerCase().includes(q)).sort((a,b)=>b.total-a.total);
-  $("#clients").innerHTML = L.length ? L.map((c,i)=>`<div class="cl" style="--i:${i}"><span class="av">${esc((c.name||"?")[0].toUpperCase())}</span><span><b>${esc(c.name)}</b>${i<3 && c.total ? " 👑" : ""}<small>${esc(c.place||"")}${c.place?" · ":""}${esc(c.phone||"")}</small><small>${c.n} commande(s) · ${fmt(c.total)}${c.last ? " · dernière le " + frDate(c.last) : ""}</small><small>💕 ${(c.n % 5 === 4) ? "<b style='color:#1f8a4c'>Prochaine commande : −2 000 F 🎁</b>" : "Fidélité " + (c.n % 5) + "/5"}${String(c.phone).replace(/\D/g,"").length >= 6 ? " · code parrain R" + String(c.phone).replace(/\D/g,"").slice(-6) : ""}</small></span>${c.phone ? `<a class="btn wa" style="padding:7px 12px" href="${waUrl(c)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}</div>`).join("") : `<div class="empty-state"><b>Aucune cliente</b>Elles s’ajoutent toutes seules à chaque commande.</div>`;
+  $("#clients").innerHTML = L.length ? L.map((c,i)=>`<div class="cl clk" style="--i:${i}" data-client="${esc(String(c.phone||c.name))}"><span class="av">${esc((c.name||"?")[0].toUpperCase())}</span><span><b>${esc(c.name)}</b>${i<3 && c.total ? " 👑" : ""}<small>${esc(c.place||"")}${c.place?" · ":""}${esc(c.phone||"")}</small><small>${c.n} commande(s) · ${fmt(c.total)}${c.last ? " · dernière le " + frDate(c.last) : ""}</small><small>💕 ${(c.n % 5 === 4) ? "<b style='color:#1f8a4c'>Prochaine commande : −2 000 F 🎁</b>" : "Fidélité " + (c.n % 5) + "/5"}${String(c.phone).replace(/\D/g,"").length >= 6 ? " · code parrain R" + String(c.phone).replace(/\D/g,"").slice(-6) : ""}</small></span>${c.phone ? `<a class="btn wa" style="padding:7px 12px" href="${waUrl(c)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}</div>`).join("") : `<div class="empty-state"><b>Aucune cliente</b>Elles s’ajoutent toutes seules à chaque commande.</div>`;
   $("#livreurs").innerHTML = (DATA.livreurs||[]).length ? DATA.livreurs.map(l=>{ const n = DATA.orders.filter(o=>o.livreur===l.name && !["Livrée","Annulée"].includes(o.status)).length, ow = courierOwed(l.name); return `<div class="cl"><span class="av">🛵</span><span><b>${esc(l.name)}</b><small>${esc(l.phone)}${n ? " · " + n + " à livrer" : ""}</small>${ow.n ? `<small class="owed">💰 ${ow.amount >= 0 ? "Vous doit " + fmt(ow.amount) : "Vous lui devez " + fmt(-ow.amount)} (${ow.n} colis livré${ow.n>1?"s":""}) <button type="button" class="btn ok" style="padding:4px 10px;font-size:12px" data-remis="${esc(l.name)}">Argent reçu ✓</button></small>` : `<small style="color:#1f8a4c">Caisse à jour ✓</small>`}<small><a href="${courierLink(l)}" target="_blank" rel="noopener">Sa page livraisons ↗</a></small></span><a class="btn wa" style="padding:7px 12px" href="${waUrl(l, "Bonjour " + l.name + " 👋 Voici votre page Timfa : vous y voyez vos livraisons et vous appuyez sur « Livré » à chaque colis remis.\n" + courierLink(l))}" target="_blank" rel="noopener">Envoyer son lien</a></div>`; }).join("") : `<div class="empty-chart">Ajoutez vos livreurs.</div>`;
 }
 $("#qc").addEventListener("input", renderClients);
@@ -916,6 +934,89 @@ function upcomingDates(days){ const now = new Date(), up = []; for (let k=0;k<da
 function courierOwed(name){ const L = DATA.orders.filter(o => o.livreur===name && o.status==="Livrée" && !o.remis);
   return {n:L.length, amount:L.reduce((t,o)=>t + (/^Wave/.test(String(o.payment)) ? -(o.fee||0) : net(o)), 0), list:L}; }
 function staleCarts(){ const lim = Date.now() - 30*60*1000; return (DATA.carts||[]).filter(c => !c.date || new Date(c.date).getTime() < lim); }
+
+/* ——— Ventes par bijou, prévision, réassort ——— */
+function salesByCode(days){ const lim = addDays(today(), -days), m = {};
+  DATA.orders.filter(o => o.status !== "Annulée" && o.date.slice(0,10) >= lim).forEach(o => String(o.codes||"").split(",").forEach(c => { const x = c.trim().match(/^(.+) x(\d+)$/); if (!x) return;
+    const parts = /^set:/.test(x[1]) ? x[1].slice(4).split("+") : [x[1]]; parts.forEach(k => m[k] = (m[k]||0) + (+x[2])); }));
+  return m; }
+let SALES30 = null;
+function sales30(){ if (!SALES30) SALES30 = salesByCode(30); return SALES30; }
+function daysLeft(s){ const sold = sales30()[s.code] || 0; if (!sold || s.qty === null) return null; return s.qty <= 0 ? 0 : Math.round(s.qty / (sold/30)); }
+function forecastHtml(s){ const sold = sales30()[s.code] || 0; if (!sold) return ""; const d = daysLeft(s);
+  if (d === null) return `<span class="fc warm">${sold} vendu(s) en 30 j</span>`;
+  return `<span class="fc ${d <= 7 ? "hot" : d <= 21 ? "warm" : "ok"}">${sold} vendu(s) en 30 j · ${d === 0 ? "épuisé" : "épuisé dans ~" + d + " j"}</span>`; }
+function restockList(){ const S = sales30();
+  return mergedStock().filter(s => s.qty !== null).map(s => { const sold = S[s.code] || 0, target = Math.max(sold > 0 ? Math.ceil(sold * 1.5) : 0, (s.qty <= 1 && sold) ? 3 : 0);
+    return Object.assign({sold, need: Math.max(0, target - s.qty)}, s); }).filter(s => s.need > 0 || (s.qty === 0 && s.sold)).sort((a,b) => b.sold - a.sold || a.qty - b.qty); }
+function restockText(L){ return "🛒 Réassort Timfa · " + frDate(today()) + "\n" + L.map(s => `• ${s.name}${s.variant ? " (" + s.variant + ")" : ""} : ${s.need} pièce(s)  [stock ${s.qty}, vendus 30 j : ${s.sold}]`).join("\n"); }
+$("#restock").onclick = () => { SALES30 = null; const L = restockList();
+  openModal(`<h2>Liste de réassort 1688</h2><p class="p-sub">Calculée sur vos ventes des 30 derniers jours : de quoi tenir environ 6 semaines. Ajustez les quantités si besoin.</p>
+    <div id="rsList">${L.length ? L.map((s,i) => { const im = photoOf(s.code); return `<div class="rs-row">${im ? `<img src="${im}" alt="">` : `<span class="ph">📷</span>`}<span><b>${esc(s.name)}</b>${s.variant ? " · " + esc(s.variant) : ""}<small style="display:block;color:var(--muted)">Stock ${s.qty} · vendus 30 j : ${s.sold}${s.cost ? " · achat " + fmt(s.cost) : ""}</small></span><input type="number" min="0" value="${s.need}" data-rs="${i}" aria-label="Quantité à commander"></div>`; }).join("") : `<div class="empty-state"><b>Rien à recommander pour l’instant</b>La liste se remplit avec vos ventes : renseignez bien le stock.</div>`}</div>
+    ${L.length ? `<div class="f-actions"><button class="btn dark" type="button" id="rsCopy">Copier la liste</button><a class="btn wa" id="rsWa" target="_blank" rel="noopener" href="#">Envoyer sur WhatsApp</a></div>` : ""}`);
+  if (!L.length) return;
+  const txt = () => { document.querySelectorAll("[data-rs]").forEach(inp => L[+inp.dataset.rs].need = Math.max(0, +inp.value || 0)); return restockText(L.filter(s => s.need > 0)); };
+  $("#rsCopy").onclick = () => navigator.clipboard.writeText(txt()).then(()=>toast("Liste copiée ✓"), ()=>toast("Copie impossible"));
+  $("#rsWa").onclick = e => { e.currentTarget.href = "https://wa.me/?text=" + encodeURIComponent(txt()); }; };
+
+/* ——— Fiche cliente ——— */
+const k8 = p => String(p||"").replace(/\D/g,"").slice(-8);
+document.addEventListener("click", e => { const c = e.target.closest("[data-client]"); if (!c || e.target.closest("a,button")) return; clientSheet(c.dataset.client); });
+function clientSheet(key){ const kk = k8(key) || key, O = DATA.orders.filter(o => (k8(o.phone) || o.name) === kk).sort((a,b) => b.date.localeCompare(a.date));
+  const info = (DATA.clients||[]).find(c => k8(c.phone) === kk) || O[0] || {name:key, phone:key};
+  const ok = O.filter(o => o.status !== "Annulée"), tot = ok.reduce((t,o)=>t+net(o),0), n = ok.length, code = k8(info.phone).length >= 6 ? "R" + String(info.phone).replace(/\D/g,"").slice(-6) : "";
+  const dates = (DATA.dates||[]).filter(d => k8(d.phone) === kk);
+  openModal(`<h2>${esc(info.name || "Cliente")}</h2><p class="p-sub">${esc(info.phone||"")}${info.place ? " · " + esc(info.place) : ""}</p>
+    <div class="report"><div class="kp"><div><small>Commandes</small><b>${n}</b></div><div><small>Dépensé (sans livraison)</small><b>${fmt(tot)}</b></div><div><small>Fidélité</small><b>${n % 5}/5${n % 5 === 4 ? " 🎁" : ""}</b></div>${code ? `<div><small>Code parrain</small><b>${code}</b></div>` : ""}</div>
+    ${dates.length ? `<h3>Dates à retenir</h3>${dates.map(d => `<div>🎂 ${esc(d.occasion)} de ${esc(d.forWho||"?")} : ${esc(String(d.day).replace(/^'/,""))}</div>`).join("")}` : ""}
+    <h3>Historique</h3>${O.length ? `<table>${O.map(o => `<tr><td>${frDate(o.date)}<br><small>${esc(o.id)} · ${esc(o.status)}</small></td><td style="white-space:pre-line;font-weight:400;text-align:left">${esc(o.items)}</td><td>${fmt(o.total)}</td></tr>`).join("")}</table>` : `<p class="p-sub">Pas encore de commande.</p>`}</div>
+    <div class="f-actions">${info.phone ? `<a class="btn wa" target="_blank" rel="noopener" href="${waUrl(info)}">WhatsApp</a>` : ""}</div>`); }
+
+/* ——— Message groupé ——— */
+function clientGroups(){ const map = {}, T = today();
+  (DATA.clients||[]).forEach(c => { const k = k8(c.phone); if (k) map[k] = {name:c.name, phone:c.phone, n:0, last:""}; });
+  DATA.orders.filter(o => o.status !== "Annulée").forEach(o => { const k = k8(o.phone); if (!k) return; const c = map[k] || (map[k] = {name:o.name, phone:o.phone, n:0, last:""}); c.n++; if (o.date > c.last) c.last = o.date; });
+  const all = Object.values(map).filter(c => k8(c.phone).length === 8);
+  return {toutes: all, fideles: all.filter(c => c.n >= 2), inactives: all.filter(c => c.last && c.last.slice(0,10) < addDays(T, -30)), nouvelles: all.filter(c => c.n === 1), anniv: all.filter(c => upcomingDates(14).some(d => k8(d.phone) === k8(c.phone)))}; }
+$("#groupMsg").onclick = () => { const G = clientGroups(), labels = {toutes:"Toutes", fideles:"Fidèles (2 commandes et +)", nouvelles:"1 seule commande", inactives:"Pas de commande depuis 30 jours", anniv:"Une date à fêter dans 14 jours"};
+  openModal(`<h2>Message groupé</h2><p class="p-sub">Choisissez un groupe, écrivez le message, puis appuyez sur « Envoyer » pour chaque cliente : WhatsApp s’ouvre avec le message prêt. {prénom} est remplacé automatiquement.</p>
+    <div class="f-grid"><label>Groupe<select id="gmG">${Object.keys(labels).map(k => `<option value="${k}">${labels[k]} (${G[k].length})</option>`).join("")}</select></label>
+    <label class="full">Message<textarea id="gmT" rows="5" style="width:100%;font:inherit;border:1px solid var(--line);border-radius:12px;padding:10px">Bonjour {prénom} 😊 C’est Timfa online shop ✨\nNos nouveautés sont arrivées ! Colliers, bracelets et ensembles à composer 💕\n🎁 −1 000 F sur votre commande sur le site : ${SITE}</textarea></label></div>
+    <div class="gm-list" id="gmL"></div>`);
+  const draw = () => { const L = G[$("#gmG").value];
+    $("#gmL").innerHTML = L.length ? L.map((c,i) => `<div class="gm-row"><span><b>${esc(c.name)}</b> <small>${esc(c.phone)}</small></span><a class="btn wa" style="padding:6px 12px" target="_blank" rel="noopener" data-gm="${i}" href="#">Envoyer</a></div>`).join("") : `<div class="empty-state"><b>Personne dans ce groupe</b></div>`; };
+  draw(); $("#gmG").onchange = draw;
+  $("#gmL").onclick = e => { const a = e.target.closest("[data-gm]"); if (!a) return; const c = G[$("#gmG").value][+a.dataset.gm];
+    a.href = waUrl(c, $("#gmT").value.replace(/\{prénom\}/g, String(c.name||"").split(" ")[0])); a.closest(".gm-row").classList.add("sent"); a.textContent = "Envoyé ✓"; }; };
+
+/* ——— Bilan du mois ——— */
+$("#monthReport").onclick = () => { const T = today(), M = T.slice(0,7), O = DATA.orders.filter(o => o.status !== "Annulée" && o.date.slice(0,7) === M);
+  const ca = O.reduce((a,o)=>a+net(o),0), fees = O.reduce((a,o)=>a+(o.fee||0),0); let cogs = 0; O.forEach(o => String(o.codes||"").split(",").forEach(c => { const m = c.trim().match(/^(.+) x(\d+)$/); if (m) cogs += costOf(m[1]) * (+m[2]); }));
+  const EX = (DATA.expenses||[]).filter(x => x.date.slice(0,7) === M), dep = EX.reduce((a,x)=>a+x.amount,0), ben = ca - cogs - dep;
+  const S = salesByCode(31), top = Object.entries(S).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,v]) => { const s = mergedStock().find(x=>x.code===k); return [s ? s.name + (s.variant ? " · " + s.variant : "") : k, v]; });
+  const cm = {}; O.forEach(o => { const k = k8(o.phone) || o.name; cm[k] = cm[k] || {name:o.name, n:0, t:0}; cm[k].n++; cm[k].t += net(o); });
+  const topC = Object.values(cm).sort((a,b)=>b.t-a.t).slice(0,5), month = new Date(T+"T12:00").toLocaleDateString("fr-FR",{month:"long",year:"numeric"});
+  openModal(`<div class="report" id="rep"><img src="../images/logo-rose.png" alt="Timfa online shop" style="height:60px"><h2 style="margin:6px 0 2px">Bilan de ${month}</h2><p class="p-sub">Arrêté au ${frDate(T)}</p>
+    <div class="kp"><div><small>Commandes</small><b>${O.length}</b></div><div><small>Ventes (sans livraison)</small><b>${fmt(ca)}</b></div><div><small>Coût des bijoux</small><b>${fmt(cogs)}</b></div><div><small>Dépenses</small><b>${fmt(dep)}</b></div><div><small>Bénéfice</small><b style="color:#1f8a4c">${fmt(ben)}</b></div><div><small>Panier moyen</small><b>${fmt(O.length ? Math.round(ca/O.length) : 0)}</b></div></div>
+    <h3>Bijoux les plus vendus</h3>${top.length ? `<table>${top.map(([n,v]) => `<tr><td>${esc(n)}</td><td>${v}</td></tr>`).join("")}</table>` : "<p class='p-sub'>Aucune vente ce mois-ci.</p>"}
+    <h3>Meilleures clientes</h3>${topC.length ? `<table>${topC.map(c => `<tr><td>${esc(c.name)} (${c.n} cde)</td><td>${fmt(c.t)}</td></tr>`).join("")}</table>` : "<p class='p-sub'>—</p>"}
+    <h3>Dépenses</h3>${EX.length ? `<table>${EX.map(x => `<tr><td>${esc(x.label||x.cat)} · ${frDate(x.date)}</td><td>${fmt(x.amount)}</td></tr>`).join("")}</table>` : "<p class='p-sub'>Aucune dépense enregistrée.</p>"}
+    <p class="p-sub" style="margin-top:10px">Frais de livraison encaissés pour les livreurs : ${fmt(fees)} (non comptés dans les ventes).</p></div>
+    <div class="f-actions"><button class="btn dark" type="button" id="repPrint">📄 Enregistrer en PDF / imprimer</button></div>`);
+  $("#repPrint").onclick = () => { document.body.classList.add("printing"); print(); document.body.classList.remove("printing"); }; };
+
+/* ——— Alertes de nouvelles commandes ——— */
+let BELL = false; try { BELL = localStorage.getItem("timfaBell") === "1"; } catch (e) {}
+function bellIcon(){ $("#bell").textContent = BELL ? "🔔" : "🔕"; }
+function ding(){ try { const a = new (window.AudioContext || window.webkitAudioContext)(); [880, 1175, 1568].forEach((f,i) => { const o = a.createOscillator(), g = a.createGain(); o.frequency.value = f; o.connect(g); g.connect(a.destination); g.gain.setValueAtTime(.0001, a.currentTime + i*.16); g.gain.exponentialRampToValueAtTime(.3, a.currentTime + i*.16 + .02); g.gain.exponentialRampToValueAtTime(.0001, a.currentTime + i*.16 + .3); o.start(a.currentTime + i*.16); o.stop(a.currentTime + i*.16 + .32); }); } catch (e) {} }
+$("#bell").onclick = () => { BELL = !BELL; try { localStorage.setItem("timfaBell", BELL ? "1" : "0"); } catch (e) {} bellIcon();
+  if (BELL) { ding(); if ("Notification" in window && Notification.permission === "default") Notification.requestPermission(); toast("Alertes activées : la gestion vérifie les nouvelles commandes chaque minute"); } else toast("Alertes coupées"); };
+let KNOWN = null;
+function checkNew(){ if (!DATA) return; const ids = new Set(DATA.orders.map(o => o.id));
+  if (KNOWN) { const fresh = DATA.orders.filter(o => !KNOWN.has(o.id)); if (fresh.length && BELL) { ding(); toast(`🛍️ Nouvelle commande : ${fresh[0].name} · ${fmt(fresh[0].total)}`);
+    try { if ("Notification" in window && Notification.permission === "granted") new Notification("Nouvelle commande Timfa", {body: fresh.map(o => o.id + " · " + o.name + " · " + fmt(o.total)).join("\n"), icon:"../images/logo-rose.png"}); } catch (e) {} } }
+  KNOWN = ids; }
+setInterval(() => { if (PIN && !$("#app").hidden && document.visibilityState === "visible" && $("#modal").hidden) load().then(checkNew); }, 60000);
 
 /* ——— Avis et alertes ——— */
 function stockQty(code){ const s = mergedStock().find(x=>x.code===code); return s ? s.qty : null; }
@@ -962,6 +1063,7 @@ function render(){ renderKpis(); renderSales(); renderTab(); }
 
 /* ——— Démarrage ——— */
 if (PIN) { load(PIN).then(ok => ok ? showApp() : (PIN="", pins[0].focus())); } else pins[0].focus();
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("../sw.js").catch(() => {}));
 </script>
 </body>
 </html>

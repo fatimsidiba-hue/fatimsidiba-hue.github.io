@@ -2,12 +2,13 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-bWGX+wKbg6LcSKHYnstv4HETCJ1/P1qZqR279rZxFv4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-T8PthKXo5F7AfaJ4K6ZQUw9q7l0wrC28tPx3Jae3NBk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
 <link rel="icon" type="image/png" href="images/logo-carre.png">
-<link rel="apple-touch-icon" href="images/logo-carre.png">
+<link rel="apple-touch-icon" href="images/app-site-192.png">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="google-site-verification" content="Y4WIaHOln6NOR8TKTSDkjlDKfbMnnodq_a5pTKz5kuE" />
 <meta name="theme-color" content="#fcecee">
 <meta property="og:type" content="website">
@@ -232,6 +233,20 @@ details.acc p{margin:8px 0 0;color:var(--muted);font-size:14px}
 .np input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
 .pre-tag{display:inline-block;margin-top:4px;font-size:11.5px;font-weight:600;color:#8a5a00;background:#fff3d6;border-radius:999px;padding:2px 9px}
 .pre-note{font-size:12.5px;line-height:1.45;border-radius:10px;padding:9px 11px;background:#fff3d6;color:#8a5a00;margin:6px 0}
+.pd-revs,.pd-also{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
+.pd-revs h3,.pd-also h3{font-family:var(--display);font-weight:500;font-size:19px;margin:0 0 10px}
+.pd-revs h3 span{font-family:var(--body);font-size:13px;color:#b07d1c;margin-left:6px}
+.pd-rev{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.pd-rev img{width:64px;height:64px;border-radius:12px;object-fit:cover;flex:none}
+.pd-rev .stars{color:#d9a441;font-size:13px}.pd-rev p{margin:2px 0;font-style:italic;font-size:14px}.pd-rev small{color:var(--muted)}
+.also-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+.also{display:grid;gap:4px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px;font:inherit;color:inherit;cursor:pointer}
+.also img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px}.also span{font-size:12.5px;line-height:1.25}.also b{font-size:13px;color:var(--rose)}
+.gi-sub{color:var(--muted);margin:6px 0 0;max-width:60ch}
+.gift-ideas .filters{margin:14px 0 18px}
+.gift-set{grid-column:1/-1;background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.gift-set p{margin:0;max-width:52ch}
+.install-btn{position:fixed;left:16px;bottom:18px;z-index:40;border:0;border-radius:999px;background:var(--ink,#2a1c1e);color:#fff;padding:11px 16px;font:inherit;font-size:13px;font-weight:600;box-shadow:0 10px 24px -10px rgba(0,0,0,.4)}
 .fav-bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin:0 0 16px}
 .fav-bar b{font-family:var(--display);font-weight:500;font-size:18px}
 .fav-bar span{color:var(--muted);font-size:14px;flex:1;min-width:200px}
@@ -668,6 +683,17 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
   </div>
 </section>
 
+<section class="shop gift-ideas" id="giftIdeas">
+  <div class="wrap">
+    <div class="shop-head"><h2 class="sec-title">Idées cadeaux</h2><p class="gi-sub">Anniversaire, fête, Saint-Valentin, « juste comme ça » : choisissez votre budget. Coffret, sac et carte message offerts, livraison surprise possible.</p></div>
+    <div class="filters" id="giftTabs" role="group" aria-label="Budget"></div>
+    <div class="grid" id="giftRow"></div>
+  </div>
+</section>
+<section class="shop" id="recent" hidden>
+  <div class="wrap"><div class="shop-head"><h2 class="sec-title">Vus récemment</h2></div><div class="grid" id="recentRow"></div></div>
+</section>
+
 <section class="reels" id="videos">
   <div class="wrap">
     <div class="reels-card">
@@ -885,7 +911,7 @@ function addExtra(list){
 }
 function loadStock(){
   if (!API) return;
-  fetch(API + "?action=stock").then(r => r.json()).then(d => { if (d && d.stock) { STOCK = d.stock; addExtra(d.extra || []); renderGrid(); renderBuilder(); } }).catch(() => {});
+  fetch(API + "?action=stock").then(r => r.json()).then(d => { if (d && d.stock) { STOCK = d.stock; addExtra(d.extra || []); renderGrid(); renderBuilder(); renderGiftIdeas(); renderRecent(); } }).catch(() => {});
 }
 // ——— Galerie photos ———
 function galleryOf(p){ const v = p.variants ? p.variants[chosen[p.id]||0] : null; const first = v ? v.img : p.img; return [first, ...(p.imgs||[]).filter(x => x !== first)]; }
@@ -903,7 +929,7 @@ $("#lb").addEventListener("touchend", e => { if (lbX0 === null) return; const dx
 // ——— Fiche détaillée d'un bijou ———
 const INFO = window.TIMFA_INFO || {};
 let PD = null;
-function openPd(id){ PD = PRODUCTS.find(x => x.id === id); if (!PD) return; track("ViewContent", {content_ids:[PD.id], content_name:PD.name, content_type:"product", value:PD.price||0, currency:"XOF"}); renderPd(); $("#pd").hidden = $("#pdScrim").hidden = false; document.body.style.overflow = "hidden"; }
+function openPd(id){ PD = PRODUCTS.find(x => x.id === id); if (!PD) return; try { pushRecent(id); } catch (e) {} track("ViewContent", {content_ids:[PD.id], content_name:PD.name, content_type:"product", value:PD.price||0, currency:"XOF"}); renderPd(); $("#pd").hidden = $("#pdScrim").hidden = false; document.body.style.overflow = "hidden"; }
 function closePd(){ $("#pdVid").pause(); $("#pd").hidden = $("#pdScrim").hidden = true; document.body.style.overflow = ""; PD = null; }
 function renderPd(k){
   const p = PD, gal = galleryOf(p), v = p.variants ? p.variants[chosen[p.id]||0] : null, idx = k || 0;
@@ -931,8 +957,34 @@ function renderPd(k){
     <details class="acc"><summary>Emballage</summary><p>${esc(INFO.emballage||"")}</p></details>
     ${gar ? `<details class="acc" open><summary>Garantie</summary><p>${esc(gar)}${INFO.entretien ? "<br>" + esc(INFO.entretien) : ""}</p></details>` : ""}
     <details class="acc"><summary>Livraison & paiement</summary><p>Abidjan 1 500 F (900 F pour un ensemble) · Port-Bouët / Bassam 2 000 F · Expédition 2 500 F.<br>Paiement à la livraison, ou par Wave au 07 79 51 25 04 (envoyez la capture sur WhatsApp).</p></details>
-    <details class="acc"><summary>Carte message</summary><p>${esc(INFO.carte||"")}</p></details>`;
+    <details class="acc"><summary>Carte message</summary><p>${esc(INFO.carte||"")}</p></details>
+    ${pdReviews(p)}${pdAlso(p)}`;
 }
+// Avis de ce bijou (avis publiés dont le bijou correspond)
+const norm = t => String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim();
+function pdReviews(p){ const L = (window.__revs||[]).filter(x => x.product && (norm(x.product).includes(norm(p.name)) || norm(p.name).includes(norm(x.product)))); if (!L.length) return "";
+  const avg = L.reduce((t,x)=>t+(x.stars||5),0)/L.length;
+  return `<div class="pd-revs"><h3>Avis des clientes <span>${"★".repeat(Math.round(avg))} ${avg.toFixed(1).replace(".",",")} · ${L.length} avis</span></h3>${L.slice(0,4).map(x => `<div class="pd-rev">${/^data:image\//.test(x.photo||"") ? `<img src="${x.photo}" alt="Photo de ${esc(x.name)}" loading="lazy">` : ""}<div><span class="stars">${"★".repeat(x.stars||5)}</span><p>« ${esc(x.text)} »</p><small>— ${esc(x.name)}</small></div></div>`).join("")}</div>`; }
+// Vous aimerez aussi : le complément (collier ↔ bracelet), sinon même catégorie
+function pdAlso(p){ const want = p.cat === "Colliers" ? "Bracelets & parures" : p.cat === "Bracelets & parures" ? "Colliers" : p.cat;
+  let L = PRODUCTS.filter(x => x.id !== p.id && x.price && x.cat === want && availOf(codesOf(x)) !== 0);
+  L = [...L.filter(x => !!x.isNew === !!p.isNew), ...L.filter(x => !!x.isNew !== !!p.isNew)].slice(0, 3); if (!L.length) return "";
+  return `<div class="pd-also"><h3>${p.cat === "Colliers" ? "Le bracelet assorti ?" : p.cat === "Bracelets & parures" ? "Le collier assorti ?" : "Vous aimerez aussi"}</h3><div class="also-row">${L.map(x => `<button type="button" class="also" data-open="${x.id}"><img src="${x.img || (x.variants && x.variants[0].img) || (x.imgs||[])[0]}" alt="" loading="lazy"><span>${esc(x.name)}</span><b>${fmt(x.price)}</b></button>`).join("")}</div></div>`; }
+// Vus récemment
+let RECENT = read("timfa-recent", []); if (!Array.isArray(RECENT)) RECENT = [];
+function pushRecent(id){ RECENT = [id, ...RECENT.filter(x => x !== id)].slice(0, 8); write("timfa-recent", RECENT); renderRecent(); }
+function renderRecent(){ const sec = $("#recent"); if (!sec) return; const L = RECENT.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
+  sec.hidden = L.length < 2; if (L.length < 2) return; $("#recentRow").innerHTML = L.map(card).join(""); }
+// Idées cadeaux par budget
+const GIFT_BUDGETS = [["Moins de 5 000 F", p => p.price && p.price < 5000], ["5 000 F", p => p.price === 5000], ["6 000 à 7 000 F", p => p.price >= 6000 && p.price <= 7000], ["Ensemble 10 000 F", null]];
+let giftB = 0;
+function renderGiftIdeas(){ const box = $("#giftIdeas"); if (!box) return;
+  $("#giftTabs").innerHTML = GIFT_BUDGETS.map((g,i) => `<button type="button" data-gb="${i}" aria-pressed="${i===giftB}">${g[0]}</button>`).join("");
+  const f = GIFT_BUDGETS[giftB][1];
+  if (!f) { $("#giftRow").innerHTML = `<div class="gift-set"><p>Un collier + un bracelet de la nouvelle collection, dans leur coffret : le cadeau qui fait toujours plaisir 💝</p><a class="btn btn-dark" href="#ensembles">Composer un ensemble · 10 000 F</a></div>`; return; }
+  $("#giftRow").innerHTML = PRODUCTS.filter(p => f(p) && availOf(codesOf(p)) !== 0).slice(0, 8).map(card).join(""); }
+document.addEventListener("click", e => { const g = e.target.closest("[data-gb]"); if (g) { giftB = +g.dataset.gb; renderGiftIdeas(); }
+  const o = e.target.closest("[data-open]"); if (o) { openPd(o.dataset.open); const sh = $("#pd"); if (sh) sh.scrollTop = 0; } });
 $("#pdX").onclick = closePd; $("#pdScrim").onclick = closePd;
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#pd").hidden && $("#lb").hidden) closePd(); });
 
@@ -1110,7 +1162,7 @@ function loadReviews(){
   if (!API) return;
   fetch(API + "?action=reviews").then(r=>r.json()).then(d => { const L = (d && d.reviews) || []; if (!L.length) return;
     $("#revLive").innerHTML = L.slice(0, 9).map((x,i)=>`<article class="rcard" style="animation-delay:${i*60}ms">${/^data:image\//.test(x.photo||"") ? `<img src="${x.photo}" alt="Photo envoyée par ${esc(x.name)}" loading="lazy" data-revimg="${i}">` : ""}<div><span class="stars">${"★".repeat(x.stars||5)}${"☆".repeat(5-(x.stars||5))}</span><p>« ${esc(x.text)} »</p><small>— ${esc(x.name)}${x.product ? " · " + esc(x.product) : ""}</small></div></article>`).join("");
-    $("#revLive").hidden = false; window.__revs = L; }).catch(()=>{});
+    $("#revLive").hidden = false; window.__revs = L; if (PD) renderPd(); }).catch(()=>{});
 }
 document.addEventListener("click", e => { const im = e.target.closest("[data-revimg]"); if (im) { const L = window.__revs || []; const imgs = L.filter(x=>/^data:image\//.test(x.photo||"")).map(x=>x.photo); openLb(imgs, imgs.indexOf(L[+im.dataset.revimg].photo), "Avis de " + L[+im.dataset.revimg].name); } });
 
@@ -1273,8 +1325,14 @@ $("#checkout").addEventListener("click", e => {
     .catch(() => { const link = waLink(orderText()); if (w) w.location.href = link; else location.href = link; })
     .finally(() => { btn.textContent = "Commander sur WhatsApp"; });
 });
-loadStock(); loadReviews();
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+loadStock(); loadReviews(); renderGiftIdeas(); renderRecent();
 renderGrid(); renderBuilder(); renderGift(); renderCart();
+// Installer le site comme une appli (Android / ordinateur)
+let INSTALL = null;
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); INSTALL = e; if (document.getElementById("installBtn")) return;
+  const b = document.createElement("button"); b.id = "installBtn"; b.className = "install-btn"; b.type = "button"; b.textContent = "📲 Installer l’appli Timfa"; document.body.appendChild(b);
+  b.onclick = () => { INSTALL.prompt(); INSTALL.userChoice.finally(() => { b.remove(); INSTALL = null; }); }; });
 </script>
 
 </body>
