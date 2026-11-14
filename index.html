@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-n7r8GvzKrWySq3OHhMUw6uTrowG/WbeVzMZIa0PKeHY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-bWGX+wKbg6LcSKHYnstv4HETCJ1/P1qZqR279rZxFv4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -232,6 +232,9 @@ details.acc p{margin:8px 0 0;color:var(--muted);font-size:14px}
 .np input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
 .pre-tag{display:inline-block;margin-top:4px;font-size:11.5px;font-weight:600;color:#8a5a00;background:#fff3d6;border-radius:999px;padding:2px 9px}
 .pre-note{font-size:12.5px;line-height:1.45;border-radius:10px;padding:9px 11px;background:#fff3d6;color:#8a5a00;margin:6px 0}
+.fav-bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin:0 0 16px}
+.fav-bar b{font-family:var(--display);font-weight:500;font-size:18px}
+.fav-bar span{color:var(--muted);font-size:14px;flex:1;min-width:200px}
 .loy-line{font-size:12.5px;border-radius:10px;padding:8px 10px;background:#fff8e6;color:#8a5a00}
 .loy-line.on{background:#e8f6ee;color:#1f8a4c;font-weight:600}
 /* Galerie */
@@ -326,7 +329,7 @@ details.acc p{margin:8px 0 0;color:var(--muted);font-size:14px}
 .size-table tr:hover td{background:var(--blush)}
 .size-tip{margin:16px 0 0;font-size:13px;color:var(--muted);background:var(--blush);border-radius:12px;padding:12px 14px}
 @media (max-width:860px){.sizes-card{grid-template-columns:1fr;padding:26px 20px}}
-.fav{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:#fff;display:grid;place-items:center;box-shadow:0 4px 10px -4px rgba(0,0,0,.2)}
+.fav{position:absolute;z-index:3;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:#fff;display:grid;place-items:center;box-shadow:0 4px 10px -4px rgba(0,0,0,.2)}
 .fav svg{width:17px;height:17px}
 .fav[aria-pressed="true"] svg{fill:var(--rose);stroke:var(--rose)}
 .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
@@ -619,8 +622,10 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
         <button type="button" data-jump="Ensembles" aria-pressed="false">Ensembles</button>
         <button type="button" data-filter="Promo" aria-pressed="false">Black Friday</button>
         <button type="button" data-filter="Nouveautés" aria-pressed="false" id="newFilter" hidden>Nouveautés ✦</button>
+        <button type="button" data-filter="Favoris" aria-pressed="false" id="favFilter" hidden>♥ Mes favoris</button>
       </div>
     </div>
+    <div class="fav-bar" id="favBar" hidden></div>
     <div class="grid" id="grid"></div>
     <div class="more" id="moreWrap"><button class="btn btn-light" id="more" type="button">Voir tous les bijoux</button></div>
   </div>
@@ -987,8 +992,18 @@ function card(p, i = 0){
       ${stockHtml}<div class="foot"><div class="price">${priceHtml}</div><button class="add" type="button" data-add="${p.id}"${out ? " disabled" : ""} aria-label="${out ? "Rupture de stock" : p.price ? "Ajouter au panier" : "Demander le prix"}">${p.price ? BAG : CHAT}</button></div>${out ? `<button type="button" class="notify" data-notify="${p.id}">🔔 Me prévenir</button>` : ""}
     </div></article>`;
 }
+var SHARED = (new URLSearchParams(location.search).get("favoris") || "").split(",").filter(Boolean), SHARED_NAME = (new URLSearchParams(location.search).get("de") || "").slice(0, 30);
+function updateFavFilter(){ const b = $("#favFilter"); b.hidden = !favs.length && filter !== "Favoris"; b.textContent = "♥ Mes favoris" + (favs.length ? " (" + favs.length + ")" : ""); }
+function favLink(){ return location.origin + location.pathname + "?favoris=" + favs.join(",") + "#boutique"; }
+function renderFavBar(){ const bar = $("#favBar");
+  if (filter === "Partagés") { bar.hidden = false; bar.innerHTML = `<b>💝 La liste d’envies${SHARED_NAME ? " de " + esc(SHARED_NAME) : ""}</b><span>Offrez-lui un de ces bijoux : coffret offert, carte message et livraison surprise possible.</span>`; return; }
+  if (filter !== "Favoris") { bar.hidden = true; return; }
+  bar.hidden = false; bar.innerHTML = favs.length ? `<b>♥ Vos favoris (${favs.length})</b><span>Envoyez votre liste à quelqu’un qui veut vous faire plaisir 😉</span><button class="btn btn-dark" type="button" id="favShare">Partager ma liste</button>` : `<b>Aucun favori pour l’instant</b><span>Touchez le ♡ sur un bijou pour l’ajouter ici.</span>`;
+  const sb = $("#favShare"); if (sb) sb.onclick = () => { const url = favLink(), names = favs.map(id => (PRODUCTS.find(p=>p.id===id)||{}).name).filter(Boolean), text = "💝 Ma liste d’envies chez Timfa online shop :\n" + names.map(n => "• " + n).join("\n") + "\n";
+    if (navigator.share) navigator.share({title:"Ma liste d’envies Timfa", text, url}).catch(()=>{}); else window.open("https://wa.me/?text=" + encodeURIComponent(text + url), "_blank", "noopener"); }; }
 function renderGrid(){
-  let list = PRODUCTS.filter(p => filter==="Tout" || (filter==="Promo" ? !!p.was : filter==="Nouveautés" ? !!p.isNew : p.cat===filter));
+  let list = PRODUCTS.filter(p => filter==="Tout" || (filter==="Promo" ? !!p.was : filter==="Nouveautés" ? !!p.isNew : filter==="Favoris" ? favs.includes(p.id) : filter==="Partagés" ? SHARED.includes(p.id) : p.cat===filter));
+  updateFavFilter(); renderFavBar();
   if (filter==="Tout") list = [...list.filter(p=>p.isNew), ...list.filter(p=>!p.isNew)];
   const limited = filter==="Tout" && !showAll && list.length > 8;
   $("#moreWrap").hidden = !limited;
@@ -1124,6 +1139,7 @@ function loyLabel(){ if (!LOY) return ""; const a = []; if (LOY.rewardNow) a.pus
 const payMode = () => (document.querySelector('input[name="pay"]:checked')||{value:"cod"}).value;
 const waLink = t => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(t)}`;
 function renderCart(){
+  if (typeof saveCart === "function" && cart.length) saveCart();
   $("#cartCount").textContent = cart.reduce((s,l)=>s+l.qty,0);
   $("#lines").innerHTML = cart.length ? cart.map((l,i)=>`<div class="line"><img src="${esc(l.img)}" alt=""><div><h4>${esc(l.name)}</h4><small>${l.price ? fmt(l.price) : "Prix sur demande"}</small>${isPre(l.key) ? `<span class="pre-tag">⏳ Précommande · dispo jeudi 19/11</span>` : ""}</div><div class="qty"><button type="button" data-q="${i}" data-d="-1" aria-label="Retirer un">−</button><span>${l.qty}</span><button type="button" data-q="${i}" data-d="1" aria-label="Ajouter un">+</button></div></div>`).join("")
     : `<p class="empty">Votre panier est vide.<br>Ajoutez un bijou pour commencer.</p>`;
@@ -1147,7 +1163,7 @@ function openCart(o){ $("#drawer").classList.toggle("open",o); $("#scrim").class
 
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-add]"); if (a) return addToCart(a.dataset.add);
-  const f2 = e.target.closest("[data-fav]"); if (f2) { const id=f2.dataset.fav; favs = favs.includes(id) ? favs.filter(x=>x!==id) : [...favs,id]; write("timfa-favs", favs); f2.setAttribute("aria-pressed", String(favs.includes(id))); return; }
+  const f2 = e.target.closest("[data-fav]"); if (f2) { const id=f2.dataset.fav; favs = favs.includes(id) ? favs.filter(x=>x!==id) : [...favs,id]; write("timfa-favs", favs); f2.setAttribute("aria-pressed", String(favs.includes(id))); if (filter === "Favoris") renderGrid(); else updateFavFilter(); toast(favs.includes(id) ? "Ajouté à vos favoris ♥" : "Retiré des favoris"); return; }
   const s = e.target.closest("[data-sw]"); if (s) { chosen[s.dataset.sw] = +s.dataset.i; renderGrid(); if (PD) renderPd(); return; }
   const sz = e.target.closest("[data-size]"); if (sz) { chosenSize[sz.dataset.size] = sz.dataset.z; renderGrid(); if (PD) renderPd(); return; }
   const q = e.target.closest("[data-q]"); if (q) { const l = cart[+q.dataset.q]; l.qty += +q.dataset.d; if (l.qty<=0) cart.splice(+q.dataset.q,1); write("timfa-cart", cart); return renderCart(); }
@@ -1163,6 +1179,13 @@ $("#pApply").onclick = applyPromo; $("#pCode").addEventListener("keydown", e => 
 if (PROMO && PROMOS[PROMO]) { $("#pCode").value = PROMO; }
 ["#gName","#gNick","#gMsg","#gFrom","#gOccOther"].forEach(id => $(id).addEventListener("input", () => { if (id==="#gName"||id==="#gNick") renderGift(); renderCart(); }));
 $("#cPhone").addEventListener("input", checkLoyalty);
+// Panier non finalisé : enregistré pour que Timfa puisse aider la cliente (nom + téléphone + panier)
+var cartSent = "", cartT = 0;
+function saveCart(){ clearTimeout(cartT); cartT = setTimeout(() => { const phone = $("#cPhone").value.trim(); if (!API || !cart.length || phone.replace(/\D/g,"").length < 8) return;
+  const items = cart.map(l => `${l.qty} × ${l.name}`).join("\n"), total = Number(($("#total").textContent||"").replace(/\D/g,"")) || 0, sig = phone + "|" + items;
+  if (sig === cartSent) return; cartSent = sig;
+  fetch(API, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({action:"cart", name:$("#cName").value.trim(), phone, place:$("#cPlace").value.trim(), items, total, website:""})}).catch(()=>{ cartSent = ""; }); }, 4000); }
+["#cName","#cPhone","#cPlace"].forEach(id => $(id).addEventListener("input", saveCart));
 ["#cName","#cPhone","#cPlace"].forEach(id=>$(id).addEventListener("input",()=>{$("#checkout").href = waLink(orderText());}));
 $("#openCart").onclick = () => openCart(true);
 $("#closeCart").onclick = () => openCart(false);
@@ -1217,6 +1240,8 @@ cart = (Array.isArray(cart) ? cart : []).map(l => {
   return {key: l.key, name: p.name + (v ? " · " + v.name : "") + (z ? " · taille " + z : "") + (p.adjustable ? " · réglable" : ""), price: p.price, img: v ? v.img : p.img, qty};
 }).filter(Boolean);
 favs = (Array.isArray(favs) ? favs : []).filter(id => PRODUCTS.some(p => p.id === id));
+SHARED = SHARED.filter(id => PRODUCTS.some(p => p.id === id));
+if (SHARED.length) { filter = "Partagés"; document.querySelectorAll("[data-filter]").forEach(b => b.setAttribute("aria-pressed", "false")); setTimeout(() => { const g = $("#boutique"); if (g) g.scrollIntoView({behavior:"smooth"}); }, 400); }
 // Envoi de la commande au tableau, puis ouverture de WhatsApp avec le numéro de commande
 $("#checkout").addEventListener("click", e => {
   if (!API || !cart.length) return;

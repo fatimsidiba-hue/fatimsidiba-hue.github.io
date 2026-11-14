@@ -93,7 +93,7 @@ function render(){
   const L = D.orders.slice().sort((a,b) => (a.status==="Livrée") - (b.status==="Livrée") || String(a.delivery||"9").localeCompare(String(b.delivery||"9")));
   const todo = L.filter(o => o.status !== "Livrée"), cash = todo.filter(o => !o.paid).reduce((a,o)=>a+o.total,0), done = L.filter(o=>o.status==="Livrée");
   $("#lead").textContent = `Bonjour ${D.courier} 👋 ${todo.length ? todo.length + " livraison(s) à faire." : "Aucune livraison en attente."}`;
-  $("#sum").innerHTML = todo.length || done.length ? `<div class="sum"><span>À encaisser</span><b>${fmt(cash)}</b></div>${done.length ? `<div class="sum"><span>Livrées aujourd’hui</span><b>${done.length}</b></div>` : ""}` : "";
+  $("#sum").innerHTML = todo.length || done.length || D.owedCount ? `<div class="sum"><span>À encaisser</span><b>${fmt(cash)}</b></div>${done.length ? `<div class="sum"><span>Livrées aujourd’hui</span><b>${done.length}</b></div>` : ""}${D.owedCount ? `<div class="sum" style="background:#fff3d6"><span>${D.owed >= 0 ? "À remettre à Timfa" : "Timfa vous doit"} (${D.owedCount} colis, sans vos frais)</span><b>${fmt(Math.abs(D.owed))}</b></div>` : ""}` : "";
   $("#list").innerHTML = L.length ? L.map(o => { const dest = o.dest || "", who = dest ? dest : o.name + " · " + o.phone, ph = (dest.match(/(\+?\d[\d ]{7,})/) || [])[1] || o.phone, place = dest ? dest : o.place;
     return `<article class="o ${o.status==="Livrée"?"ok":""}">
       <h2>${esc(o.id)} <small>${o.delivery ? (o.delivery===today ? "Aujourd’hui" : new Date(o.delivery+"T12:00").toLocaleDateString("fr-FR",{weekday:"short",day:"numeric",month:"short"})) : "Date à confirmer"}</small></h2>
@@ -109,7 +109,7 @@ document.addEventListener("click", e => { const b = e.target.closest("[data-done
   const o = D.orders.find(x => x.id === b.dataset.done); if (!confirm(`Confirmer : ${o.id} livrée${o.paid ? "" : " et " + fmt(o.total) + " encaissés"} ?`)) return;
   b.disabled = true; b.textContent = "Enregistrement…";
   fetch(API, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({action:"courierDone", k:K, id:o.id, paid:true})})
-    .then(r=>r.json()).then(d => { if (!d.ok) throw 0; o.status = "Livrée"; o.paid = true; render(); })
+    .then(r=>r.json()).then(d => { if (!d.ok) throw 0; o.status = "Livrée"; o.paid = true; render(); load(); })
     .catch(() => { alert("Pas enregistré, réessayez."); b.disabled = false; b.textContent = "✓ Livré"; }); });
 $("#re").onclick = load; load();
 </script>
