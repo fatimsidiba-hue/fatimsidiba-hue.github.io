@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Catalogue Timfa online shop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="../images/logo-carre.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;1,500&display=swap">
+<style>
+@page{size:A4;margin:0}
+:root{--bg:#fffafa;--blush:#fcecee;--blush-2:#f7d9dd;--rose:#c4526e;--ink:#2a1c1e;--muted:#7e6a6e;--line:#f1dfe2;--display:"Playfair Display",Georgia,serif;--body:"Jost",Arial,sans-serif}
+*{box-sizing:border-box}html,body{margin:0;background:#fff;color:var(--ink);font-family:var(--body);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:210mm;height:297mm;padding:14mm 13mm 12mm;position:relative;overflow:hidden;page-break-after:always;background:var(--bg)}
+.page:last-child{page-break-after:auto}
+.cover{padding:0;background:linear-gradient(160deg,var(--blush),#fff 55%,var(--blush-2))}
+.cover .ph{position:absolute;inset:0 0 38% 0;background-size:cover;background-position:center}
+.cover .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,var(--blush) 100%)}
+.cover .txt{position:absolute;left:0;right:0;bottom:16mm;text-align:center;padding:0 16mm}
+.cover img.logo{height:34mm}
+.cover h1{font-family:var(--display);font-weight:500;font-size:44pt;margin:4mm 0 2mm;line-height:1}
+.cover h1 em{color:var(--rose)}
+.cover p{color:var(--muted);font-size:13pt;margin:0}
+.cover .chips{display:flex;gap:3mm;justify-content:center;margin-top:7mm;flex-wrap:wrap}
+.chip{background:#fff;border:1px solid var(--line);border-radius:99px;padding:2mm 5mm;font-size:10.5pt}
+.chip b{color:var(--rose)}
+header.h{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--line);padding-bottom:4mm;margin-bottom:6mm}
+header.h h2{font-family:var(--display);font-weight:500;font-size:26pt;margin:0;line-height:1}
+header.h h2 em{color:var(--rose)}
+header.h small{color:var(--muted);font-size:10pt;text-align:right;max-width:80mm}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm}
+.card{background:#fff;border-radius:5mm;overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column}
+.card .im{aspect-ratio:1/1;background-size:cover;background-position:center;position:relative}
+.card .badge{position:absolute;top:2.5mm;left:2.5mm;background:var(--rose);color:#fff;border-radius:99px;padding:.8mm 3mm;font-size:8pt;font-weight:600}
+.card .badge.pre{background:#fff;color:var(--rose)}
+.card .b{padding:2.5mm 3mm 3mm;display:flex;flex-direction:column;gap:1mm;flex:1}
+.card h3{font-size:10pt;font-weight:600;margin:0;line-height:1.2}
+.card .d{font-size:8pt;color:var(--muted);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .p{margin-top:auto;font-family:var(--display);font-size:14pt;color:var(--rose)}
+.card .p s{font-family:var(--body);font-size:9pt;color:var(--muted);margin-left:2mm}
+.card .v{font-size:7.5pt;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.foot{position:absolute;left:13mm;right:13mm;bottom:7mm;display:flex;justify-content:space-between;font-size:8.5pt;color:var(--muted)}
+.ens{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}
+.ens .card .im{aspect-ratio:4/5}
+.hero-ens{background:#fff;border:1px solid var(--line);border-radius:6mm;padding:6mm 7mm;margin-bottom:6mm;display:flex;justify-content:space-between;align-items:center;gap:6mm}
+.hero-ens b{font-family:var(--display);font-weight:500;font-size:30pt;color:var(--rose)}
+.hero-ens p{margin:0;font-size:11pt;line-height:1.45}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
+.box{background:#fff;border:1px solid var(--line);border-radius:5mm;padding:5mm 6mm}
+.box h3{font-family:var(--display);font-weight:500;font-size:15pt;margin:0 0 2mm;color:var(--rose)}
+.box p,.box li{font-size:10.5pt;line-height:1.5;margin:0}
+.box ul{margin:0;padding-left:4.5mm}
+.cta{margin-top:7mm;background:var(--ink);color:#fff;border-radius:6mm;padding:8mm;text-align:center}
+.cta h3{font-family:var(--display);font-weight:500;font-size:22pt;margin:0 0 2mm}
+.cta p{margin:1mm 0;font-size:12pt}
+.cta b{color:#f6b5c8}
+@media screen{body{background:#e9dfe1;padding:70px 0 30px}.page{margin:0 auto 18px;box-shadow:0 20px 40px -24px rgba(0,0,0,.4)}
+.bar{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;gap:10px;justify-content:center;align-items:center;padding:12px;background:#fff;box-shadow:0 4px 16px -8px rgba(0,0,0,.2);font-family:var(--body)}
+.bar button{font:inherit;font-weight:600;border:0;border-radius:999px;background:var(--ink);color:#fff;padding:10px 18px;cursor:pointer}.bar span{color:var(--muted);font-size:13px}
+@media (max-width:800px){.page{zoom:.45}}}
+@media print{.bar{display:none}}
+</style></head><body>
+<div class="bar"><button type="button" onclick="print()">📄 Enregistrer en PDF</button><span id="st">Chargement du stock…</span></div>
+<div id="out"></div>
+<script src="../catalogue.js"></script>
+<script>
+const IMG = "../";
+let C = window.TIMFA_CATALOGUE.filter(p => p.price); const byId = Object.fromEntries(window.TIMFA_CATALOGUE.map(p=>[p.id,p]));
+const fmt = n => Number(n).toLocaleString("fr-FR").replace(/ | /g," ") + " F";
+const esc = x => String(x ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const imgOf = p => p._photo ? p._photo : p.img || (p.variants && p.variants[0].img) || (p.imgs && p.imgs[0]);
+const foot = n => `<div class="foot"><span>Timfa online shop · Bingerville</span><span>fatimsidiba-hue.github.io · WhatsApp 07 04 16 09 52</span><span>${n}</span></div>`;
+function card(p, pre){ const extra = [p.variants ? "Coloris : " + p.variants.map(v=>v.name).join(", ") : "", p.sizes ? "Tailles " + p.sizes.join(" et ") : "", p.adjustable ? "Réglable" : ""].filter(Boolean).join(" · ");
+  return `<div class="card"><div class="im" style="background-image:url('${p._photo ? p._photo : IMG + imgOf(p)}')">${pre ? `<span class="badge pre">Dispo jeudi 19/11</span>` : p.was ? `<span class="badge">−${fmt(p.was-p.price)}</span>` : ""}</div>
+  <div class="b"><h3>${esc(p.name)}</h3><div class="d">${esc(p.desc)}</div>${extra ? `<div class="v">${esc(extra)}</div>` : ""}<div class="p">${fmt(p.price)}${p.was ? `<s>${fmt(p.was)}</s>` : ""}</div></div></div>`; }
+function build(){ const pages = []; let n = 1;
+pages.push(`<section class="page cover"><div class="ph" style="background-image:url('${IMG}images/couverture.jpg')"></div><div class="txt"><img class="logo" src="${IMG}images/logo-sombre.png" alt="Timfa online shop"><h1>Le <em>catalogue</em></h1><p>Bijoux en acier inoxydable · Novembre 2026</p>
+  <div class="chips"><span class="chip">🎁 <b>−1 000 F</b> sur le site</span><span class="chip">🚚 Paiement à la livraison à Abidjan</span><span class="chip">💝 Coffret offert</span></div></div></section>`);
+const chunk = (a, k) => a.reduce((r,x,i)=>(i%k ? r[r.length-1].push(x) : r.push([x]), r), []);
+const news = C.filter(p=>p.isNew), cols = C.filter(p=>!p.isNew && p.cat==="Colliers"), others = C.filter(p=>!p.isNew && p.cat==="Bracelets & parures").concat(C.filter(p=>!p.isNew && p.cat==="Bagues"));
+chunk(news, 12).forEach((g,i)=>pages.push(`<section class="page"><header class="h"><h2>Nouvelle <em>collection</em></h2><small>Colliers 6 000 F · Bracelets 5 000 F<br>En précommande, disponible jeudi 19/11</small></header><div class="grid">${g.map(p=>card(p,true)).join("")}</div>${foot(++n)}</section>`));
+const S = window.TIMFA_SET, ideas = S.ideas.filter(x=>!x.label).slice(0,6);
+pages.push(`<section class="page"><header class="h"><h2>Les <em>ensembles</em></h2><small>Un collier + un bracelet de la nouvelle collection</small></header>
+  <div class="hero-ens"><p>Composez votre ensemble :<br>choisissez <b style="font-size:inherit;font-family:inherit;color:inherit">un collier</b> et <b style="font-size:inherit;font-family:inherit;color:inherit">un bracelet</b>,<br>livraison à 900 F à Abidjan.</p><b>${fmt(S.price)}</b></div>
+  <div class="ens">${ideas.map(x=>{ const c = byId[x.c], [bid,vi] = x.b.split("#"), b = byId[bid], bn = b.name + (vi!==undefined ? " " + b.variants[+vi].name : "");
+    return `<div class="card"><div class="im" style="background-image:url('${IMG + x.img}')"></div><div class="b"><h3>${esc(c.name)}</h3><div class="d">+ ${esc(bn)}</div><div class="p">${fmt(S.price)}</div></div></div>`; }).join("")}</div>${foot(++n)}</section>`);
+const rest = cols.concat(others);
+chunk(rest, 12).forEach((g,i)=>pages.push(`<section class="page"><header class="h"><h2>La <em>collection</em></h2><small>${i ? "Bagues réglables ou en taille 6 et 7" : "Offre Black Friday sur les colliers de la collection"}</small></header><div class="grid">${g.map(p=>card(p)).join("")}</div>${foot(++n)}</section>`));
+const I = window.TIMFA_INFO || {};
+pages.push(`<section class="page"><header class="h"><h2>Bon à <em>savoir</em></h2><small>Tout pour commander sereinement</small></header>
+  <div class="info">
+    <div class="box"><h3>🚚 Livraison</h3><ul><li>Abidjan : 1 500 F (900 F pour un ensemble), <b>offerte dès 15 000 F</b></li><li>Port-Bouët et Grand-Bassam : 2 000 F</li><li>Expédition autres villes : 2 500 F</li></ul></div>
+    <div class="box"><h3>💳 Paiement</h3><ul><li>À la livraison à Abidjan, Port-Bouët et Bassam</li><li>Ou par Wave au 07 79 51 25 04, puis envoyez la capture sur WhatsApp</li><li>Expéditions : paiement avant l’envoi</li></ul></div>
+    <div class="box"><h3>✨ Matière et garantie</h3><ul><li>Acier inoxydable (Toi & Moi : acier plaqué or)</li><li>Colliers : garantie 2 ans et plus</li><li>Bracelets : 6 mois et plus, avec un bon entretien</li><li>Bagues : 5 mois et plus · Toi & Moi : 1 an et plus</li></ul></div>
+    <div class="box"><h3>🎁 Pour offrir</h3><ul><li>Chaque bijou est livré en coffret avec son sac</li><li>Carte message personnalisée</li><li>Livraison surprise à la personne de votre choix</li><li>Carte cadeau Timfa de 5 000 à 20 000 F</li></ul></div>
+  </div>
+  <div class="cta"><h3>Commandez en 2 minutes</h3><p>Sur le site : <b>fatimsidiba-hue.github.io</b> · −1 000 F sur votre commande</p><p>💍 2 bijoux achetés = −1 000 F · 🎁 4e commande = bracelet ou boucles offerts</p><p>Ou sur WhatsApp : <b>07 04 16 09 52</b></p><p style="opacity:.8;font-size:10.5pt;margin-top:3mm">Timfa online shop · Bingerville, Côte d’Ivoire</p></div>${foot(++n)}</section>`);
+document.getElementById("out").innerHTML = pages.join(""); }
+
+const API = "https://script.google.com/macros/s/AKfycbyZiPC2weLVrD2r8GExmtv_6MxTw0TNZxvXRm4wRLXdy5qTdi2SPsDUQJVgV_s45h7N/exec";
+const codesOf = p => { const o = []; (p.variants ? p.variants.map((_,i)=>p.id+"#"+i) : [p.id]).forEach(c => (p.sizes ? p.sizes.map(z=>c+"@"+z) : [c]).forEach(x => o.push(x))); return o; };
+Promise.all([fetch(API + "?action=stock").then(r=>r.json()), fetch(API + "?action=photos").then(r=>r.json()).catch(()=>({photos:{}}))]).then(([d, ph]) => {
+  const st = d.stock || {}, photos = (ph && ph.photos) || {};
+  (d.extra || []).forEach(x => { if (!C.some(p => p.id === x.code)) C.push({id:x.code, cat:x.cat, isNew:x.isNew, name:x.name, desc:x.desc || "", price:x.price, img: photos[x.code] ? "" : "images/logo-carre.png", _photo: photos[x.code]}); });
+  C = C.filter(p => { const q = codesOf(p).map(c => st[c]); return !(q.length && q.every(v => v === 0)); });
+  document.getElementById("st").textContent = C.length + " bijoux disponibles · à jour du " + new Date().toLocaleDateString("fr-FR");
+}).catch(() => { document.getElementById("st").textContent = "Stock indisponible : catalogue complet affiché"; }).finally(() => { build(); });
+</script></body></html>

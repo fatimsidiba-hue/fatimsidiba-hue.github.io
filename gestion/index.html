@@ -258,6 +258,13 @@ header img{height:46px}
 .debt small{color:var(--muted)}.debt .acts{display:flex;gap:6px;flex-wrap:wrap}.debt.done{opacity:.6}
 .fin-tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
 .fin-tips div{background:#fff8ec;border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.45}.fin-tips b{display:block;margin-bottom:2px}
+.vis-btn{display:inline-block;margin-top:4px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;font:inherit;font-size:12px;cursor:pointer}
+.vis-prev{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}.vis-prev img{width:100%;border-radius:12px;box-shadow:0 10px 24px -14px rgba(0,0,0,.4)}
+.plan{display:grid;gap:10px;max-height:60vh;overflow:auto}.plan article{border:1px solid var(--line);border-radius:14px;padding:12px}.plan h4{margin:0 0 6px;font-size:15px}.plan pre{white-space:pre-wrap;font:inherit;font-size:13.5px;background:#f6fbf4;border-radius:10px;padding:10px;margin:0 0 8px}
+.vbars{display:flex;align-items:flex-end;gap:3px;height:120px;margin:8px 0 4px}.vbars i{flex:1;background:#e9a3b4;border-radius:4px 4px 0 0;min-height:2px}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:10px}.vgrid h4{margin:0 0 6px;font-size:14px}
+.hrow{display:grid;grid-template-columns:1fr auto;gap:8px;font-size:13.5px;padding:4px 0;border-bottom:1px solid var(--line)}
+.funnel{display:flex;gap:6px;flex-wrap:wrap}.funnel div{flex:1;min-width:90px;background:var(--bg,#fffafa);border:1px solid var(--line);border-radius:12px;padding:8px 10px}.funnel b{display:block;font-size:20px;font-family:var(--display);font-weight:500}
 .owed{display:flex;gap:6px;align-items:center;flex-wrap:wrap;color:#8a5a00!important;font-weight:600}
 .tk-share{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0 4px}.tk-share .btn{flex:1;justify-content:center;min-width:200px}.tk-share label{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}.tk-share select{border:1px solid var(--line);border-radius:10px;padding:6px 8px;background:#fff}
 .ticket.receipt{border:0;padding:0;background:#eee;border-radius:14px;padding:14px;display:block}.ticket.receipt img{display:block;width:100%;max-width:360px;height:auto;margin:0 auto;box-shadow:0 10px 24px -14px rgba(0,0,0,.4)}
@@ -339,6 +346,8 @@ header img{height:46px}
         <button class="btn soft" type="button" id="dayTickets">🧾 Tickets du jour</button>
         <button class="btn soft" type="button" id="dayPoint">📊 Point du jour</button>
         <button class="btn soft" type="button" id="monthReport">📄 Bilan du mois</button>
+        <button class="btn soft" type="button" id="planning">📅 Planning réseaux</button>
+        <a class="btn soft" href="../catalogue/" target="_blank" rel="noopener">📘 Catalogue PDF</a>
         <input class="search" id="q" type="search" placeholder="Rechercher un nom, un numéro, un bijou…" aria-label="Rechercher">
         <button class="chip" type="button" data-f="todo" aria-pressed="true">À traiter</button>
         <button class="chip" type="button" data-f="new" aria-pressed="false">Nouvelles</button>
@@ -351,6 +360,8 @@ header img{height:46px}
 
     <section id="view-stats" hidden>
       <div class="stats-grid">
+        <section class="panel" style="grid-column:1/-1"><div class="p-head"><h2>Visites du site (30 jours)</h2><span class="p-sub" id="visSub"></span></div><div id="visits"></div></section>
+        <section class="panel" style="grid-column:1/-1"><div class="p-head"><h2>Publicité : ce qu’elle rapporte ce mois-ci</h2></div><div id="adsBox"></div></section>
         <section class="panel profit" style="grid-column:1/-1"><div class="p-head"><h2>Bénéfice du mois</h2><span class="p-sub" id="profitSub"></span></div><div id="profit" class="profit-grid"></div></section>
         <section class="panel"><div class="p-head"><h2>Dépenses</h2><span class="p-sub" id="expSum"></span></div>
           <form id="expForm" class="exp-form"><input id="eLabel" placeholder="Libellé (ex. Pub Facebook)" required maxlength="80"><select id="eCat"><option>Publicité</option><option>Achat bijoux</option><option>Emballage</option><option>Livraison</option><option>Site / internet</option><option>Autre</option></select><input id="eAmount" type="number" inputmode="numeric" min="1" placeholder="Montant F" required><input id="eDate" type="date"><button class="btn dark" type="submit">Ajouter</button></form>
@@ -388,7 +399,8 @@ header img{height:46px}
 
     <section id="view-clients" hidden>
       <div class="toolbar"><input class="search" id="qc" type="search" placeholder="Rechercher une cliente…" aria-label="Rechercher une cliente"><button class="btn soft" type="button" id="groupMsg">📣 Message groupé</button><button class="btn soft" type="button" id="newLivreur">＋ Livreur</button></div>
-      <div class="cl-grid"><div><h3 class="group-title">Clientes</h3><div class="clients" id="clients"></div></div><div><h3 class="group-title">Livreurs</h3><div class="clients" id="livreurs"></div></div></div>
+      <div class="cl-grid"><div><h3 class="group-title">Clientes</h3><div class="clients" id="clients"></div></div><div><h3 class="group-title">Livreurs</h3><div class="clients" id="livreurs"></div>
+        <h3 class="group-title" style="display:flex;justify-content:space-between;align-items:center">Cartes cadeaux <button class="btn soft" type="button" id="newGift" style="padding:6px 12px">＋ Créer</button></h3><div class="clients" id="gifts"></div></div></div>
     </section>
 
     <section id="view-stock" hidden>
@@ -488,6 +500,7 @@ function renderKpis(){
   if (todo) a.push(`<span class="alert info">${todo} bijou${todo>1?"x":""} sans stock renseigné</span>`);
   const soonOut = mergedStock().filter(s => { const d = daysLeft(s); return d !== null && d > 0 && d <= 7; }).length; if (soonOut) a.push(`<span class="alert warn">⏳ ${soonOut} bijou(x) bientôt épuisé(s)</span>`);
   const dueSoon = (DATA.finance ? activeDebts() : []).filter(d => d.due && d.due <= addDays(today(), 7)).length; if (dueSoon) a.push(`<span class="alert bad">💳 ${dueSoon} échéance(s) de crédit dans les 7 jours</span>`);
+  const goal = DATA.finance && DATA.finance.split && DATA.finance.split.goal; if (goal) { const ca = monthMoney(today().slice(0,7)).ca; a.push(`<span class="alert ${ca >= goal ? "info" : "warn"}">🎯 Objectif du mois : ${Math.round(ca/goal*100)} % (${fmt(ca)} / ${fmt(goal)})</span>`); }
   const soonDates = upcomingDates(7).length; if (soonDates) a.push(`<span class="alert info">🎂 ${soonDates} anniversaire(s)/fête(s) dans les 7 jours</span>`);
   const owedAll = (DATA.livreurs||[]).reduce((t,l)=>t+courierOwed(l.name).amount,0); if (owedAll > 0) a.push(`<span class="alert warn">🛵 ${fmt(owedAll)} à récupérer chez les livreurs</span>`);
   const rvWait = (DATA.reviews||[]).filter(x=>x.status==="En attente").length, back = backAlerts().length, carts = staleCarts().length;
@@ -569,6 +582,7 @@ async function ticketImage(o, W){
   if (o.paid) { box("COLIS SOLDÉ", fs+16); center("Déjà payé · rien à encaisser", fs-2, false); }
   else box("À PAYER : " + fmt(o.total), fs+12);
   if (surprise) { y += 4; center("CADEAU SURPRISE : ne rien dire du contenu", fs-1, true); }
+  if (/Cadeau fidélité/.test(o.notes||"")) { y += 4; center("CADEAU FIDÉLITÉ : bracelet ou boucles offerts dans ce colis", fs-1, true); }
   y += 6; center("MERCI !", fs+10, true, S); center("Vous êtes une reine", fs-3, false); y += 8;
   // code-barres décoratif à partir du numéro de commande
   const code = String(o.id), bw = W - 4*pad, bh = Math.round(fs*2.6); let bx = 2*pad, seq = [];
@@ -658,7 +672,7 @@ function orderCard(o, i){
   return `<article class="order" style="--i:${i};--st:${STATUS[o.status]||"#ddd"}" data-id="${esc(o.id)}">
     <div class="o-head"><div><div class="o-id">${esc(o.id)} · <span class="o-when">${frDate(o.date)} à ${frTime(o.date)}</span></div><div class="o-name">${esc(o.name)}</div><div class="o-when">${esc(o.place)}${o.place?" · ":""}${esc(o.phone)}</div></div><div class="o-total">${fmt(o.total)}</div></div>
     <div class="o-items">${esc(o.items)}</div>
-    <div class="o-meta"><span class="tag">${esc(o.zone)} · livraison ${fmt(o.fee)} → livreur</span><span class="tag paid">Pour vous : ${fmt(net(o))}</span>${o.discount?`<span class="tag">−${fmt(o.discount)} site</span>`:""}${o.preorder?`<span class="tag pre">Précommande</span>`:""}<span class="tag ${o.paid?"paid":"unpaid"}">${o.paid?"Payée ✓":esc(o.payment||"Non payée")}</span>${o.livreur && o.status==="Livrée" ? `<span class="tag ${o.remis?"paid":"unpaid"}">${o.remis ? "Argent remis ✓" : "Argent chez " + esc(o.livreur)}</span>` : ""}</div>
+    <div class="o-meta"><span class="tag">${esc(o.zone)} · livraison ${fmt(o.fee)} → livreur</span><span class="tag paid">Pour vous : ${fmt(net(o))}</span>${o.discount?`<span class="tag">−${fmt(o.discount)} site</span>`:""}${o.preorder?`<span class="tag pre">Précommande</span>`:""}<span class="tag ${o.paid?"paid":"unpaid"}">${o.paid?"Payée ✓":esc(o.payment||"Non payée")}</span>${o.source ? `<span class="tag">📍 ${esc(o.source)}</span>` : ""}${/Cadeau fidélité/.test(o.notes||"") ? `<span class="tag pre">🎁 Cadeau fidélité à glisser</span>` : ""}${/Carte cadeau Timfa/.test(o.items||"") ? `<span class="tag pre">💳 Carte cadeau à activer (Clientes)</span>` : ""}${o.livreur && o.status==="Livrée" ? `<span class="tag ${o.remis?"paid":"unpaid"}">${o.remis ? "Argent remis ✓" : "Argent chez " + esc(o.livreur)}</span>` : ""}</div>
     <div class="o-ctrl three">
       <label>Statut<select data-act="status">${st}</select></label>
       <label>Date de livraison<input type="date" data-act="delivery" value="${o.delivery}" class="${o.delivery?"":"empty"}"></label>
@@ -725,7 +739,7 @@ function renderStock(){
   list.forEach(s => {
     if (lastNew !== s.isNew) { html += `<div class="group-title">${s.isNew ? "Nouvelle collection" : "Collection"}</div>`; lastNew = s.isNew; }
     const im = photoOf(s.code);
-    html += `<div class="s-row${s.missing?" missing":""}" style="--i:${i++}" data-code="${esc(s.code)}">${im ? `<img class="s-img" src="${im}" alt="" loading="lazy" data-edit="${esc(s.code)}">` : `<span class="s-img ph" data-edit="${esc(s.code)}">📷</span>`}<div class="s-name">${esc(s.name)}${s.added==="Oui" ? `<span class="s-tag">ajouté</span>` : s.added==="Masqué" ? `<span class="s-tag">masqué</span>` : ""}<small>${[esc(s.variant||""), s.price?fmt(s.price):""].filter(Boolean).join(" · ")}</small>${forecastHtml(s)}${s.missing ? "" : `<label class="cost">Prix d’achat <input type="number" inputmode="numeric" min="0" data-cost="${esc(s.code)}" value="${s.cost||""}" placeholder="–"> F</label>`}</div>${sBadge(s.qty)}
+    html += `<div class="s-row${s.missing?" missing":""}" style="--i:${i++}" data-code="${esc(s.code)}">${im ? `<img class="s-img" src="${im}" alt="" loading="lazy" data-edit="${esc(s.code)}">` : `<span class="s-img ph" data-edit="${esc(s.code)}">📷</span>`}<div class="s-name">${esc(s.name)}${s.added==="Oui" ? `<span class="s-tag">ajouté</span>` : s.added==="Masqué" ? `<span class="s-tag">masqué</span>` : ""}<small>${[esc(s.variant||""), s.price?fmt(s.price):""].filter(Boolean).join(" · ")}</small>${forecastHtml(s)}${s.missing ? "" : `<button type="button" class="vis-btn" data-visual="${esc(s.code)}">🎨 Visuel</button>`}${s.missing ? "" : `<label class="cost">Prix d’achat <input type="number" inputmode="numeric" min="0" data-cost="${esc(s.code)}" value="${s.cost||""}" placeholder="–"> F</label>`}</div>${sBadge(s.qty)}
       <div class="stepper"><button type="button" data-d="-1" aria-label="Retirer une pièce">−</button><input type="number" inputmode="numeric" min="0" value="${s.qty===null?"":s.qty}" placeholder="–" aria-label="Pièces en stock"><button type="button" data-d="1" aria-label="Ajouter une pièce">+</button></div></div>`;
   });
   $("#stock").innerHTML = html || `<div class="empty-state"><b>Aucun bijou</b>Changez de filtre.</div>`;
@@ -816,7 +830,7 @@ function renderStats(){
 }
 
 /* ——— Photos ——— */
-function catImg(code){ const [id, rest] = String(code).split("#"); const p = (window.TIMFA_CATALOGUE||[]).find(x=>x.id===id.split("@")[0]); if (!p) return ""; const i = rest ? parseInt(rest,10) : 0; return "../" + (p.variants ? (p.variants[i]||p.variants[0]).img : p.img); }
+function catImg(code){ const [id, rest] = String(code).split("#"); const p = (window.TIMFA_CATALOGUE||[]).find(x=>x.id===id.split("@")[0]); if (!p) return ""; const i = rest ? parseInt(rest,10) : 0; return "../" + (p.variants ? (p.variants[i]||p.variants[0]).img : (p.img || (p.imgs||[])[0])); }
 const photoOf = code => (DATA.photos||{})[code] || catImg(code);
 function resizeImage(file){ return new Promise((ok, ko) => { const fr = new FileReader(); fr.onload = () => { const im = new Image(); im.onload = () => {
   let w = im.width, h = im.height, max = 900; if (w > h && w > max) { h = h*max/w; w = max; } else if (h > max) { w = w*max/h; h = max; }
@@ -946,7 +960,7 @@ function renderClients(){
   (DATA.clients||[]).forEach(c => { const k = String(c.phone).replace(/\D/g,"").slice(-8) || c.name; map[k] = {name:c.name, phone:c.phone, place:c.place, n:0, total:0, last:""}; });
   DATA.orders.filter(o=>o.status!=="Annulée").forEach(o => { const k = String(o.phone).replace(/\D/g,"").slice(-8) || o.name; const c = map[k] || (map[k] = {name:o.name, phone:o.phone, place:o.place, n:0, total:0, last:""}); c.n++; c.total += net(o); if (o.date > c.last) c.last = o.date; });
   const L = Object.values(map).filter(c => !q || (c.name+" "+c.phone+" "+c.place).toLowerCase().includes(q)).sort((a,b)=>b.total-a.total);
-  $("#clients").innerHTML = L.length ? L.map((c,i)=>`<div class="cl clk" style="--i:${i}" data-client="${esc(String(c.phone||c.name))}"><span class="av">${esc((c.name||"?")[0].toUpperCase())}</span><span><b>${esc(c.name)}</b>${i<3 && c.total ? " 👑" : ""}<small>${esc(c.place||"")}${c.place?" · ":""}${esc(c.phone||"")}</small><small>${c.n} commande(s) · ${fmt(c.total)}${c.last ? " · dernière le " + frDate(c.last) : ""}</small><small>💕 ${(c.n % 5 === 4) ? "<b style='color:#1f8a4c'>Prochaine commande : −2 000 F 🎁</b>" : "Fidélité " + (c.n % 5) + "/5"}${String(c.phone).replace(/\D/g,"").length >= 6 ? " · code parrain R" + String(c.phone).replace(/\D/g,"").slice(-6) : ""}</small></span>${c.phone ? `<a class="btn wa" style="padding:7px 12px" href="${waUrl(c)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}</div>`).join("") : `<div class="empty-state"><b>Aucune cliente</b>Elles s’ajoutent toutes seules à chaque commande.</div>`;
+  $("#clients").innerHTML = L.length ? L.map((c,i)=>`<div class="cl clk" style="--i:${i}" data-client="${esc(String(c.phone||c.name))}"><span class="av">${esc((c.name||"?")[0].toUpperCase())}</span><span><b>${esc(c.name)}</b>${i<3 && c.total ? " 👑" : ""}<small>${esc(c.place||"")}${c.place?" · ":""}${esc(c.phone||"")}</small><small>${c.n} commande(s) · ${fmt(c.total)}${c.last ? " · dernière le " + frDate(c.last) : ""}</small><small>💕 ${(c.n % 4 === 3) ? "<b style='color:#1f8a4c'>Prochaine commande : bracelet ou boucles offerts 🎁</b>" : "Fidélité " + (c.n % 4) + "/4"}${String(c.phone).replace(/\D/g,"").length >= 6 ? " · code parrain R" + String(c.phone).replace(/\D/g,"").slice(-6) : ""}</small></span>${c.phone ? `<a class="btn wa" style="padding:7px 12px" href="${waUrl(c)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}</div>`).join("") : `<div class="empty-state"><b>Aucune cliente</b>Elles s’ajoutent toutes seules à chaque commande.</div>`;
   $("#livreurs").innerHTML = (DATA.livreurs||[]).length ? DATA.livreurs.map(l=>{ const n = DATA.orders.filter(o=>o.livreur===l.name && !["Livrée","Annulée"].includes(o.status)).length, ow = courierOwed(l.name); return `<div class="cl"><span class="av">🛵</span><span><b>${esc(l.name)}</b><small>${esc(l.phone)}${n ? " · " + n + " à livrer" : ""}</small>${ow.n ? `<small class="owed">💰 ${ow.amount >= 0 ? "Vous doit " + fmt(ow.amount) : "Vous lui devez " + fmt(-ow.amount)} (${ow.n} colis livré${ow.n>1?"s":""}) <button type="button" class="btn ok" style="padding:4px 10px;font-size:12px" data-remis="${esc(l.name)}">Argent reçu ✓</button></small>` : `<small style="color:#1f8a4c">Caisse à jour ✓</small>`}<small><a href="${courierLink(l)}" target="_blank" rel="noopener">Sa page livraisons ↗</a></small></span><a class="btn wa" style="padding:7px 12px" href="${waUrl(l, "Bonjour " + l.name + " 👋 Voici votre page Timfa : vous y voyez vos livraisons et vous appuyez sur « Livré » à chaque colis remis.\n" + courierLink(l))}" target="_blank" rel="noopener">Envoyer son lien</a></div>`; }).join("") : `<div class="empty-chart">Ajoutez vos livreurs.</div>`;
 }
 $("#qc").addEventListener("input", renderClients);
@@ -996,7 +1010,7 @@ function clientSheet(key){ const kk = k8(key) || key, O = DATA.orders.filter(o =
   const ok = O.filter(o => o.status !== "Annulée"), tot = ok.reduce((t,o)=>t+net(o),0), n = ok.length, code = k8(info.phone).length >= 6 ? "R" + String(info.phone).replace(/\D/g,"").slice(-6) : "";
   const dates = (DATA.dates||[]).filter(d => k8(d.phone) === kk);
   openModal(`<h2>${esc(info.name || "Cliente")}</h2><p class="p-sub">${esc(info.phone||"")}${info.place ? " · " + esc(info.place) : ""}</p>
-    <div class="report"><div class="kp"><div><small>Commandes</small><b>${n}</b></div><div><small>Dépensé (sans livraison)</small><b>${fmt(tot)}</b></div><div><small>Fidélité</small><b>${n % 5}/5${n % 5 === 4 ? " 🎁" : ""}</b></div>${code ? `<div><small>Code parrain</small><b>${code}</b></div>` : ""}</div>
+    <div class="report"><div class="kp"><div><small>Commandes</small><b>${n}</b></div><div><small>Dépensé (sans livraison)</small><b>${fmt(tot)}</b></div><div><small>Fidélité</small><b>${n % 4}/4${n % 4 === 3 ? " 🎁" : ""}</b></div>${code ? `<div><small>Code parrain</small><b>${code}</b></div>` : ""}</div>
     ${dates.length ? `<h3>Dates à retenir</h3>${dates.map(d => `<div>🎂 ${esc(d.occasion)} de ${esc(d.forWho||"?")} : ${esc(String(d.day).replace(/^'/,""))}</div>`).join("")}` : ""}
     <h3>Historique</h3>${O.length ? `<table>${O.map(o => `<tr><td>${frDate(o.date)}<br><small>${esc(o.id)} · ${esc(o.status)}</small></td><td style="white-space:pre-line;font-weight:400;text-align:left">${esc(o.items)}</td><td>${fmt(o.total)}</td></tr>`).join("")}</table>` : `<p class="p-sub">Pas encore de commande.</p>`}</div>
     <div class="f-actions">${info.phone ? `<a class="btn wa" target="_blank" rel="noopener" href="${waUrl(info)}">WhatsApp</a>` : ""}</div>`); }
@@ -1132,6 +1146,99 @@ $("#finSplit").onclick = () => { const sp = splitPct();
     const split = {debt:+$("#spDebt").value, invest:+$("#spInvest").value, save:+$("#spSave").value, me:+$("#spMe").value, goal:+$("#spGoal").value||0};
     DATA.finance = Object.assign(FIN(), {split}); closeModal(); renderFin(); post({action:"setSplit", split}).then(d => toast(d.ok ? "Enregistré ✓" : "Erreur : faites la mise à jour du code")); }); };
 
+/* ——— Visuels réseaux sociaux ——— */
+function prodOf(code){ const id = String(code).split(/[#@]/)[0], p = (window.TIMFA_CATALOGUE||[]).find(x => x.id === id); const s = mergedStock().find(x => x.code === code) || {}; return {p, s, name: s.name || (p && p.name) || code, price: s.price || (p && p.price) || 0, was: p && p.was, isNew: s.isNew || (p && p.isNew), variant: s.variant || ""}; }
+function roundRect(x, X, Y, W, H, R){ x.beginPath(); x.moveTo(X+R, Y); x.arcTo(X+W, Y, X+W, Y+H, R); x.arcTo(X+W, Y+H, X, Y+H, R); x.arcTo(X, Y+H, X, Y, R); x.arcTo(X, Y, X+W, Y, R); x.closePath(); }
+async function makeVisual(code, kind){ const W = 1080, H = kind === "story" ? 1920 : 1080, d = prodOf(code), c = document.createElement("canvas"), x = c.getContext("2d"); c.width = W; c.height = H;
+  const g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, "#fcecee"); g.addColorStop(.55, "#fffafa"); g.addColorStop(1, "#f7d9dd"); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  const logo = await loadImg("../images/logo-sombre.png"), photo = await loadImg(photoOf(code));
+  let y = kind === "story" ? 120 : 36; if (logo) { const lw = kind === "story" ? 360 : 200, lh = lw*logo.height/logo.width; x.drawImage(logo, (W-lw)/2, y, lw, lh); y += lh + (kind === "story" ? 50 : 20); }
+  const ph = kind === "story" ? 820 : (d.variant ? 440 : 480), pw = kind === "story" ? 820 : (d.variant ? 540 : 580), px = (W-pw)/2;
+  if (photo) { x.save(); roundRect(x, px, y, pw, ph, 44); x.clip(); const r = Math.max(pw/photo.width, ph/photo.height), iw = photo.width*r, ih = photo.height*r; x.drawImage(photo, px + (pw-iw)/2, y + (ph-ih)/2, iw, ih); x.restore(); }
+  const tag = d.isNew ? (Date.now() < new Date(2026,10,19).getTime() ? "NOUVEAUTÉ · DISPO JEUDI 19/11" : "NOUVEAUTÉ") : d.was ? "BLACK FRIDAY" : "";
+  if (tag) { x.font = "600 30px Helvetica, Arial"; const tw = x.measureText(tag).width + 50; x.fillStyle = d.was && !d.isNew ? "#2a1c1e" : "#c4526e"; roundRect(x, px + 30, y + 30, tw, 58, 29); x.fill(); x.fillStyle = "#fff"; x.textBaseline = "middle"; x.fillText(tag, px + 55, y + 60); }
+  y += ph + (kind === "story" ? 70 : 30); x.textAlign = "center"; x.textBaseline = "top"; x.fillStyle = "#2a1c1e";
+  let fs = kind === "story" ? 84 : 58; x.font = `500 ${fs}px "Playfair Display", Georgia, serif`; while (x.measureText(d.name).width > W - 120 && fs > 40) { fs -= 4; x.font = `500 ${fs}px "Playfair Display", Georgia, serif`; } x.fillText(d.name, W/2, y); y += fs * 1.25;
+  if (d.variant) { x.font = "34px Helvetica, Arial"; x.fillStyle = "#7e6a6e"; x.fillText(d.variant, W/2, y); y += 50; }
+  x.font = `600 ${kind === "story" ? 96 : 64}px Helvetica, Arial`; x.fillStyle = "#c4526e"; const price = d.price ? fmt(d.price) : "Prix sur demande"; x.fillText(price, W/2, y);
+  if (d.was) { const pw2 = x.measureText(price).width; x.font = "40px Helvetica, Arial"; x.fillStyle = "#7e6a6e"; const old = fmt(d.was); x.fillText(old, W/2 + pw2/2 + 90, y + 18); const ow = x.measureText(old).width; x.fillRect(W/2 + pw2/2 + 90 - ow/2, y + 40, ow, 3); }
+  y += (kind === "story" ? 140 : 84);
+  const lines = kind === "story" ? ["🎁 −1 000 F en commandant sur le site", "🚚 Paiement à la livraison à Abidjan", "💝 Coffret + sac offerts"] : ["−1 000 F sur le site · Paiement à la livraison"];
+  x.font = `${kind === "story" ? 40 : 34}px Helvetica, Arial`; x.fillStyle = "#2a1c1e"; lines.forEach(l => { if (y + 40 < H - (kind === "story" ? 230 : 135)) x.fillText(l, W/2, y); y += kind === "story" ? 62 : 48; });
+  x.fillStyle = "#2a1c1e"; roundRect(x, 90, H - (kind === "story" ? 210 : 120), W - 180, kind === "story" ? 120 : 84, 60); x.fill();
+  x.fillStyle = "#fff"; let ff = kind === "story" ? 40 : 32; const ft = "fatimsidiba-hue.github.io · WhatsApp 07 04 16 09 52"; x.font = `600 ${ff}px Helvetica, Arial`; while (x.measureText(ft).width > W - 260 && ff > 18) { ff--; x.font = `600 ${ff}px Helvetica, Arial`; } x.textBaseline = "middle"; x.fillText(ft, W/2, H - (kind === "story" ? 150 : 78));
+  return c; }
+async function shareCanvases(cs, base){ const files = []; for (const [c, n] of cs) { const b = await new Promise(ok => c.toBlob(ok, "image/jpeg", .9)); files.push(new File([b], base + "-" + n + ".jpg", {type:"image/jpeg"})); }
+  try { if (navigator.canShare && navigator.canShare({files})) { await navigator.share({files}); return; } } catch (e) { if (e && e.name === "AbortError") return; }
+  files.forEach(f => { const a = document.createElement("a"); a.href = URL.createObjectURL(f); a.download = f.name; a.click(); }); toast("Images enregistrées dans vos téléchargements"); }
+function captionFor(code){ const d = prodOf(code); return `${d.isNew ? "✨ NOUVEAUTÉ ✨" : d.was ? "🖤 BLACK FRIDAY 🖤" : "💕 Coup de cœur"}\n${d.name}${d.variant ? " · " + d.variant : ""} : ${d.price ? fmt(d.price) : "prix sur demande"}${d.was ? " au lieu de " + fmt(d.was) : ""}\n🎁 −1 000 F en commandant sur le site\n🚚 Paiement à la livraison à Abidjan · coffret offert\n👉 ${SITE}`; }
+async function visualModal(code){ const d = prodOf(code);
+  openModal(`<h2>Visuels : ${esc(d.name)}</h2><p class="p-sub">Post carré (Instagram, Facebook) et story (WhatsApp Status, Instagram). Partagez-les, puis collez la légende.</p><div class="vis-prev"><img id="vPost" alt="Post"><img id="vStory" alt="Story"></div>
+    <pre style="white-space:pre-wrap;background:#f6fbf4;border-radius:10px;padding:10px;font:inherit;font-size:13.5px;margin:12px 0" id="vCap">${esc(captionFor(code))}</pre>
+    <div class="f-actions"><button class="btn dark" type="button" id="vShare">📤 Partager les 2 images</button><button class="btn soft" type="button" id="vCopy">Copier la légende</button></div>`);
+  await document.fonts.ready; const post = await makeVisual(code, "post"), story = await makeVisual(code, "story");
+  $("#vPost").src = post.toDataURL("image/jpeg", .85); $("#vStory").src = story.toDataURL("image/jpeg", .85);
+  $("#vShare").onclick = () => shareCanvases([[post, "post"], [story, "story"]], "timfa-" + code.replace(/[^a-z0-9]/gi, "-"));
+  $("#vCopy").onclick = () => navigator.clipboard.writeText(captionFor(code)).then(()=>toast("Légende copiée ✓"), ()=>toast("Copie impossible")); }
+document.addEventListener("click", e => { const b = e.target.closest("[data-visual]"); if (b) visualModal(b.dataset.visual); });
+
+/* ——— Planning de publication de la semaine ——— */
+$("#planning").onclick = () => { const ST = mergedStock().filter(s => s.qty === null || s.qty > 0), news = ST.filter(s => s.isNew), S = sales30();
+  const top = ST.slice().sort((a,b) => (S[b.code]||0) - (S[a.code]||0))[0], promo = ST.find(s => { const d = prodOf(s.code); return d.was; });
+  const rv = (DATA.reviews||[]).find(r => r.status === "Publié"), pick = (L, i) => L.length ? L[i % L.length] : ST[i % Math.max(1, ST.length)];
+  const mon = new Date(today()+"T12:00");
+  const day = k => { const d = new Date(mon); d.setDate(d.getDate()+k); return d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}); };
+  const plan = [
+    ["✨ Nouveauté", pick(news,0), s => captionFor(s.code)],
+    ["⭐ Avis cliente", null, () => rv ? `💬 Elles en parlent mieux que nous…\n« ${rv.text} » — ${rv.name} ${"★".repeat(rv.stars)}\nMerci ma reine 👑 À votre tour : ${SITE}` : `💬 Vos avis comptent !\nVous avez reçu votre bijou Timfa ? Envoyez-nous une photo ou un petit mot ici : ${SITE}/avis/ 💕`],
+    ["🔥 Le plus commandé", top, s => `🔥 Le bijou que vous adorez en ce moment : ${prodOf(s.code).name} !\n${prodOf(s.code).price ? fmt(prodOf(s.code).price) : ""} · stock limité\n👉 ${SITE}`],
+    ["💝 Idée cadeau / ensemble", pick(news,1), () => `💝 Le cadeau parfait : un ensemble collier + bracelet à 10 000 F, dans son coffret 🎁\nLivraison à 900 F à Abidjan, carte message offerte.\nComposez le vôtre 👉 ${SITE}/#ensembles`],
+    ["🖤 Promo du week-end", promo || pick(ST,2), s => `🖤 C’est le week-end !\n${prodOf(s.code).name} à ${fmt(prodOf(s.code).price)}${prodOf(s.code).was ? " au lieu de " + fmt(prodOf(s.code).was) : ""}\n🎉 Livraison offerte dès 15 000 F à Abidjan · 💍 2 bijoux = −1 000 F\n👉 ${SITE}`],
+    ["📸 Portés par vous", pick(ST,3), () => `📸 Vous êtes magnifiques avec vos bijoux Timfa 😍\nEnvoyez-nous votre photo avec votre bijou : on la partage en story ! 💕\n${SITE}`],
+    ["📲 Enregistrez mon numéro", null, () => `📲 Vous voyez ce Status ? Alors vous avez déjà enregistré mon numéro 💕\nPartagez-le à une amie qui aime les bijoux : 07 04 16 09 52 « Timfa Bijoux »\nFiche contact : ${SITE}/timfa.vcf`]];
+  openModal(`<h2>Planning de la semaine</h2><p class="p-sub">Un post par jour. Touchez « Copier » pour la légende et « Visuel » pour l’image prête à publier.</p><div class="plan">${plan.map(([t, s, f], i) => `<article><h4>${day(i).replace(/^./, c => c.toUpperCase())} · ${t}</h4><pre>${esc(f(s || {}))}</pre><div style="display:flex;gap:6px"><button class="btn soft" type="button" style="padding:6px 12px" data-plancopy="${i}">Copier</button>${s && s.code ? `<button class="btn dark" type="button" style="padding:6px 12px" data-visual="${esc(s.code)}">🎨 Visuel</button>` : ""}</div></article>`).join("")}</div>`);
+  $("#mBody").onclick = e => { const b = e.target.closest("[data-plancopy]"); if (!b) return; const [t, s, f] = plan[+b.dataset.plancopy]; navigator.clipboard.writeText(f(s || {})).then(()=>toast("Copié ✓"), ()=>toast("Copie impossible")); }; };
+
+/* ——— Cartes cadeaux ——— */
+async function giftImage(g){ const W = 1080, H = 680, c = document.createElement("canvas"), x = c.getContext("2d"); c.width = W; c.height = H; const bg = await loadImg("../images/carte-cadeau.jpg");
+  if (bg) x.drawImage(bg, 0, 0, W, H); else { x.fillStyle = "#f7d9dd"; x.fillRect(0,0,W,H); }
+  x.fillStyle = "#2a1c1e"; x.textAlign = "right"; x.textBaseline = "top"; x.font = '600 92px Helvetica, Arial'; x.fillText(fmt(g.amount), W - 60, 70);
+  x.font = "34px Helvetica, Arial"; if (g.forName) x.fillText("Pour " + g.forName, W - 60, 180);
+  x.textAlign = "left"; x.font = "600 46px 'Courier New', monospace"; x.fillText("Code : " + g.code, 72, 540);
+  x.font = "24px Helvetica, Arial"; x.fillStyle = "#5a3c42"; x.fillText("À saisir dans « Code promo » sur fatimsidiba-hue.github.io", 72, 604);
+  return c; }
+function renderGifts(){ const L = DATA.giftcards || [];
+  $("#gifts").innerHTML = L.length ? L.slice(0, 30).map(g => `<div class="cl"><span class="av">💳</span><span><b>${esc(g.code)}</b> · ${fmt(g.amount)}<small>${esc(g.name)}${g.forName ? " → " + esc(g.forName) : ""} · ${esc(g.order)}</small><small>${g.status === "Active" ? "Solde " + fmt(g.balance) : esc(g.status)}${g.uses ? " · " + esc(g.uses) : ""}</small></span>
+    <span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">${g.status === "À payer" ? `<button class="btn ok" type="button" style="padding:6px 10px" data-gact="${g.row}">Payée → activer</button>` : ""}${g.status === "Active" ? `<button class="btn wa" type="button" style="padding:6px 10px" data-gsend="${g.row}">Envoyer</button>` : ""}</span></div>`).join("")
+    : `<div class="empty-chart">Les cartes cadeaux achetées sur le site arrivent ici. Activez-les une fois payées, puis envoyez la carte.</div>`; }
+$("#gifts").addEventListener("click", async e => { const a = e.target.closest("[data-gact]"), sd = e.target.closest("[data-gsend]");
+  if (a) { const g = DATA.giftcards.find(x => x.row === +a.dataset.gact); g.status = "Active"; renderGifts(); post({action:"setGift", row:g.row, status:"Active"}).then(d => toast(d.ok ? "Carte activée ✓ Envoyez-la à la cliente" : "Erreur")); }
+  if (sd) { const g = DATA.giftcards.find(x => x.row === +sd.dataset.gsend), c = await giftImage(g);
+    openModal(`<h2>Carte cadeau ${esc(g.code)}</h2><img src="${c.toDataURL("image/jpeg", .9)}" alt="" style="width:100%;border-radius:14px"><div class="f-actions"><button class="btn dark" type="button" id="gShare">📤 Partager l’image</button><a class="btn wa" target="_blank" rel="noopener" href="${waUrl(g, `Merci ${g.name} 💝 Voici votre carte cadeau Timfa de ${fmt(g.amount)}${g.forName ? " pour " + g.forName : ""} !\nCode : ${g.code}\nÀ saisir dans « Code promo » sur ${SITE} (valable sur tout le site, en une ou plusieurs fois).`)}">Envoyer le code sur WhatsApp</a></div>`);
+    $("#gShare").onclick = () => shareCanvases([[c, "carte"]], "carte-cadeau-" + g.code); } });
+$("#newGift").onclick = () => { openModal(`<h2>Créer une carte cadeau</h2><p class="p-sub">Pour une carte vendue directement (WhatsApp, en main propre). Elle est active tout de suite.</p><form id="ngForm" class="f-grid">
+    <label>Montant (F)<select id="ngAmt"><option>5000</option><option selected>10000</option><option>15000</option><option>20000</option></select></label><label>Acheteuse<input id="ngName" required></label>
+    <label>Téléphone<input id="ngPhone" type="tel"></label><label>Pour (facultatif)<input id="ngFor"></label><div class="f-actions full"><button class="btn dark" type="submit">Créer</button></div></form>`);
+  $("#ngForm").addEventListener("submit", e => { e.preventDefault(); post({action:"addGift", amount:+$("#ngAmt").value, name:$("#ngName").value.trim(), phone:$("#ngPhone").value.trim(), forName:$("#ngFor").value.trim()})
+    .then(d => { toast(d.ok ? "Carte " + d.code + " créée ✓" : "Erreur : faites la mise à jour du code"); closeModal(); load(); }); }); };
+
+/* ——— Statistiques du site et publicité ——— */
+function renderVisits(){ const st = DATA.stats; if (!st) { $("#visits").innerHTML = `<div class="empty-chart">Les visites s’afficheront ici après la mise à jour n°10.</div>`; return; }
+  const days = [...Array(30)].map((_,k) => addDays(today(), k-29)), vals = days.map(d => st.days[d] || 0), max = Math.max(1, ...vals);
+  const src = Object.entries(st.sources).sort((a,b)=>b[1]-a[1]), prods = Object.entries(st.products).sort((a,b)=>b[1]-a[1]).slice(0, 8);
+  const orders30 = DATA.orders.filter(o => o.date.slice(0,10) >= days[0] && o.status !== "Annulée" && !/^ANCIEN/.test(o.id)).length;
+  $("#visSub").textContent = st.visits + " visite(s)";
+  $("#visits").innerHTML = `<div class="vbars">${vals.map((v,i) => `<i style="height:${v/max*100}%" title="${frDate(days[i])} : ${v}"></i>`).join("")}</div>
+    <div class="funnel"><div><small>Visites</small><b>${st.visits}</b></div><div><small>Ajouts au panier</small><b>${st.carts}</b></div><div><small>Commandes lancées</small><b>${st.checkouts}</b></div><div><small>Commandes reçues</small><b>${orders30}</b></div><div><small>Taux de commande</small><b>${st.visits ? (orders30/st.visits*100).toFixed(1).replace(".",",") : 0} %</b></div></div>
+    <div class="vgrid"><div><h4>D’où viennent vos visiteuses</h4>${src.length ? src.map(([k,v]) => `<div class="hrow"><span>${esc(k)}</span><b>${v}</b></div>`).join("") : "<p class='p-sub'>—</p>"}</div>
+    <div><h4>Bijoux les plus regardés</h4>${prods.length ? prods.map(([k,v]) => { const p = (window.TIMFA_CATALOGUE||[]).find(x=>x.id===k), s = mergedStock().find(x => x.code===k); return `<div class="hrow"><span>${esc((p && p.name) || (s && s.name) || k)}</span><b>${v}</b></div>`; }).join("") : "<p class='p-sub'>—</p>"}</div></div>`; }
+function renderAds(){ const M = today().slice(0,7), spend = (DATA.expenses||[]).filter(x => x.date.slice(0,7) === M && /pub/i.test(x.cat + " " + x.label)).reduce((a,x)=>a+x.amount,0);
+  const O = DATA.orders.filter(o => o.status !== "Annulée" && o.date.slice(0,7) === M), fromAds = O.filter(o => /pub/i.test(o.source||"")), social = O.filter(o => /facebook|instagram|tiktok/i.test(o.source||""));
+  const rev = fromAds.reduce((a,o)=>a+net(o),0); let cogs = 0; fromAds.forEach(o => String(o.codes||"").split(",").forEach(c => { const m = c.trim().match(/^(.+) x(\d+)$/); if (m) (/^set:/.test(m[1]) ? m[1].slice(4).split("+") : [m[1]]).forEach(k => cogs += costOf(k) * (+m[2])); }));
+  const gain = rev - cogs - spend;
+  $("#adsBox").innerHTML = `<div class="funnel"><div><small>Dépensé en pub</small><b>${fmt(spend)}</b></div><div><small>Commandes venues d’une pub</small><b>${fromAds.length}</b></div><div><small>Ventes venues d’une pub</small><b>${fmt(rev)}</b></div><div><small>Coût par commande</small><b>${fromAds.length ? fmt(Math.round(spend/fromAds.length)) : "—"}</b></div><div><small>Gain après pub et bijoux</small><b style="color:${gain >= 0 ? "#1f8a4c" : "#d6334a"}">${fmt(gain)}</b></div></div>
+    <p class="p-sub" style="margin-top:8px">${social.length - fromAds.length > 0 ? `${social.length - fromAds.length} autre(s) commande(s) venue(s) de Facebook/Instagram sans pub. ` : ""}Ajoutez vos dépenses de pub dans « Dépenses » avec la catégorie « Publicité ». Les commandes venues d’une pub sont reconnues automatiquement (lien Facebook/Instagram) à partir de la mise à jour n°10.${spend && fromAds.length ? ` Chaque 1 000 F de pub a rapporté ${fmt(Math.round(rev/spend*1000))} de ventes.` : ""}</p>`; }
+
 /* ——— Avis et alertes ——— */
 function stockQty(code){ const s = mergedStock().find(x=>x.code===code); return s ? s.qty : null; }
 function backAlerts(){ return (DATA.alerts||[]).filter(a => { const q = stockQty(a.code); return q === null || q > 0; }); }
@@ -1172,7 +1279,7 @@ document.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { oFilter=b
 document.querySelectorAll("[data-s]").forEach(b => b.onclick = () => { sFilter=b.dataset.s; document.querySelectorAll("[data-s]").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderStock(); });
 $("#q").addEventListener("input", renderOrders); $("#qs").addEventListener("input", renderStock);
 addEventListener("resize", placePill);
-function renderTab(){ const f = ({stock:renderStock, stats:renderStats, lots:renderLots, clients:renderClients, avis:renderAvis, fin:renderFin})[tab]; f ? f() : renderOrders(); }
+function renderTab(){ const f = ({stock:renderStock, lots:renderLots, clients:() => { renderClients(); renderGifts(); }, avis:renderAvis, fin:renderFin, stats:() => { renderStats(); renderVisits(); renderAds(); }})[tab]; f ? f() : renderOrders(); }
 function render(){ renderKpis(); renderSales(); renderTab(); }
 
 /* ——— Démarrage ——— */

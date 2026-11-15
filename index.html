@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-T8PthKXo5F7AfaJ4K6ZQUw9q7l0wrC28tPx3Jae3NBk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-YPn5ku4jOMqWliaXqkwdDNhMsCT19T0HweFxQDmewB4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -248,6 +248,20 @@ details.acc p{margin:8px 0 0;color:var(--muted);font-size:14px}
 .gift-set p{margin:0;max-width:52ch}
 .install-btn{position:fixed;left:16px;bottom:18px;z-index:40;border:0;border-radius:999px;background:var(--ink,#2a1c1e);color:#fff;padding:11px 16px;font:inherit;font-size:13px;font-weight:600;box-shadow:0 10px 24px -10px rgba(0,0,0,.4)}
 .save-hint{font-size:13px;color:var(--muted);max-width:46ch;margin:14px auto 0}
+.ship-goal{font-size:13px;border-radius:12px;padding:9px 11px;background:#eef3ff;color:#2b4a9b;margin:6px 0;display:grid;gap:6px}
+.ship-goal.on{background:#e8f6ee;color:#1f8a4c;font-weight:600}
+.sg-bar{display:block;height:6px;background:#d8e2fb;border-radius:6px;overflow:hidden}.sg-bar i{display:block;height:100%;background:#2b4a9b;border-radius:6px}
+.gcard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:22px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;margin-top:22px}
+@media (max-width:700px){.gcard{grid-template-columns:1fr}}
+.gcard img{width:100%;border-radius:16px;box-shadow:0 20px 40px -24px rgba(120,30,60,.5)}
+.gcard h3{font-family:var(--display);font-weight:500;font-size:26px;margin:6px 0}.gcard p{color:var(--muted);margin:0 0 12px}
+.gc-amts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.gc-amts button{font:inherit;font-size:14px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer}
+.gc-amts button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.top-pick{display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:center;background:linear-gradient(120deg,#fff4dc,#fff);border:1px solid #f1dfb6;border-radius:22px;padding:12px;margin:0 0 18px;cursor:pointer}
+.top-pick img{width:140px;height:140px;object-fit:cover;border-radius:16px}
+.top-pick .eyebrow{color:#b07d1c}.top-pick h3{font-family:var(--display);font-weight:500;font-size:22px;margin:4px 0}.top-pick p{margin:0 0 8px;color:var(--muted);font-size:14px}
+.perks-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}.perks-row span{font-size:12.5px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px}
 .fav-bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin:0 0 16px}
 .fav-bar b{font-family:var(--display);font-weight:500;font-size:18px}
 .fav-bar span{color:var(--muted);font-size:14px;flex:1;min-width:200px}
@@ -641,6 +655,8 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
         <button type="button" data-filter="Favoris" aria-pressed="false" id="favFilter" hidden>♥ Mes favoris</button>
       </div>
     </div>
+    <div class="perks-row"><span>🎉 Livraison offerte dès 15 000 F à Abidjan</span><span>💍 2 bijoux achetés = −1 000 F</span><span>🎁 4e commande = bracelet ou boucles offerts</span><span>🌐 −1 000 F sur le site</span></div>
+    <div class="top-pick" id="topPick" hidden></div>
     <div class="fav-bar" id="favBar" hidden></div>
     <div class="grid" id="grid"></div>
     <div class="more" id="moreWrap"><button class="btn btn-light" id="more" type="button">Voir tous les bijoux</button></div>
@@ -689,6 +705,12 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
     <div class="shop-head"><h2 class="sec-title">Idées cadeaux</h2><p class="gi-sub">Anniversaire, fête, Saint-Valentin, « juste comme ça » : choisissez votre budget. Coffret, sac et carte message offerts, livraison surprise possible.</p></div>
     <div class="filters" id="giftTabs" role="group" aria-label="Budget"></div>
     <div class="grid" id="giftRow"></div>
+    <div class="gcard" id="carte-cadeau">
+      <img src="images/carte-cadeau.jpg" alt="Carte cadeau Timfa online shop" loading="lazy">
+      <div><div class="eyebrow">Vous hésitez ?</div><h3>La carte cadeau Timfa</h3><p>Elle choisit elle-même son bijou. Vous recevez un code sur WhatsApp (et une jolie carte à lui envoyer), valable sur tout le site.</p>
+        <div class="gc-amts" role="group" aria-label="Montant"></div>
+        <button class="btn btn-dark" type="button" id="gcAdd">Offrir cette carte</button></div>
+    </div>
   </div>
 </section>
 <section class="shop" id="recent" hidden>
@@ -718,7 +740,7 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
   <div class="wrap">
     <h2 class="sec-title">Livraison &amp; paiement</h2>
     <div class="deliv-grid">
-      <article><div class="eyebrow">Abidjan</div><b class="fee">1 500 F</b><p>Livraison dans Abidjan.<br><strong>Paiement à la livraison.</strong><br>Ensembles : <strong>900 F</strong> seulement.</p></article>
+      <article><div class="eyebrow">Abidjan</div><b class="fee">1 500 F</b><p>Livraison dans Abidjan.<br><strong>Paiement à la livraison.</strong><br>Ensembles : <strong>900 F</strong> seulement.<br>🎉 <strong>Offerte dès 15 000 F</strong> de bijoux.</p></article>
       <article><div class="eyebrow">Port-Bouët · Bassam</div><b class="fee">2 000 F</b><p>Livraison à Port-Bouët et Grand-Bassam.<br><strong>Paiement à la livraison.</strong></p></article>
       <article><div class="eyebrow">Expédition</div><b class="fee">2 500 F</b><p>Envoi hors de ces zones. Paiement avant l’envoi sur le <strong class="sel">07 79 51 25 04</strong>, puis envoyez la capture avec votre nom sur WhatsApp.</p></article>
     </div>
@@ -816,15 +838,18 @@ aside.drawer{overflow-y:auto;overscroll-behavior:contain}
     </fieldset>
     <div class="fields"><input id="cName" type="text" placeholder="Votre nom" autocomplete="name"><input id="cPhone" type="tel" placeholder="Téléphone" autocomplete="tel" inputmode="tel"><input id="cPlace" class="wide" type="text" placeholder="Quartier / ville" autocomplete="address-level2"></div>
     <p class="pay-note" id="payNote"></p>
-    <div class="promo-row"><input id="pCode" type="text" placeholder="Code promo ou parrain (R…)" maxlength="20" autocomplete="off" autocapitalize="characters"><button type="button" class="btn btn-light" id="pApply">Appliquer</button></div>
+    <div class="promo-row"><input id="pCode" type="text" placeholder="Code promo, parrain ou carte cadeau" maxlength="20" autocomplete="off" autocapitalize="characters"><button type="button" class="btn btn-light" id="pApply">Appliquer</button></div>
     <p class="promo-msg" id="pMsg" hidden></p>
     <p class="pre-note" id="preNote" hidden></p>
+    <p class="ship-goal" id="shipGoal" hidden></p>
     <div class="sub"><span>Bijoux</span><span id="subtotal">0 F</span></div>
     <div class="sub"><span>Livraison</span><span id="shipFee">1 500 F</span></div>
     <div class="sub promo-line" id="promoLine" hidden><span>Réduction commande sur le site</span><span>−1 000 F</span></div>
+    <div class="sub promo-line" id="bundleLine" hidden><span>💍 2 bijoux achetés</span><span id="bundleVal">−1 000 F</span></div>
     <p class="loy-line" id="loyLine" hidden></p>
     <div class="sub promo-line" id="loyOff" hidden><span id="loyLabel"></span><span id="loyVal"></span></div>
     <div class="sub promo-line" id="codeLine" hidden><span id="codeLabel">Code promo</span><span id="codeVal"></span></div>
+    <div class="sub promo-line" id="gcLine" hidden><span id="gcLabel">Carte cadeau</span><span id="gcVal"></span></div>
     <div class="total"><span>Total</span><b id="total">0 F</b></div>
     <a class="btn btn-dark" id="checkout" href="#" target="_blank" rel="noopener">Commander sur WhatsApp</a>
     <button class="copy" id="copyOrder" type="button">Copier le message de commande</button>
@@ -914,7 +939,7 @@ function addExtra(list){
 }
 function loadStock(){
   if (!API) return;
-  fetch(API + "?action=stock").then(r => r.json()).then(d => { if (d && d.stock) { STOCK = d.stock; addExtra(d.extra || []); renderGrid(); renderBuilder(); renderGiftIdeas(); renderRecent(); } }).catch(() => {});
+  fetch(API + "?action=stock").then(r => r.json()).then(d => { if (d && d.stock) { STOCK = d.stock; TOP = d.top || ""; addExtra(d.extra || []); renderGrid(); renderBuilder(); renderGiftIdeas(); renderRecent(); } }).catch(() => {});
 }
 // ——— Galerie photos ———
 function galleryOf(p){ const v = p.variants ? p.variants[chosen[p.id]||0] : null; const first = v ? v.img : p.img; return [first, ...(p.imgs||[]).filter(x => x !== first)]; }
@@ -932,7 +957,7 @@ $("#lb").addEventListener("touchend", e => { if (lbX0 === null) return; const dx
 // ——— Fiche détaillée d'un bijou ———
 const INFO = window.TIMFA_INFO || {};
 let PD = null;
-function openPd(id){ PD = PRODUCTS.find(x => x.id === id); if (!PD) return; try { pushRecent(id); } catch (e) {} track("ViewContent", {content_ids:[PD.id], content_name:PD.name, content_type:"product", value:PD.price||0, currency:"XOF"}); renderPd(); $("#pd").hidden = $("#pdScrim").hidden = false; document.body.style.overflow = "hidden"; }
+function openPd(id){ PD = PRODUCTS.find(x => x.id === id); if (!PD) return; try { pushRecent(id); hit("product", id); } catch (e) {} track("ViewContent", {content_ids:[PD.id], content_name:PD.name, content_type:"product", value:PD.price||0, currency:"XOF"}); renderPd(); $("#pd").hidden = $("#pdScrim").hidden = false; document.body.style.overflow = "hidden"; }
 function closePd(){ $("#pdVid").pause(); $("#pd").hidden = $("#pdScrim").hidden = true; document.body.style.overflow = ""; PD = null; }
 function renderPd(k){
   const p = PD, gal = galleryOf(p), v = p.variants ? p.variants[chosen[p.id]||0] : null, idx = k || 0;
@@ -1058,7 +1083,7 @@ function renderFavBar(){ const bar = $("#favBar");
     if (navigator.share) navigator.share({title:"Ma liste d’envies Timfa", text, url}).catch(()=>{}); else window.open("https://wa.me/?text=" + encodeURIComponent(text + url), "_blank", "noopener"); }; }
 function renderGrid(){
   let list = PRODUCTS.filter(p => filter==="Tout" || (filter==="Promo" ? !!p.was : filter==="Nouveautés" ? !!p.isNew : filter==="Favoris" ? favs.includes(p.id) : filter==="Partagés" ? SHARED.includes(p.id) : p.cat===filter));
-  updateFavFilter(); renderFavBar();
+  updateFavFilter(); renderFavBar(); if (typeof renderTop === "function") renderTop();
   if (filter==="Tout") list = [...list.filter(p=>p.isNew), ...list.filter(p=>!p.isNew)];
   const limited = filter==="Tout" && !showAll && list.length > 8;
   $("#moreWrap").hidden = !limited;
@@ -1076,21 +1101,26 @@ function addToCart(id){
   if (q !== null && (q <= 0 || (ex && ex.qty >= q))) { toast(q <= 0 ? "Désolée, ce bijou est en rupture de stock" : `Il ne reste que ${q} pièce${q>1?"s":""}`); return; }
   if (ex) ex.qty++; else { const v = p.variants ? p.variants[i] : null; cart.push({key, name:p.name+(v?" · "+v.name:"")+(z?" · taille "+z:"")+(p.adjustable?" · réglable":""), price:p.price, img:v?v.img:p.img, qty:1}); }
   track("AddToCart", {content_ids:[key], content_name:p.name, content_type:"product", value:p.price||0, currency:"XOF"});
-  write("timfa-cart", cart); renderCart(); bump(); toast(PREORDER && p.isNew ? "Précommande ajoutée · dispo jeudi 19/11" : p.price ? "Ajouté au panier" : "Ajouté, prix à confirmer");
+  hit("cart"); write("timfa-cart", cart); renderCart(); bump(); toast(PREORDER && p.isNew ? "Précommande ajoutée · dispo jeudi 19/11" : p.price ? "Ajouté au panier" : "Ajouté, prix à confirmer");
 }
 function orderText(orderId){
   if (!cart.length) return "Bonjour Timfa online shop, j'ai une question sur vos bijoux.";
   const lines = cart.map(l => `• ${l.qty} × ${l.name}${isPre(l.key) ? " (précommande, disponible le jeudi 19 novembre)" : ""} : ${l.price ? fmt(l.price*l.qty) : "prix à confirmer"}`);
-  const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), z = ZONES[zone()], f = feeFor(zone()), d = discountFor(sub);
+  const t = totals(), z = ZONES[zone()];
   const name = $("#cName").value.trim(), phone = $("#cPhone").value.trim(), place = $("#cPlace").value.trim();
-  return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\nLivraison ${z.label}${f!==z.fee ? " (tarif ensemble)" : ""} : ${fmt(f)}\n${d ? "Réduction commande sur le site : -"+fmt(d)+"\n" : ""}${promoOff(sub) ? "Code promo " + PROMO + " : -" + fmt(promoOff(sub)) + "\n" : ""}${loyOff(sub) ? loyLabel() + " : -" + fmt(loyOff(sub)) + "\n" : ""}Total : ${fmt(sub+f-d-promoOff(sub)-loyOff(sub))}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${giftText() ? "\n"+giftText() : ""}${surprise() ? "\n🤫 Cadeau surprise : ne pas mettre le prix" : ""}${recipient() ? "\n📦 Livrer à : " + recipient().name + " · " + recipient().phone + " · " + recipient().place : ""}${remember() ? "\n📅 Date à retenir : " + remember().day : ""}${name ? "\nNom : "+name : ""}${phone ? "\nTéléphone : "+phone : ""}${place ? "\nQuartier / ville : "+place : ""}${orderId ? "\nN° de commande : "+orderId+"\nSuivre ma commande : https://fatimsidiba-hue.github.io/suivi/" : ""}\nMerci !`;
+  const money = [`Livraison ${z.label}${t.fee && t.fee !== z.fee ? " (tarif ensemble)" : ""} : ${t.feeNote && !t.fee ? t.feeNote : fmt(t.fee)}`,
+    t.site ? "Réduction commande sur le site : -" + fmt(t.site) : "", t.bundle ? "2 bijoux achetés : -" + fmt(t.bundle) : "", t.promo ? "Code promo " + PROMO + " : -" + fmt(t.promo) : "",
+    (t.ref + t.credit) ? loyLabel() + " : -" + fmt(t.ref + t.credit) : "", t.gc ? "Carte cadeau " + GC.code + " : -" + fmt(t.gc) : "", t.gift ? "🎁 Cadeau fidélité : " + (LOY.gift || "cadeau offert") : ""].filter(Boolean);
+  return `Bonjour Timfa online shop, je souhaite commander :\n${lines.join("\n")}\n${money.join("\n")}\nTotal : ${fmt(t.total)}${cart.some(l=>!l.price) ? " (+ articles à confirmer)" : ""}\n${payText(zone())}${giftText() ? "\n"+giftText() : ""}${surprise() ? "\n🤫 Cadeau surprise : ne pas mettre le prix" : ""}${recipient() ? "\n📦 Livrer à : " + recipient().name + " · " + recipient().phone + " · " + recipient().place : ""}${remember() ? "\n📅 Date à retenir : " + remember().day : ""}${name ? "\nNom : "+name : ""}${phone ? "\nTéléphone : "+phone : ""}${place ? "\nQuartier / ville : "+place : ""}${orderId ? "\nN° de commande : "+orderId+"\nSuivre ma commande : https://fatimsidiba-hue.github.io/suivi/" : ""}\nMerci !`;
 }
 const feeFor = z => (z==="abj" && cart.some(l => isSetKey(l.key))) ? 900 : ZONES[z].fee;
 // Nouvelle collection en précommande jusqu'au jeudi 19 novembre 2026 (passe en « Nouveau » automatiquement)
 const PREORDER = Date.now() < new Date(2026,10,19).getTime();
 const isPre = key => { if (isSetKey(key)) return PREORDER && setParts(key).some(c => { const o = byCode(c); return o && o.p.isNew; }); const id = String(key).split(/[#@]/)[0]; const p = PRODUCTS.find(x => x.id === id); return PREORDER && !!(p && p.isNew); };
 // Réduction de 1 000 F sur chaque commande passée via le site (une fois par commande)
-const SITE_DISCOUNT = 1000;
+const SITE_DISCOUNT = 1000, FREE_SHIP_MIN = 15000, BUNDLE_MIN = 2, BUNDLE_OFF = 1000, GIFT_AMOUNTS = [5000, 10000, 15000, 20000];
+const isGiftKey = k => String(k).startsWith("gift:");
+let GC = null; // carte cadeau utilisée
 const discountFor = sub => sub >= SITE_DISCOUNT ? SITE_DISCOUNT : 0;
 const ZONES = {abj:{label:"Abidjan", fee:1500}, pb:{label:"Port-Bouët / Bassam", fee:2000}, exp:{label:"Expédition", fee:2500}};
 const zone = () => (document.querySelector('input[name="zone"]:checked')||{value:"abj"}).value;
@@ -1145,6 +1175,11 @@ function applyPromo(){
   const c = $("#pCode").value.trim().toUpperCase(), m = $("#pMsg"); m.hidden = false;
   if (!c) { PROMO = ""; m.hidden = true; }
   else if (PROMOS[c]) { PROMO = c; m.className = "promo-msg ok"; m.textContent = `Code ${c} appliqué : −${fmt(PROMOS[c])} ✨`; }
+  else if (/^TC-[A-Z0-9]{6}$/.test(c)) { PROMO = ""; m.className = "promo-msg"; m.textContent = "Vérification de la carte cadeau…";
+    fetch(API + "?action=giftcard&code=" + encodeURIComponent(c)).then(r=>r.json()).then(d => {
+      if (d && d.ok && d.status === "Active" && d.balance > 0) { GC = {code: d.code, balance: d.balance}; m.className = "promo-msg ok"; m.textContent = `💳 Carte cadeau acceptée : ${fmt(d.balance)} à utiliser.`; }
+      else { GC = null; m.className = "promo-msg bad"; m.textContent = d && d.ok ? (d.status === "Utilisée" ? "Cette carte cadeau a déjà été utilisée." : "Cette carte cadeau n’est pas encore activée : écrivez-nous sur WhatsApp.") : "Carte cadeau introuvable."; }
+      renderCart(); }).catch(() => { m.className = "promo-msg bad"; m.textContent = "Connexion impossible, réessayez."; }); }
   else if (/^R\d{6}$/.test(c)) { PROMO = ""; m.className = "promo-msg ok"; m.textContent = "Code parrain enregistré : indiquez votre téléphone, la réduction s’affiche pour une 1re commande."; checkLoyalty(); }
   else { PROMO = ""; m.className = "promo-msg bad"; m.textContent = "Ce code n’existe pas ou n’est plus valable."; }
   try { localStorage.setItem("timfa-promo", PROMO); } catch(e) {}
@@ -1160,12 +1195,38 @@ const remember = () => { if (!$("#giftOn") || !$("#giftOn").checked) return null
   ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"].forEach((n,i)=>m.insertAdjacentHTML("beforeend", `<option value="${String(i+1).padStart(2,"0")}">${n}</option>`)); })();
 // ——— Meta Pixel : événements ———
 function track(ev, data, id){ try { if (window.fbq) fbq("track", ev, data, id ? {eventID: id} : undefined); } catch (e) {} }
+// ——— Carte cadeau ———
+let gcAmt = 10000;
+function renderGcAmts(){ const box = document.querySelector(".gc-amts"); if (!box) return; box.innerHTML = GIFT_AMOUNTS.map(a => `<button type="button" data-gca="${a}" aria-pressed="${a===gcAmt}">${fmt(a)}</button>`).join(""); }
+document.addEventListener("click", e => { const b = e.target.closest("[data-gca]"); if (b) { gcAmt = +b.dataset.gca; renderGcAmts(); } });
+$("#gcAdd").onclick = () => { const key = "gift:" + gcAmt, ex = cart.find(l => l.key === key);
+  if (ex) ex.qty++; else cart.push({key, name: "Carte cadeau Timfa " + fmt(gcAmt), price: gcAmt, img: "images/carte-cadeau.jpg", qty: 1});
+  write("timfa-cart", cart); renderCart(); bump(); hit("cart"); toast("Carte cadeau ajoutée 💝 Le code vous sera envoyé sur WhatsApp après paiement"); };
+// ——— Bijou du mois ———
+let TOP = "";
+function renderTop(){ const box = $("#topPick"), p = PRODUCTS.find(x => x.id === TOP); if (!box) return; if (!p || filter !== "Tout") { box.hidden = true; return; }
+  box.hidden = false; box.dataset.open = p.id;
+  box.innerHTML = `<img src="${p.img || (p.variants && p.variants[0].img) || (p.imgs||[])[0]}" alt="${esc(p.name)}"><div><div class="eyebrow">⭐ Bijou du mois · le plus commandé</div><h3>${esc(p.name)}</h3><p>${esc(p.desc||"")}</p><b style="color:var(--rose)">${p.price ? fmt(p.price) : ""}</b></div>`; }
+// ——— Portés par vous : photos des avis publiés ———
+function renderWorn(L){ const g = document.querySelector("#portes .look-grid"); if (!g) return; const ph = L.filter(x => /^data:image\//.test(x.photo||"")).slice(0, 6); if (!ph.length) return;
+  g.insertAdjacentHTML("beforeend", ph.map(x => `<figure><img src="${x.photo}" alt="Bijou porté par ${esc(x.name)}" loading="lazy"><figcaption>${esc(x.product || "Porté par " + x.name)} · ${esc(x.name)}</figcaption></figure>`).join("")); }
+// ——— Statistiques (anonymes) : visites, bijoux regardés, provenance ———
+const SRC = (() => { try { const k = "timfa-src", old = sessionStorage.getItem(k); if (old) return old;
+  const q = new URLSearchParams(location.search), u = (q.get("utm_source") || "").toLowerCase(), ref = document.referrer.toLowerCase();
+  let v = q.get("fbclid") ? (/instagram/.test(ref) || u === "ig" || u === "instagram" ? "Instagram pub" : "Facebook pub") : u ? (u === "fb" ? "Facebook" : u.charAt(0).toUpperCase() + u.slice(1)) :
+    /instagram/.test(ref) ? "Instagram" : /facebook|fb\.com/.test(ref) ? "Facebook" : /whatsapp|wa\.me|l\.wl\.co/.test(ref) ? "WhatsApp" : /google/.test(ref) ? "Google" : /tiktok/.test(ref) ? "TikTok" : ref && !ref.includes(location.host) ? "Autre site" : "Direct";
+  sessionStorage.setItem(k, v); return v; } catch (e) { return "Direct"; } })();
+const SID = (() => { try { let s = sessionStorage.getItem("timfa-sid"); if (!s) { s = Math.random().toString(36).slice(2, 10); sessionStorage.setItem("timfa-sid", s); } return s; } catch (e) { return ""; } })();
+const HITS = new Set();
+function hit(ev, p){ const k = ev + (p || ""); if (!API || HITS.has(k)) return; HITS.add(k); try { if (sessionStorage.getItem("timfa-h-" + k)) return; sessionStorage.setItem("timfa-h-" + k, "1"); } catch (e) {}
+  fetch(API, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({action:"hit", ev, p: p || "", src: SRC, sid: SID}), keepalive: true}).catch(()=>{}); }
+
 // ——— Avis publiés ———
 function loadReviews(){
   if (!API) return;
   fetch(API + "?action=reviews").then(r=>r.json()).then(d => { const L = (d && d.reviews) || []; if (!L.length) return;
     $("#revLive").innerHTML = L.slice(0, 9).map((x,i)=>`<article class="rcard" style="animation-delay:${i*60}ms">${/^data:image\//.test(x.photo||"") ? `<img src="${x.photo}" alt="Photo envoyée par ${esc(x.name)}" loading="lazy" data-revimg="${i}">` : ""}<div><span class="stars">${"★".repeat(x.stars||5)}${"☆".repeat(5-(x.stars||5))}</span><p>« ${esc(x.text)} »</p><small>— ${esc(x.name)}${x.product ? " · " + esc(x.product) : ""}</small></div></article>`).join("");
-    $("#revLive").hidden = false; window.__revs = L; if (PD) renderPd(); }).catch(()=>{});
+    $("#revLive").hidden = false; window.__revs = L; renderWorn(L); if (PD) renderPd(); }).catch(()=>{});
 }
 document.addEventListener("click", e => { const im = e.target.closest("[data-revimg]"); if (im) { const L = window.__revs || []; const imgs = L.filter(x=>/^data:image\//.test(x.photo||"")).map(x=>x.photo); openLb(imgs, imgs.indexOf(L[+im.dataset.revimg].photo), "Avis de " + L[+im.dataset.revimg].name); } });
 
@@ -1193,20 +1254,37 @@ function loyOff(sub){ if (!LOY) return 0; const base = sub - discountFor(sub) - 
 function loyLabel(){ if (!LOY) return ""; const a = []; if (LOY.rewardNow) a.push(`🎁 Fidélité (${LOY.count+1}e commande)`); if (LOY.referralOk) a.push(`🤝 Parrainée par ${LOY.referrerName}`); if (LOY.credit) a.push("🤝 Bonus parrainage"); return a.join(" + "); }
 const payMode = () => (document.querySelector('input[name="pay"]:checked')||{value:"cod"}).value;
 const waLink = t => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(t)}`;
+function totals(){
+  const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), giftSub = cart.filter(l=>isGiftKey(l.key)).reduce((s,l)=>s+l.price*l.qty,0), jewel = sub - giftSub, z = zone();
+  let fee = feeFor(z), feeNote = "";
+  if (!jewel && giftSub) { fee = 0; feeNote = "Carte cadeau envoyée sur WhatsApp"; }
+  else if (z === "abj" && jewel >= FREE_SHIP_MIN) { fee = 0; feeNote = "Livraison offerte 🎉"; }
+  let disc = jewel >= SITE_DISCOUNT ? SITE_DISCOUNT : 0; const site = disc;
+  const pieces = cart.filter(l => !isSetKey(l.key) && !isGiftKey(l.key)).reduce((s,l)=>s+l.qty,0);
+  const bundle = pieces >= BUNDLE_MIN ? Math.min(BUNDLE_OFF, Math.max(0, jewel - disc)) : 0; disc += bundle;
+  const promo = Math.min(PROMOS[PROMO] || 0, Math.max(0, jewel - disc)); disc += promo;
+  let ref = 0, credit = 0; if (LOY) { if (LOY.referralOk) { ref = Math.min(LOY.referralOff, Math.max(0, jewel - disc)); disc += ref; } if (LOY.credit) { credit = Math.min(LOY.credit, Math.max(0, jewel - disc)); disc += credit; } }
+  const gc = GC && GC.balance > 0 ? Math.min(GC.balance, Math.max(0, jewel + fee - disc)) : 0; disc += gc;
+  return {sub, giftSub, jewel, fee, feeNote, site, bundle, promo, ref, credit, gc, pieces, total: sub + fee - disc, gift: !!(LOY && LOY.rewardNow)};
+}
 function renderCart(){
   if (typeof saveCart === "function" && cart.length) saveCart();
   $("#cartCount").textContent = cart.reduce((s,l)=>s+l.qty,0);
   $("#lines").innerHTML = cart.length ? cart.map((l,i)=>`<div class="line"><img src="${esc(l.img)}" alt=""><div><h4>${esc(l.name)}</h4><small>${l.price ? fmt(l.price) : "Prix sur demande"}</small>${isPre(l.key) ? `<span class="pre-tag">⏳ Précommande · dispo jeudi 19/11</span>` : ""}</div><div class="qty"><button type="button" data-q="${i}" data-d="-1" aria-label="Retirer un">−</button><span>${l.qty}</span><button type="button" data-q="${i}" data-d="1" aria-label="Ajouter un">+</button></div></div>`).join("")
     : `<p class="empty">Votre panier est vide.<br>Ajoutez un bijou pour commencer.</p>`;
-  const sub = cart.reduce((s,l)=>s+(l.price||0)*l.qty,0), fee = feeFor(zone()), disc = discountFor(sub);
-  $("#promoLine").hidden = !disc;
+  const t = totals();
+  $("#promoLine").hidden = !t.site;
   $("#feeAbj").textContent = fmt(feeFor("abj"));
-  $("#subtotal").textContent = fmt(sub); $("#shipFee").textContent = fmt(fee);
-  const lo = loyOff(sub); $("#loyOff").hidden = !lo || !cart.length; $("#loyLabel").textContent = loyLabel(); $("#loyVal").textContent = "−" + fmt(lo);
+  $("#subtotal").textContent = fmt(t.sub); $("#shipFee").textContent = t.feeNote && !t.fee ? t.feeNote : fmt(t.fee);
+  $("#bundleLine").hidden = !t.bundle; $("#bundleVal").textContent = "−" + fmt(t.bundle);
+  const lo = t.ref + t.credit; $("#loyOff").hidden = !lo || !cart.length; $("#loyLabel").textContent = loyLabel(); $("#loyVal").textContent = "−" + fmt(lo);
   if (LOY && cart.length) { const left = LOY.every - ((LOY.count) % LOY.every); $("#loyLine").hidden = false; $("#loyLine").className = "loy-line" + (LOY.rewardNow ? " on" : "");
-    $("#loyLine").textContent = LOY.rewardNow ? `🎁 Bravo ! C’est votre ${LOY.count+1}e commande : −${fmt(LOY.off)} offerts` : `💕 Carte fidélité : ${LOY.count} commande(s). Encore ${left-1} avant −${fmt(LOY.off)} !`; } else $("#loyLine").hidden = true;
-  const po = promoOff(sub); $("#codeLine").hidden = !po || !cart.length; $("#codeLabel").textContent = "Code promo " + PROMO; $("#codeVal").textContent = "−" + fmt(po);
-  $("#total").textContent = fmt(cart.length ? sub+fee-disc-po-lo : 0);
+    $("#loyLine").textContent = LOY.rewardNow ? `🎁 Bravo ! C’est votre ${LOY.count+1}e commande : ${LOY.gift || "un cadeau offert"} 💝` : `💕 Carte fidélité : ${LOY.count} commande(s). Encore ${left-1} avant ${LOY.gift ? LOY.gift.replace(/ offerts$/," offerts") : "votre cadeau"} !`; } else $("#loyLine").hidden = true;
+  $("#codeLine").hidden = !t.promo || !cart.length; $("#codeLabel").textContent = "Code promo " + PROMO; $("#codeVal").textContent = "−" + fmt(t.promo);
+  $("#gcLine").hidden = !t.gc || !cart.length; $("#gcLabel").textContent = "💳 Carte cadeau " + (GC ? GC.code : ""); $("#gcVal").textContent = "−" + fmt(t.gc);
+  const goal = $("#shipGoal"); if (cart.length && zone() === "abj" && t.jewel > 0) { goal.hidden = false; goal.className = "ship-goal" + (t.jewel >= FREE_SHIP_MIN ? " on" : "");
+    goal.innerHTML = t.jewel >= FREE_SHIP_MIN ? "🎉 Livraison offerte à Abidjan !" : `🚚 Plus que <b>${fmt(FREE_SHIP_MIN - t.jewel)}</b> de bijoux pour la livraison offerte à Abidjan<span class="sg-bar"><i style="width:${Math.min(100, t.jewel/FREE_SHIP_MIN*100)}%"></i></span>`; } else goal.hidden = true;
+  $("#total").textContent = fmt(cart.length ? t.total : 0);
   const nPre = cart.filter(l => isPre(l.key)).length, mixed = nPre && nPre < cart.length;
   $("#preNote").hidden = !nPre;
   $("#preNote").textContent = !nPre ? "" : mixed ? "⏳ Votre panier contient des bijoux en précommande, disponibles à partir du jeudi 19 novembre. Nous vous confirmons sur WhatsApp la date de livraison de toute votre commande." : "⏳ Précommande : vos bijoux seront disponibles à partir du jeudi 19 novembre. Nous vous confirmons la date de livraison sur WhatsApp.";
@@ -1309,6 +1387,7 @@ $("#checkout").addEventListener("click", e => {
   const w = window.open("", "_blank");
   const btn = $("#checkout"); btn.textContent = "Envoi de la commande…";
   const payload = {name, phone, place, zone: zone(), pay: (payMode()==="wave" || zone()==="exp") ? "wave" : "cod", card: giftText().replace(/^🎁 /,""), surprise: surprise(), recipient: recipient(), remember: remember(), promo: PROMOS[PROMO] ? PROMO : ($("#pCode").value.trim().toUpperCase().match(/^R\d{6}$/) ? $("#pCode").value.trim().toUpperCase() : ""), items: cart.map(l => ({code: l.key, qty: l.qty}))};
+  if (GC) payload.giftcard = GC.code; payload.source = SRC; hit("checkout");
   fetch(API, {method: "POST", headers: {"Content-Type": "text/plain;charset=utf-8"}, body: JSON.stringify(payload)})
     .then(r => r.json())
     .then(d => {
@@ -1329,7 +1408,7 @@ $("#checkout").addEventListener("click", e => {
     .finally(() => { btn.textContent = "Commander sur WhatsApp"; });
 });
 if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
-loadStock(); loadReviews(); renderGiftIdeas(); renderRecent();
+loadStock(); loadReviews(); renderGiftIdeas(); renderRecent(); renderGcAmts(); hit("visit");
 renderGrid(); renderBuilder(); renderGift(); renderCart();
 // Installer le site comme une appli (Android / ordinateur)
 let INSTALL = null;
