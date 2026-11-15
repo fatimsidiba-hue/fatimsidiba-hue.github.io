@@ -243,6 +243,21 @@ header img{height:46px}
 .report h3{font-family:var(--display);font-weight:500;margin:16px 0 6px}
 .report table{width:100%;border-collapse:collapse;font-size:13.5px}.report td{padding:5px 4px;border-bottom:1px solid var(--line)}.report td:last-child{text-align:right;font-weight:600}
 .report .kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}.report .kp div{background:var(--bg,#fffafa);border:1px solid var(--line);border-radius:12px;padding:10px}.report .kp b{display:block;font-size:18px}
+.fin-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-bottom:60px}
+@media (max-width:820px){.fin-grid{grid-template-columns:1fr}}
+.flow-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.flow-top>div{background:var(--bg,#fffafa);border:1px solid var(--line);border-radius:14px;padding:10px 12px}.flow-top small{color:var(--muted)}.flow-top>div>b{display:block;font-size:20px;font-family:var(--display);font-weight:500}
+.pot{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.pot .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--blush);font-size:17px}
+.pot b{font-weight:600}.pot small{display:block;color:var(--muted);font-size:12px}
+.pot .amt{text-align:right;font-variant-numeric:tabular-nums}.pot .amt b{font-family:var(--display);font-size:19px;font-weight:500;color:var(--rose)}
+.bar{height:7px;background:#f4e3e6;border-radius:9px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--rose);border-radius:9px;transition:width .6s}
+.bar.ok i{background:#1f8a4c}.bar.over i{background:#d6334a}
+.debt{border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px;display:grid;gap:6px}
+.debt .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.debt .top b{font-size:15px}.debt .rest{font-family:var(--display);font-size:20px;color:var(--rose)}
+.debt small{color:var(--muted)}.debt .acts{display:flex;gap:6px;flex-wrap:wrap}.debt.done{opacity:.6}
+.fin-tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.fin-tips div{background:#fff8ec;border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.45}.fin-tips b{display:block;margin-bottom:2px}
 .owed{display:flex;gap:6px;align-items:center;flex-wrap:wrap;color:#8a5a00!important;font-weight:600}
 .tk-share{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0 4px}.tk-share .btn{flex:1;justify-content:center;min-width:200px}.tk-share label{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}.tk-share select{border:1px solid var(--line);border-radius:10px;padding:6px 8px;background:#fff}
 .ticket.receipt{border:0;padding:0;background:#eee;border-radius:14px;padding:14px;display:block}.ticket.receipt img{display:block;width:100%;max-width:360px;height:auto;margin:0 auto;box-shadow:0 10px 24px -14px rgba(0,0,0,.4)}
@@ -314,6 +329,7 @@ header img{height:46px}
       <button type="button" role="tab" id="tab-lots" aria-selected="false">Fournisseurs</button>
       <button type="button" role="tab" id="tab-clients" aria-selected="false">Clientes</button>
       <button type="button" role="tab" id="tab-avis" aria-selected="false">Avis & alertes<span class="count" id="avCount" hidden></span></button>
+      <button type="button" role="tab" id="tab-fin" aria-selected="false">Finances</button>
       <button type="button" role="tab" id="tab-stats" aria-selected="false">Statistiques</button>
     </div>
 
@@ -344,6 +360,17 @@ header img{height:46px}
         <section class="panel"><div class="p-head"><h2>Commandes par statut</h2></div><div id="donut" class="donut-wrap"></div></section>
         <section class="panel"><div class="p-head"><h2>Votre stock</h2><span class="p-sub" id="stockVal"></span></div><div id="catChart"></div></section>
         <section class="panel"><div class="p-head"><h2>En bref</h2></div><div id="brief" class="brief"></div></section>
+      </div>
+    </section>
+
+    <section id="view-fin" hidden>
+      <div class="fin-grid">
+        <section class="panel" style="grid-column:1/-1"><div class="p-head"><h2>Où va votre argent ce mois-ci</h2><button class="btn soft" type="button" id="finSplit">Régler les pourcentages</button></div><div id="finFlow"></div></section>
+        <section class="panel"><div class="p-head"><h2>Crédits et dettes</h2><button class="btn dark" type="button" id="finAddDebt">＋ Ajouter</button></div><div id="finDebts"></div></section>
+        <section class="panel"><div class="p-head"><h2>Argent pris</h2><span class="p-sub" id="finTakenSum"></span></div>
+          <form id="finForm" class="exp-form"><select id="fType"><option>Pour moi</option><option>Remboursement</option><option>Achat stock</option><option>Investissement</option><option>Épargne</option><option value="Apport">Apport (j’ai remis de l’argent)</option></select><input id="fAmount" type="number" inputmode="numeric" min="1" placeholder="Montant F" required><input id="fLabel" placeholder="Libellé (facultatif)" maxlength="100"><input id="fDate" type="date"><button class="btn dark" type="submit">Enregistrer</button></form>
+          <div id="finMoves" class="exp-list"></div></section>
+        <section class="panel" style="grid-column:1/-1"><div class="p-head"><h2>Conseils pour votre argent</h2></div><div id="finTips" class="fin-tips"></div></section>
       </div>
     </section>
 
@@ -460,6 +487,7 @@ function renderKpis(){
   if (low) a.push(`<span class="alert warn">${low} en stock faible</span>`);
   if (todo) a.push(`<span class="alert info">${todo} bijou${todo>1?"x":""} sans stock renseigné</span>`);
   const soonOut = mergedStock().filter(s => { const d = daysLeft(s); return d !== null && d > 0 && d <= 7; }).length; if (soonOut) a.push(`<span class="alert warn">⏳ ${soonOut} bijou(x) bientôt épuisé(s)</span>`);
+  const dueSoon = (DATA.finance ? activeDebts() : []).filter(d => d.due && d.due <= addDays(today(), 7)).length; if (dueSoon) a.push(`<span class="alert bad">💳 ${dueSoon} échéance(s) de crédit dans les 7 jours</span>`);
   const soonDates = upcomingDates(7).length; if (soonDates) a.push(`<span class="alert info">🎂 ${soonDates} anniversaire(s)/fête(s) dans les 7 jours</span>`);
   const owedAll = (DATA.livreurs||[]).reduce((t,l)=>t+courierOwed(l.name).amount,0); if (owedAll > 0) a.push(`<span class="alert warn">🛵 ${fmt(owedAll)} à récupérer chez les livreurs</span>`);
   const rvWait = (DATA.reviews||[]).filter(x=>x.status==="En attente").length, back = backAlerts().length, carts = staleCarts().length;
@@ -477,6 +505,7 @@ const WA_TPL = [
   ["Confirmer la commande", o => `Bonjour ${o.name} 😊 Merci pour votre commande ${o.id} chez Timfa online shop ✨\n${o.items}\nTotal : ${fmt(o.total)}\n${o.delivery ? "Livraison prévue " + frDate(o.delivery) + "." : "Je vous confirme la date de livraison très vite."}`],
   ["Livreur en route", o => `Bonjour ${o.name} 😊 Votre colis Timfa (${o.id}) est en route 🚚 Le livreur va vous appeler. Pensez à préparer ${fmt(o.total)} pour le paiement à la livraison. Merci !`],
   ["Merci + demander un avis ⭐", o => `Merci beaucoup ${o.name} pour votre confiance 💕 J’espère que votre bijou vous plaît !\nSi vous avez une minute, laissez-moi votre avis (avec une photo si vous voulez 📸) ici : ${avisLink(o)}\nÇa aide énormément ma boutique 🙏 N’oubliez jamais : vous êtes une reine 👑`],
+  ["Enregistrer mon numéro 📲", o => `Merci ${o.name} 💕 Pensez à enregistrer ce numéro sous le nom « Timfa Bijoux » : c’est le seul moyen de voir mes Status WhatsApp, où je publie en premier les nouveautés, les promos et les pièces uniques ✨\nFiche contact à enregistrer en 1 clic : ${SITE}/timfa.vcf`],
   ["Paiement expédition", o => `Bonjour ${o.name}, pour l’expédition merci d’envoyer ${fmt(o.total)} sur le 07 79 51 25 04, puis la capture du paiement avec votre nom ici. J’expédie dès réception 📦`]
 ];
 const SITE = "https://fatimsidiba-hue.github.io";
@@ -1018,6 +1047,91 @@ function checkNew(){ if (!DATA) return; const ids = new Set(DATA.orders.map(o =>
   KNOWN = ids; }
 setInterval(() => { if (PIN && !$("#app").hidden && document.visibilityState === "visible" && $("#modal").hidden) load().then(checkNew); }, 60000);
 
+/* ——— Finances ——— */
+const POTS = [["stock","🛍️","Racheter le stock vendu","Achat stock","Le prix d’achat des bijoux vendus : à garder pour recommander."],
+  ["debt","💳","Rembourser crédits et dettes","Remboursement",""],["invest","📈","Investir dans le business","Investissement","Pub, nouveaux modèles, emballages, matériel…"],
+  ["save","🏦","Épargne de sécurité","Épargne","Pour les mois difficiles et les imprévus."],["me","👑","Pour moi (mon salaire)","Pour moi","Ce que vous pouvez prendre pour vous sans abîmer le business."]];
+function FIN(){ return DATA.finance || {debts:[], moves:[], split:{}}; }
+function splitPct(){ const sp = FIN().split || {}; const d = {debt:30, invest:30, save:10, me:30}; const o = {}; Object.keys(d).forEach(k => o[k] = (typeof sp[k] === "number") ? sp[k] : d[k]); o.goal = sp.goal || 0; return o; }
+function debtPaid(d){ return (d.paidBefore||0) + FIN().moves.filter(m => m.type === "Remboursement" && m.debt === d.row).reduce((t,m)=>t+m.amount,0); }
+function debtLeft(d){ return Math.max(0, d.amount - debtPaid(d)); }
+function activeDebts(){ return FIN().debts.filter(d => d.status !== "Soldée" && debtLeft(d) > 0); }
+function monthMoney(M){ const O = DATA.orders.filter(o => o.status !== "Annulée" && o.date.slice(0,7) === M);
+  const ca = O.reduce((a,o)=>a+net(o),0); let cogs = 0, missing = 0; O.forEach(o => String(o.codes||"").split(",").forEach(c => { const m = c.trim().match(/^(.+) x(\d+)$/); if (!m) return;
+    const parts = /^set:/.test(m[1]) ? m[1].slice(4).split("+") : [m[1]]; parts.forEach(k => { const v = costOf(k); if (!v) missing++; cogs += v * (+m[2]); }); }));
+  const dep = (DATA.expenses||[]).filter(x => x.date.slice(0,7) === M).reduce((a,x)=>a+x.amount,0);
+  return {ca, cogs, dep, ben: ca - cogs - dep, missing, n: O.length}; }
+function renderFin(){ const T = today(), M = T.slice(0,7), mm = monthMoney(M), sp = splitPct(), debts = activeDebts();
+  const taken = t => FIN().moves.filter(m => m.type === t && m.date.slice(0,7) === M).reduce((a,m)=>a+m.amount,0);
+  const pos = Math.max(0, mm.ben), plan = {stock: mm.cogs, debt: debts.length ? Math.round(pos*sp.debt/100) : 0, invest: Math.round(pos*sp.invest/100), save: Math.round(pos*(sp.save + (debts.length ? 0 : sp.debt))/100), me: Math.round(pos*sp.me/100)};
+  $("#finFlow").innerHTML = `<div class="flow-top"><div><small>Ventes du mois (sans livraison)</small><b>${fmt(mm.ca)}</b></div><div><small>Dépenses payées</small><b>${fmt(mm.dep)}</b></div><div><small>Bénéfice à partager</small><b style="color:${mm.ben >= 0 ? "#1f8a4c" : "#d6334a"}">${fmt(mm.ben)}</b></div>${sp.goal ? `<div><small>Objectif du mois</small><b>${Math.round(mm.ca/sp.goal*100)} %</b><div class="bar ${mm.ca >= sp.goal ? "ok" : ""}"><i style="width:${Math.min(100, mm.ca/sp.goal*100)}%"></i></div><small>${fmt(mm.ca)} / ${fmt(sp.goal)}</small></div>` : ""}</div>
+    ${POTS.map(([k,ic,name,type,hint]) => { const p = plan[k], t = taken(type), pct = p ? Math.min(100, t/p*100) : (t ? 100 : 0);
+      const lbl = k === "stock" ? "" : k === "save" && !debts.length && sp.debt ? ` · ${sp.save + sp.debt} % (pas de dette en cours)` : ` · ${sp[k]} %`;
+      return `<div class="pot"><span class="ic">${ic}</span><span><b>${name}</b><small>${hint || (debts.length ? debts.length + " crédit(s)/dette(s) en cours" : "Aucune dette en cours")}${lbl}</small><div class="bar ${t > p && p ? "over" : t >= p && p ? "ok" : ""}"><i style="width:${pct}%"></i></div><small>Déjà pris : ${fmt(t)}${p ? " · reste " + fmt(Math.max(0, p - t)) : ""}</small></span><span class="amt"><small>Prévu</small><b>${fmt(p)}</b></span></div>`; }).join("")}
+    ${mm.missing ? `<p class="p-sub" style="margin-top:8px">⚠️ ${mm.missing} bijou(x) vendu(s) sans prix d’achat : complétez-les dans l’onglet Stock pour un calcul juste.</p>` : ""}
+    ${mm.ben < 0 ? `<p class="p-sub" style="margin-top:8px;color:#d6334a">Ce mois-ci, les dépenses et achats dépassent les ventes : évitez de prendre de l’argent pour vous tant que le bénéfice est négatif.</p>` : ""}`;
+  // dettes
+  const all = FIN().debts.slice().sort((a,b) => (debtLeft(a)===0) - (debtLeft(b)===0) || String(a.due||"9").localeCompare(String(b.due||"9")));
+  const totLeft = debts.reduce((t,d)=>t+debtLeft(d),0);
+  $("#finDebts").innerHTML = (all.length ? `<p class="p-sub">Reste à rembourser au total : <b style="color:var(--rose)">${fmt(totLeft)}</b></p>` + all.map(d => { const paid = debtPaid(d), left = debtLeft(d), months = d.monthly && left ? Math.ceil(left / d.monthly) : 0, late = d.due && d.due < T && left;
+    return `<div class="debt ${left ? "" : "done"}"><div class="top"><b>${esc(d.name)} <small>· ${esc(d.type)}</small></b><span class="rest">${left ? fmt(left) : "Soldé ✓"}</span></div>
+      <div class="bar ${left ? "" : "ok"}"><i style="width:${d.amount ? Math.min(100, paid/d.amount*100) : 0}%"></i></div>
+      <small>Remboursé ${fmt(paid)} sur ${fmt(d.amount)}${d.monthly ? " · " + fmt(d.monthly) + " par mois" : ""}${months ? " · fini dans ~" + months + " mois" : ""}</small>
+      ${d.due && left ? `<small style="color:${late ? "#d6334a" : "inherit"}">${late ? "⚠️ Échéance dépassée : " : "Prochaine échéance : "}${frDate(d.due)}</small>` : ""}${d.note ? `<small>${esc(d.note)}</small>` : ""}
+      <div class="acts">${left ? `<button class="btn ok" type="button" style="padding:6px 12px" data-pay="${d.row}">＋ Remboursement</button><button class="btn soft" type="button" style="padding:6px 12px" data-due="${d.row}">Échéance</button>` : ""}<button class="btn soft" type="button" style="padding:6px 12px" data-deldebt="${d.row}" aria-label="Supprimer">🗑</button></div></div>`; }).join("")
+    : `<div class="empty-chart">Ajoutez vos crédits (banque, microfinance, tontine) et vos dettes (fournisseur, famille…) pour suivre ce qu’il reste à payer.</div>`);
+  // mouvements
+  const mv = FIN().moves.slice().sort((a,b) => b.date.localeCompare(a.date)).slice(0, 40);
+  $("#finTakenSum").textContent = "Ce mois : " + fmt(FIN().moves.filter(m => m.date.slice(0,7) === M && m.type !== "Apport").reduce((a,m)=>a+m.amount,0));
+  $("#finMoves").innerHTML = mv.length ? mv.map(m => { const d = m.debt ? FIN().debts.find(x => x.row === m.debt) : null; return `<div class="exp-row"><span>${esc(m.type)}${m.label ? " · " + esc(m.label) : ""}<small>${frDate(m.date)}${d ? " · " + esc(d.name) : ""}</small></span><b style="color:${m.type === "Apport" ? "#1f8a4c" : "inherit"}">${m.type === "Apport" ? "+" : "−"}${fmt(m.amount)}</b><button type="button" data-delmoney="${m.row}" aria-label="Supprimer">×</button></div>`; }).join("") : `<div class="empty-chart">Notez ici chaque fois que vous prenez de l’argent de la caisse : pour vous, pour un remboursement, pour racheter du stock…</div>`;
+  if (!$("#fDate").value) $("#fDate").value = T;
+  // conseils
+  const tips = [], soon = debts.filter(d => d.due && d.due >= T && d.due <= addDays(T, 7)), me = taken("Pour moi");
+  if (soon.length) tips.push(["⏰ Échéance proche", `${soon.map(d => d.name + " le " + frDate(d.due)).join(", ")} : mettez l’argent de côté dès maintenant.`]);
+  if (debts.length > 1) { const small = debts.slice().sort((a,b)=>debtLeft(a)-debtLeft(b))[0]; tips.push(["💳 Une dette à la fois", `Payez le minimum partout, et mettez tout le surplus sur la plus petite : ${small.name} (${fmt(debtLeft(small))}). Une fois soldée, passez à la suivante : c’est motivant et ça libère vite de l’argent.`]); }
+  if (mm.ben > 0 && me > plan.me) tips.push(["👑 Votre salaire", `Vous avez déjà pris ${fmt(me)} pour vous, au-delà des ${fmt(plan.me)} prévus. Le surplus vient de l’argent du stock ou des dettes : ralentissez jusqu’au mois prochain.`]);
+  tips.push(["🛍️ Ne mangez pas le stock", "L’argent du prix d’achat des bijoux vendus ne vous appartient pas encore : il sert à racheter. Gardez-le à part (un compte Wave ou une enveloppe « stock »)."]);
+  tips.push(["🏦 Séparez les poches", "Un compte ou un portefeuille pour le business, un autre pour vous. Payez-vous un salaire fixe chaque mois plutôt que de prendre au fil de l’eau."]);
+  tips.push(["🛟 Fonds de sécurité", "Visez 1 à 2 mois de dépenses en épargne avant d’investir gros : en cas de mois calme ou de colis perdu, vous ne serez pas obligée de vous endetter."]);
+  if (!sp.goal) tips.push(["🎯 Fixez un objectif", "Touchez « Régler les pourcentages » et ajoutez un objectif de ventes du mois : une barre de progression apparaîtra ici."]);
+  tips.push(["📦 Avant un crédit pour du stock", "Ne financez à crédit que des bijoux qui se vendent déjà vite (voir « Liste de réassort »). Pour tester un nouveau modèle, prenez de petites quantités."]);
+  $("#finTips").innerHTML = tips.map(t => `<div><b>${t[0]}</b>${esc(t[1])}</div>`).join(""); }
+$("#finForm").addEventListener("submit", e => { e.preventDefault(); const type = $("#fType").value, amount = +$("#fAmount").value; if (!amount) return;
+  const body = {action:"addMoney", type, amount, label:$("#fLabel").value.trim(), date:$("#fDate").value};
+  if (type === "Remboursement" && activeDebts().length) { const d = activeDebts()[0]; body.debt = d.row; if (activeDebts().length > 1) { const names = activeDebts().map((x,i)=>(i+1)+". "+x.name).join("\n"); const k = prompt("Pour quelle dette ?\n" + names, "1"); const pick = activeDebts()[(+k||1)-1]; if (pick) body.debt = pick.row; } }
+  e.target.reset(); toast("Enregistrement…"); post(body).then(d => { toast(d.ok ? "Enregistré ✓" : "Erreur"); load(); }); });
+$("#view-fin").addEventListener("click", e => {
+  const pay = e.target.closest("[data-pay]"), due = e.target.closest("[data-due]"), del = e.target.closest("[data-deldebt]"), dm = e.target.closest("[data-delmoney]");
+  if (pay) { const d = FIN().debts.find(x => x.row === +pay.dataset.pay), v = prompt(`Montant remboursé pour « ${d.name} » (F) :`, d.monthly || ""); if (!v || !(+v > 0)) return;
+    post({action:"addMoney", type:"Remboursement", amount:+v, label:d.name, debt:d.row, date:today()}).then(r => { toast(r.ok ? "Remboursement enregistré ✓" : "Erreur");
+      if (r.ok && debtLeft(d) - (+v) <= 0) post({action:"updateDebt", row:d.row, status:"Soldée"}).then(() => { toast("🎉 « " + d.name + " » est soldée !"); load(); }); else load(); }); }
+  if (due) { const d = FIN().debts.find(x => x.row === +due.dataset.due), v = prompt("Prochaine échéance (AAAA-MM-JJ) :", d.due || today()); if (v === null) return; post({action:"updateDebt", row:d.row, due:v}).then(() => load()); }
+  if (del && confirm("Supprimer cette dette de la liste ?")) post({action:"updateDebt", row:+del.dataset.deldebt, del:true}).then(() => load());
+  if (dm && confirm("Supprimer ce mouvement ?")) post({action:"delMoney", row:+dm.dataset.delmoney}).then(() => load());
+});
+$("#finAddDebt").onclick = () => { openModal(`<h2>Ajouter un crédit ou une dette</h2><form id="dbForm" class="f-grid">
+    <label>Auprès de qui ?<input id="dbName" required maxlength="60" placeholder="ex. Banque, tontine, fournisseur, maman…"></label>
+    <label>Type<select id="dbType"><option>Crédit</option><option>Dette</option><option>Fournisseur</option><option>Tontine</option><option>Autre</option></select></label>
+    <label>Montant total (F)<input id="dbAmount" type="number" inputmode="numeric" min="1" required></label>
+    <label>Déjà remboursé (F)<input id="dbPaid" type="number" inputmode="numeric" min="0" value="0"></label>
+    <label>Mensualité (F, facultatif)<input id="dbMonthly" type="number" inputmode="numeric" min="0"></label>
+    <label>Prochaine échéance<input id="dbDue" type="date"></label>
+    <label class="full">Note<input id="dbNote" maxlength="200" placeholder="Taux, conditions…"></label>
+    <div class="f-actions full"><button class="btn dark" type="submit">Ajouter</button></div></form>`);
+  $("#dbForm").addEventListener("submit", e => { e.preventDefault(); post({action:"addDebt", name:$("#dbName").value.trim(), type:$("#dbType").value, amount:+$("#dbAmount").value, paidBefore:+$("#dbPaid").value||0, monthly:+$("#dbMonthly").value||0, due:$("#dbDue").value, note:$("#dbNote").value.trim()})
+    .then(d => { toast(d.ok ? "Ajouté ✓" : "Erreur : faites la mise à jour du code"); closeModal(); load(); }); }); };
+$("#finSplit").onclick = () => { const sp = splitPct();
+  openModal(`<h2>Comment partager votre bénéfice</h2><p class="p-sub">Après avoir mis de côté l’argent pour racheter le stock vendu, le bénéfice est partagé selon ces pourcentages (total 100 %). S’il n’y a aucune dette en cours, sa part va dans l’épargne.</p>
+    <form id="spForm" class="f-grid"><label>💳 Dettes (%)<input id="spDebt" type="number" min="0" max="100" value="${sp.debt}"></label><label>📈 Investir (%)<input id="spInvest" type="number" min="0" max="100" value="${sp.invest}"></label>
+    <label>🏦 Épargne (%)<input id="spSave" type="number" min="0" max="100" value="${sp.save}"></label><label>👑 Pour moi (%)<input id="spMe" type="number" min="0" max="100" value="${sp.me}"></label>
+    <label class="full">🎯 Objectif de ventes du mois (F, facultatif)<input id="spGoal" type="number" min="0" value="${sp.goal || ""}"></label>
+    <p class="p-sub full" id="spSum"></p><div class="f-actions full"><button class="btn dark" type="submit">Enregistrer</button></div></form>`);
+  const sum = () => { const t = ["#spDebt","#spInvest","#spSave","#spMe"].reduce((a,k)=>a+(+$(k).value||0),0); $("#spSum").textContent = "Total : " + t + " %" + (t === 100 ? " ✓" : " (doit faire 100 %)"); return t; };
+  sum(); $("#spForm").addEventListener("input", sum);
+  $("#spForm").addEventListener("submit", e => { e.preventDefault(); if (sum() !== 100) { toast("Le total doit faire 100 %"); return; }
+    const split = {debt:+$("#spDebt").value, invest:+$("#spInvest").value, save:+$("#spSave").value, me:+$("#spMe").value, goal:+$("#spGoal").value||0};
+    DATA.finance = Object.assign(FIN(), {split}); closeModal(); renderFin(); post({action:"setSplit", split}).then(d => toast(d.ok ? "Enregistré ✓" : "Erreur : faites la mise à jour du code")); }); };
+
 /* ——— Avis et alertes ——— */
 function stockQty(code){ const s = mergedStock().find(x=>x.code===code); return s ? s.qty : null; }
 function backAlerts(){ return (DATA.alerts||[]).filter(a => { const q = stockQty(a.code); return q === null || q > 0; }); }
@@ -1052,13 +1166,13 @@ $("#copyAvis").onclick = () => navigator.clipboard.writeText(SITE + "/avis/").th
 
 /* ——— Onglets et filtres ——— */
 function placePill(){ const b = $("#tab-"+tab), p = $("#pill"); p.style.left = b.offsetLeft+"px"; p.style.width = b.offsetWidth+"px"; }
-const TABS = ["orders","stock","lots","clients","avis","stats"];
+const TABS = ["orders","stock","lots","clients","avis","fin","stats"];
 TABS.forEach(t => $("#tab-"+t).onclick = () => { tab=t; if (innerWidth < 760) $(".tabs").scrollIntoView({behavior:"smooth", block:"start"}); $("#tab-"+t).scrollIntoView({inline:"center", block:"nearest"}); TABS.forEach(x => { $("#tab-"+x).setAttribute("aria-selected", x===t); $("#view-"+x).hidden = x!==t; }); placePill(); renderTab(); });
 document.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { oFilter=b.dataset.f; document.querySelectorAll("[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderOrders(); });
 document.querySelectorAll("[data-s]").forEach(b => b.onclick = () => { sFilter=b.dataset.s; document.querySelectorAll("[data-s]").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderStock(); });
 $("#q").addEventListener("input", renderOrders); $("#qs").addEventListener("input", renderStock);
 addEventListener("resize", placePill);
-function renderTab(){ const f = ({stock:renderStock, stats:renderStats, lots:renderLots, clients:renderClients, avis:renderAvis})[tab]; f ? f() : renderOrders(); }
+function renderTab(){ const f = ({stock:renderStock, stats:renderStats, lots:renderLots, clients:renderClients, avis:renderAvis, fin:renderFin})[tab]; f ? f() : renderOrders(); }
 function render(){ renderKpis(); renderSales(); renderTab(); }
 
 /* ——— Démarrage ——— */
