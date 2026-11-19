@@ -258,7 +258,10 @@ header img{height:46px}
 .debt small{color:var(--muted)}.debt .acts{display:flex;gap:6px;flex-wrap:wrap}.debt.done{opacity:.6}
 .fin-tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
 .fin-tips div{background:#fff8ec;border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.45}.fin-tips b{display:block;margin-bottom:2px}
-.vis-btn{display:inline-block;margin-top:4px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;font:inherit;font-size:12px;cursor:pointer}
+.ph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.ph-slot{border:1px solid var(--line);border-radius:14px;padding:10px;display:grid;gap:6px;justify-items:start}.ph-slot small{color:var(--muted);font-size:12px}
+.ph-img{width:100%;aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--blush);display:grid;place-items:center;font-size:28px}.ph-img img{width:100%;height:100%;object-fit:cover}
+.vis-btn{margin-right:6px;display:inline-block;margin-top:4px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;font:inherit;font-size:12px;cursor:pointer}
 .vis-prev{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}.vis-prev img{width:100%;border-radius:12px;box-shadow:0 10px 24px -14px rgba(0,0,0,.4)}
 .plan{display:grid;gap:10px;max-height:60vh;overflow:auto}.plan article{border:1px solid var(--line);border-radius:14px;padding:12px}.plan h4{margin:0 0 6px;font-size:15px}.plan pre{white-space:pre-wrap;font:inherit;font-size:13.5px;background:#f6fbf4;border-radius:10px;padding:10px;margin:0 0 8px}
 .vbars{display:flex;align-items:flex-end;gap:3px;height:120px;margin:8px 0 4px}.vbars i{flex:1;background:#e9a3b4;border-radius:4px 4px 0 0;min-height:2px}
@@ -739,7 +742,7 @@ function renderStock(){
   list.forEach(s => {
     if (lastNew !== s.isNew) { html += `<div class="group-title">${s.isNew ? "Nouvelle collection" : "Collection"}</div>`; lastNew = s.isNew; }
     const im = photoOf(s.code);
-    html += `<div class="s-row${s.missing?" missing":""}" style="--i:${i++}" data-code="${esc(s.code)}">${im ? `<img class="s-img" src="${im}" alt="" loading="lazy" data-edit="${esc(s.code)}">` : `<span class="s-img ph" data-edit="${esc(s.code)}">📷</span>`}<div class="s-name">${esc(s.name)}${s.added==="Oui" ? `<span class="s-tag">ajouté</span>` : s.added==="Masqué" ? `<span class="s-tag">masqué</span>` : ""}<small>${[esc(s.variant||""), s.price?fmt(s.price):""].filter(Boolean).join(" · ")}</small>${forecastHtml(s)}${s.missing ? "" : `<button type="button" class="vis-btn" data-visual="${esc(s.code)}">🎨 Visuel</button>`}${s.missing ? "" : `<label class="cost">Prix d’achat <input type="number" inputmode="numeric" min="0" data-cost="${esc(s.code)}" value="${s.cost||""}" placeholder="–"> F</label>`}</div>${sBadge(s.qty)}
+    html += `<div class="s-row${s.missing?" missing":""}" style="--i:${i++}" data-code="${esc(s.code)}">${im ? `<img class="s-img" src="${im}" alt="" loading="lazy" data-edit="${esc(s.code)}">` : `<span class="s-img ph" data-edit="${esc(s.code)}">📷</span>`}<div class="s-name">${esc(s.name)}${s.added==="Oui" ? `<span class="s-tag">ajouté</span>` : s.added==="Masqué" ? `<span class="s-tag">masqué</span>` : ""}<small>${[esc(s.variant||""), s.price?fmt(s.price):""].filter(Boolean).join(" · ")}</small>${forecastHtml(s)}<button type="button" class="vis-btn" data-photos="${esc(s.code)}">📷 Photos</button>${s.missing ? "" : `<button type="button" class="vis-btn" data-visual="${esc(s.code)}">🎨 Visuel</button>`}${s.missing ? "" : `<label class="cost">Prix d’achat <input type="number" inputmode="numeric" min="0" data-cost="${esc(s.code)}" value="${s.cost||""}" placeholder="–"> F</label>`}</div>${sBadge(s.qty)}
       <div class="stepper"><button type="button" data-d="-1" aria-label="Retirer une pièce">−</button><input type="number" inputmode="numeric" min="0" value="${s.qty===null?"":s.qty}" placeholder="–" aria-label="Pièces en stock"><button type="button" data-d="1" aria-label="Ajouter une pièce">+</button></div></div>`;
   });
   $("#stock").innerHTML = html || `<div class="empty-state"><b>Aucun bijou</b>Changez de filtre.</div>`;
@@ -831,7 +834,7 @@ function renderStats(){
 
 /* ——— Photos ——— */
 function catImg(code){ const [id, rest] = String(code).split("#"); const p = (window.TIMFA_CATALOGUE||[]).find(x=>x.id===id.split("@")[0]); if (!p) return ""; const i = rest ? parseInt(rest,10) : 0; return "../" + (p.variants ? (p.variants[i]||p.variants[0]).img : (p.img || (p.imgs||[])[0])); }
-const photoOf = code => (DATA.photos||{})[code] || catImg(code);
+const photoOf = code => (DATA.photos||{})[code] || (DATA.photos||{})[String(code).replace(/@\d+$/,"")] || catImg(code);
 function resizeImage(file){ return new Promise((ok, ko) => { const fr = new FileReader(); fr.onload = () => { const im = new Image(); im.onload = () => {
   let w = im.width, h = im.height, max = 900; if (w > h && w > max) { h = h*max/w; w = max; } else if (h > max) { w = w*max/h; h = max; }
   const c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").drawImage(im, 0, 0, w, h);
@@ -1145,6 +1148,22 @@ $("#finSplit").onclick = () => { const sp = splitPct();
   $("#spForm").addEventListener("submit", e => { e.preventDefault(); if (sum() !== 100) { toast("Le total doit faire 100 %"); return; }
     const split = {debt:+$("#spDebt").value, invest:+$("#spInvest").value, save:+$("#spSave").value, me:+$("#spMe").value, goal:+$("#spGoal").value||0};
     DATA.finance = Object.assign(FIN(), {split}); closeModal(); renderFin(); post({action:"setSplit", split}).then(d => toast(d.ok ? "Enregistré ✓" : "Erreur : faites la mise à jour du code")); }); };
+
+/* ——— Photos du site (depuis la gestion) ——— */
+function photoKeys(code){ const main = String(code).replace(/@\d+$/,""), base = main.split("#")[0]; return {main, base, extras:[1,2,3].map(n => base + "~" + n)}; }
+function photosModal(code){ const s = mergedStock().find(x => x.code === code) || {name:code}, K = photoKeys(code), P = DATA.photos || {}, cat = (window.TIMFA_CATALOGUE||[]).find(x => x.id === K.base);
+  const builtIn = cat ? (cat.imgs||[]).map(x => "../" + x) : [];
+  const slot = (key, label, fallback) => `<div class="ph-slot"><div class="ph-img">${P[key] ? `<img src="${P[key]}" alt="">` : fallback ? `<img src="${fallback}" alt="" style="opacity:.55">` : `<span>📷</span>`}</div><b>${label}</b><small>${P[key] ? "Votre photo ✓" : fallback ? "Photo actuelle du site" : "Vide"}</small>
+    <label class="btn ${P[key] ? "soft" : "dark"}" style="padding:6px 12px;cursor:pointer">${P[key] || fallback ? "Changer" : "Ajouter"}<input type="file" accept="image/*" hidden data-phkey="${esc(key)}"></label>${P[key] ? `<button type="button" class="btn soft" style="padding:6px 10px" data-phdel="${esc(key)}" aria-label="Supprimer">🗑</button>` : ""}</div>`;
+  openModal(`<h2>📷 Photos : ${esc(s.name)}${s.variant ? " · " + esc(s.variant) : ""}</h2><p class="p-sub">Les photos que vous mettez ici s’affichent toutes seules sur le site (fiche du bijou, boutique, panier). Prenez la photo bien éclairée, le bijou au centre.</p>
+    <div class="ph-grid">${slot(K.main, "Photo principale", catImg(code))}${K.extras.map((k,i) => slot(k, "Photo en plus " + (i+1), "")).join("")}</div>
+    ${builtIn.length ? `<p class="p-sub" style="margin-top:12px">Déjà sur le site pour ce bijou : ${builtIn.length} autre(s) photo(s). Vos photos en plus s’ajoutent après.</p><div style="display:flex;gap:6px;flex-wrap:wrap">${builtIn.map(x => `<img src="${x}" alt="" style="width:54px;height:54px;object-fit:cover;border-radius:10px">`).join("")}</div>` : ""}`);
+  $("#mBody").onchange = async e => { const inp = e.target.closest("[data-phkey]"); if (!inp || !inp.files[0]) return; const key = inp.dataset.phkey; toast("Préparation de la photo…");
+    try { const d = await resizeImage(inp.files[0]); const res = await post({action:"setPhoto", key, photo:d}); if (!res.ok) { toast("Erreur : " + (res.error || "faites la mise à jour du code")); return; } DATA.photos = Object.assign(DATA.photos || {}, {[key]: d}); toast("Photo enregistrée ✓ Elle est sur le site"); photosModal(code); renderStock(); }
+    catch (err) { toast("Cette photo n’a pas pu être lue, essayez-en une autre"); } };
+  $("#mBody").onclick = e => { const b = e.target.closest("[data-phdel]"); if (!b) return; const key = b.dataset.phdel; if (!confirm("Supprimer cette photo du site ?")) return;
+    delete DATA.photos[key]; photosModal(code); renderStock(); post({action:"delPhoto", key}).then(d => toast(d.ok ? "Photo supprimée" : "Erreur")); }; }
+document.addEventListener("click", e => { const b = e.target.closest("[data-photos]"); if (b) photosModal(b.dataset.photos); });
 
 /* ——— Visuels réseaux sociaux ——— */
 function prodOf(code){ const id = String(code).split(/[#@]/)[0], p = (window.TIMFA_CATALOGUE||[]).find(x => x.id === id); const s = mergedStock().find(x => x.code === code) || {}; return {p, s, name: s.name || (p && p.name) || code, price: s.price || (p && p.price) || 0, was: p && p.was, isNew: s.isNew || (p && p.isNew), variant: s.variant || ""}; }

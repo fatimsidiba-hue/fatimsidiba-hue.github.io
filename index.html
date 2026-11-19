@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-DIS+Y+F72xh9wOyYMJ1nbSkuXXq9Gj2Uehy9O9ZgXYo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net 'sha256-OcaEpQ4Kdgca/XzHN4Wn44N6t99nKq5iY9mkI5orKbI=' 'sha256-9LybQdS56r+D2TomF1bwFbfF/jC3K38VpGzFZD3Exeo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://fatimsidiba-hue.github.io/">
@@ -965,9 +965,19 @@ function addExtra(list){
   let added = 0;
   list.forEach(x => { if (!x || !/^p-[a-z0-9-]+$/.test(x.code) || PRODUCTS.some(p => p.id === x.code)) return;
     PRODUCTS.push({id:x.code, cat:String(x.cat||"Colliers"), isNew:!!x.isNew, name:String(x.name||""), desc:String(x.desc||""), price:Number(x.price)||null, img:PH, extra:true}); added++; });
-  if (added && !photosAsked) { photosAsked = true;
-    fetch(API + "?action=photos").then(r => r.json()).then(d => { Object.entries((d && d.photos) || {}).forEach(([k,v]) => { const p = PRODUCTS.find(x => x.id === k); if (p && /^data:image\//.test(v)) p.img = v; }); renderGrid(); renderCart(); }).catch(() => {}); }
+  if (!photosAsked) { photosAsked = true;
+    fetch(API + "?action=photos").then(r => r.json()).then(d => { Object.entries((d && d.photos) || {}).forEach(([k,v]) => { const p = PRODUCTS.find(x => x.id === k); if (p && /^data:image\//.test(v)) p.img = v; }); renderGrid(); renderCart(); loadCustomPhotos((d && d.keys) || {}); }).catch(() => {}); }
 }
+// Photos mises depuis la gestion pour les bijoux du site : « id » (photo principale), « id#2 » (couleur), « id~1 » (photos en plus)
+function applyPhoto(key, data){ const m = key.match(/^([a-z0-9-]+)(?:#(\d+))?(?:~(\d+))?$/); if (!m) return; const p = PRODUCTS.find(x => x.id === m[1]); if (!p) return;
+  if (m[3]) { p.imgs = p.imgs || []; p._extra = p._extra || {}; if (p._extra[m[3]]) p.imgs = p.imgs.filter(x => x !== p._extra[m[3]]); p._extra[m[3]] = data; p.imgs.push(data); return; }
+  if (m[2] !== undefined && p.variants && p.variants[+m[2]]) { p.variants[+m[2]].img = data; return; }
+  if (p.variants) p.variants[0].img = data; else p.img = data; }
+function loadCustomPhotos(keys){ const L = Object.entries(keys).filter(([k]) => /^[a-z0-9-]+(#\d+)?(~\d+)?$/.test(k.replace(/@\d+$/,""))); if (!L.length) return;
+  let left = L.length; const done = () => { if (--left <= 0) { renderGrid(); renderBuilder(); if (PD) renderPd(); renderCart(); } };
+  L.forEach(([k, v]) => { const ck = "timfa-ph-" + k; let hit = null; try { const c = JSON.parse(localStorage.getItem(ck) || "null"); if (c && c.v === v) hit = c.d; } catch (e) {}
+    if (hit) { applyPhoto(k.replace(/@\d+$/,""), hit); done(); return; }
+    fetch(API + "?action=photo&key=" + encodeURIComponent(k)).then(r => r.json()).then(d => { if (d && d.ok && /^data:image\//.test(d.photo)) { applyPhoto(k.replace(/@\d+$/,""), d.photo); try { localStorage.setItem(ck, JSON.stringify({v, d: d.photo})); } catch (e) {} } }).catch(() => {}).finally(done); }); }
 function loadStock(){
   if (!API) return;
   fetch(API + "?action=stock").then(r => r.json()).then(d => { if (d && d.stock) { STOCK = d.stock; TOP = d.top || ""; addExtra(d.extra || []); renderGrid(); renderBuilder(); renderGiftIdeas(); renderRecent(); } }).catch(() => {});
